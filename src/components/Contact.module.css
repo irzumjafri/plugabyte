@@ -1,0 +1,141 @@
+.contact {
+  position: relative;
+  padding: 8rem 5%;
+  background: #050505;
+  z-index: 5;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 850;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.5px;
+}
+
+.desc {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 2.5rem;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.detailIcon {
+  font-size: 1.25rem;
+}
+
+.detailItem a {
+  transition: color 0.2s ease;
+}
+
+.detailItem a:hover {
+  color: #00f2fe;
+}
+
+.formContainer {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 2.5rem;
+  backdrop-filter: blur(12px);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroup label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.inputGroup input,
+.inputGroup textarea {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  color: #ffffff;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputGroup input:focus,
+.inputGroup textarea:focus {
+  border-color: #00f2fe;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.15);
+}
+
+.submit {
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  color: #0a0a0a;
+  border: none;
+  padding: 0.9rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 242, 254, 0.2);
+  margin-top: 1rem;
+}
+
+.success {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.success h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #00f2fe;
+  margin-bottom: 0.5rem;
+}
+
+.success p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+}
