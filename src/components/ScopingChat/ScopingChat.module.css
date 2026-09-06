@@ -326,3 +326,18 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* Same shape as .badge, but this one is a friendly note rather than a warning,
+   so it does not borrow the bolt red. */
+.badgeCalm {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pb-ghost);
+  background: rgba(143, 184, 232, 0.12);
+}

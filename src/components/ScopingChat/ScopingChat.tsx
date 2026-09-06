@@ -3,10 +3,11 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import {
   BUILD_TYPES, BuildTypeId, Step, Answers, classifyFreeText, branchQuestions,
-  checkDisqualify, computeEffort, assumptionsFor, specId,
+  checkDisqualify, computeEffort, assumptionsFor, fillUnknowns, specId,
 } from '@/lib/estimator';
 import type { GhostHandle } from '@/components/Ghost/Ghost';
 import type { ScopeReply } from '@/lib/scopeReply';
+import { getSessionId, recordChatSession, trackEvent } from '@/lib/track';
 import styles from './ScopingChat.module.css';
 
 type Phase = 'hero' | 'chat' | 'done';
@@ -97,7 +98,7 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
 
   useEffect(() => {
     if (!sessionIdRef.current) {
-      sessionIdRef.current = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
+      sessionIdRef.current = getSessionId();
     }
     const interval = setInterval(() => {
       setPlaceholderIdx(i => (i + 1) % PLACEHOLDERS.length);
@@ -113,6 +114,24 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
     const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     box.scrollTo({ top: box.scrollHeight, behavior: reduced ? 'auto' : 'smooth' });
   }, [messages, thinking, step]);
+
+  // Records the conversation as it goes, so abandoned funnels are captured too
+  // — those never reach the leads table and are where drop-off actually shows.
+  const snapshot = useCallback((extra: Record<string, unknown> = {}) => {
+    if (!sessionIdRef.current) return;
+    recordChatSession({
+      sessionId: sessionIdRef.current,
+      messages: transcriptRef.current.map(m => ({
+        role: m.from === 'user' ? 'user' : 'assistant',
+        content: m.text,
+      })),
+      answers: answersRef.current,
+      buildType: buildTypeRef.current ?? undefined,
+      aiDriven: aiEnabledRef.current,
+      questionCount: transcriptRef.current.filter(m => m.from === 'bot').length,
+      ...extra,
+    });
+  }, []);
 
   const labelOf = useCallback((id: BuildTypeId) => BUILD_TYPES.find(b => b.id === id)?.label ?? id, []);
 
@@ -161,6 +180,9 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
 
       if (reply?.status === 'ask') {
         if (reply.buildType && !buildTypeRef.current) setBuildTypeTracked(reply.buildType);
+        // Values it worked out from the conversation rather than asking for.
+        if (reply.inferred) answersRef.current = { ...answersRef.current, ...reply.inferred };
+        if (reply.reflection) pushMessage('bot', reply.reflection);
         pushMessage('bot', reply.question);
         setStep({
           id: reply.field,
@@ -168,6 +190,7 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
           kind: reply.options?.length ? 'chips' : 'text',
           options: reply.options,
         });
+        snapshot();
         return;
       }
       if (reply?.status === 'done') {
@@ -205,8 +228,9 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
     }
     pushMessage('bot', next.prompt);
     setStep(next);
+    snapshot();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pushMessage, fetchScopeStep, ghostRef, setBuildTypeTracked]);
+  }, [pushMessage, fetchScopeStep, ghostRef, setBuildTypeTracked, snapshot]);
 
   const startBranch = useCallback((type: BuildTypeId) => {
     // The scripted branch is the fallback; with AI on, the model picks the path.
@@ -228,20 +252,30 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
         offerCallRef.current();
         return;
       }
-      const dq = checkDisqualify(type, answersRef.current);
+      const dq = checkDisqualify(type, fillUnknowns(type, answersRef.current).answers);
       if (dq.disqualified) {
         setResult({ kind: 'disqualified', reason: dq.reason! });
         setPhase('done');
+        trackEvent('disqualified', { buildType: type }, sessionIdRef.current);
+        snapshot({ outcome: 'disqualified' });
         return;
       }
-      const weeks = computeEffort(type, answersRef.current);
-      const assumptions = assumptionsFor(type, answersRef.current);
-      setResult({ kind: 'ready', id: specId(), buildType: type, low: weeks.low, high: weeks.high, assumptions });
+      // A four-question conversation cannot establish everything. Fill the rest
+      // mid-range and show every assumption, rather than quietly under-quoting.
+      const { answers: complete, assumed } = fillUnknowns(type, answersRef.current);
+      answersRef.current = complete;
+      const weeks = computeEffort(type, complete);
+      const assumptions = [...assumptionsFor(type, complete), ...assumed];
+      const id = specId();
+      setResult({ kind: 'ready', id, buildType: type, low: weeks.low, high: weeks.high, assumptions });
       setPhase('done');
+      trackEvent('spec_generated', { buildType: type, specId: id, low: weeks.low, high: weeks.high }, sessionIdRef.current);
+      snapshot({ outcome: 'ready', specId: id, effortLow: weeks.low, effortHigh: weeks.high });
     }, 900);
-  }, [ghostRef]);
+  }, [ghostRef, snapshot]);
 
   const selectType = useCallback((id: BuildTypeId) => {
+    trackEvent('chat_started', { entry: 'chip', buildType: id }, sessionIdRef.current);
     pushMessage('user', labelOf(id));
     setBuildTypeTracked(id);
     setPhase('chat');
@@ -252,7 +286,9 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
     pushMessage('bot', "Let's just get on a call instead — happy to sort this out live.");
     setResult({ kind: 'offerCall' });
     setPhase('done');
-  }, [pushMessage]);
+    trackEvent('offered_call', undefined, sessionIdRef.current);
+    snapshot({ outcome: 'offerCall' });
+  }, [pushMessage, snapshot]);
 
   const resolveClassification = useCallback((text: string) => {
     const cls = classifyFreeText(text);
@@ -295,8 +331,10 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
     pushMessage('user', value);
     answersRef.current[step.id] = value;
     setStep(null);
+    trackEvent('question_answered', { field: step.id }, sessionIdRef.current);
+    snapshot();
     askNext();
-  }, [step, pushMessage, labelOf, startBranch, askNext, setBuildTypeTracked]);
+  }, [step, pushMessage, labelOf, startBranch, askNext, setBuildTypeTracked, snapshot]);
 
   const submitFreeText = useCallback(() => {
     const text = freeText.trim();
@@ -378,6 +416,7 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
       // Confirming a save that never happened is the worst outcome here: the
       // prospect stops chasing us and we never learn they existed.
       if (!response.ok || !data?.ok) {
+        trackEvent('lead_submit_failed', { status: response.status }, sessionIdRef.current);
         setSubmitError(
           response.status === 429
             ? "That's a few briefs in a short window. Give it a few minutes, or email us directly."
@@ -386,6 +425,7 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
         return;
       }
       setSubmitted(true);
+      trackEvent('lead_submitted', { specId: result.kind === 'ready' ? result.id : undefined }, sessionIdRef.current);
     } catch {
       setSubmitError('That didn’t send — check your connection and try again, or email us directly.');
     } finally {
@@ -494,13 +534,12 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
             <div className={styles.done}>
               {result.kind === 'disqualified' && (
                 <>
-                  <span className={styles.badge}>We told them not to hire us</span>
+                  <span className={styles.badgeCalm}>You could do this one yourself</span>
                   <p className={styles.doneText}>{result.reason}</p>
-                  <button className={styles.startOver} onClick={resetAll}>Start over</button>
                 </>
               )}
 
-              {result.kind !== 'disqualified' && !submitted && (
+              {!submitted && (
                 <>
                   {result.kind === 'offerCall' && (
                     <p className={styles.doneText}>Still not quite landing on a build type over text — let&apos;s just talk it through.</p>
@@ -516,7 +555,9 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
                     </>
                   )}
                   <div className={styles.contactForm}>
-                    <p className={styles.contactTitle}>Where should this go?</p>
+                    <p className={styles.contactTitle}>
+                      {result.kind === 'disqualified' ? 'Want us to take it on anyway?' : 'Where should this go?'}
+                    </p>
                     <input
                       className={styles.contactInput}
                       type="email"

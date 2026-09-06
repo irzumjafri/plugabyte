@@ -1,7 +1,7 @@
 # Plugabyte Phase 1 — Agency Site Rebuild Design
 
 **Date:** 2026-08-01  
-**Status:** Approved for implementation planning  
+**Status:** Approved for implementation planning — **partly superseded, see §13**  
 **Scope:** Phase 1 UI + deterministic scoping chat + lead capture + brand kit  
 **Approach:** Rebuild in place on the existing Next.js 16 app
 
@@ -213,3 +213,41 @@ Keep app shell, Supabase client patterns, Three/R3F deps for the ghost.
 ## 12. Follow-on (not this plan)
 
 Phase 2+: LLM extraction, live `/spec/[id]`, admin panel, booking, WhatsApp, integrations library — all against the same lead/session model, still with no Zoho.
+
+
+---
+
+## 13. Amendments since approval
+
+This document records the decision as it stood on 2026-08-01. Two parts of it no
+longer describe the build. The body above is left as written; this section is
+what is true now.
+
+### 2026-09-07 — the scoping chat is model-driven
+
+Superseded: "deterministic scoping chat" (§Scope), "guided deterministic
+conversation" (§4), "LLM extraction" as out of scope (§6), and Phase 2+ owning
+LLM work (§12).
+
+The conversation is now run by a model (Z.AI / GLM) that reads the prospect's
+free text, asks about their business and infers the scoping values. Approved
+explicitly by Irzum, against this document's original scoping.
+
+**What did not change, deliberately:** effort is still computed by
+`computeEffort`, never by the model, so a client is never quoted a timeline a
+model invented and two identical briefs still size the same. The success
+criterion "complete a scoped conversation and leave a lead without LLM" (§11)
+therefore still holds literally — no key, a timeout or a malformed reply all
+fall back to the scripted branch.
+
+### 2026-09-07 — leads live in Convex, not Supabase
+
+Superseded: the lead store named in §Scope and in `AGENTS.md`.
+
+Convex is now the single backend for leads, chat transcripts and events. The
+constraint behind the original choice is unchanged: no third-party CRM, we own
+the data, an on-site admin reads it later. Convex additionally stores
+conversations nobody submits, which Supabase never did.
+
+See `ai-progress/2026-09-07-ai-scoping-chat.md` and
+`ai-progress/2026-09-07-convex-and-conversation.md`.

@@ -1,4 +1,5 @@
-import { getSupabaseAdmin } from '@/lib/supabase';
+import { api } from '../../../../convex/_generated/api';
+import { getConvex } from '@/lib/convex';
 
 interface LeadPayload {
   name?: string;
@@ -96,32 +97,23 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: 'A valid email is required' }, { status: 400 });
   }
 
-  let supabaseAdmin;
   try {
-    supabaseAdmin = getSupabaseAdmin();
-  } catch {
-    console.error('Supabase is not configured — set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY');
-    return Response.json({ ok: false, error: 'Server not configured' }, { status: 500 });
-  }
-
-  const { error } = await supabaseAdmin.from('leads').insert({
-    name: trimField(body.name),
-    email: body.email.trim(),
-    phone: trimField(body.phone),
-    conversation: sanitiseConversation(body.conversation),
-    build_type: trimField(body.buildType),
-    answers: body.answers ?? {},
-    effort_low: Number.isFinite(body.effortLow) ? body.effortLow : undefined,
-    effort_high: Number.isFinite(body.effortHigh) ? body.effortHigh : undefined,
-    channel: 'web',
-    session_id: trimField(body.sessionId),
-    // The reference the prospect sees and quotes back at us. Without it there
-    // was no way to find "PB-XXXXXX" in this table.
-    spec_id: trimField(body.specId),
-  });
-
-  if (error) {
-    console.error('Supabase insert error:', error);
+    await getConvex().mutation(api.leads.create, {
+      email: body.email.trim(),
+      name: trimField(body.name),
+      phone: trimField(body.phone),
+      conversation: sanitiseConversation(body.conversation),
+      buildType: trimField(body.buildType),
+      answers: body.answers ?? {},
+      effortLow: Number.isFinite(body.effortLow) ? body.effortLow : undefined,
+      effortHigh: Number.isFinite(body.effortHigh) ? body.effortHigh : undefined,
+      sessionId: trimField(body.sessionId),
+      // The reference the prospect sees and quotes back at us — without it a
+      // quoted "PB-XXXXXX" could not be found.
+      specId: trimField(body.specId),
+    });
+  } catch (error) {
+    console.error('Convex lead insert failed:', error);
     return Response.json({ ok: false, error: 'Could not save your brief' }, { status: 500 });
   }
 

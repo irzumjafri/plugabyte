@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Reference prototypes, not app code.
     "Plugabyte prototype directions/**",
+    // Written by `npx convex dev`; not ours to lint.
+    "convex/_generated/**",
   ]),
 ]);
 

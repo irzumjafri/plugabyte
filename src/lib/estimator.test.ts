@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  BUILD_TYPES, classifyFreeText, branchQuestions, checkDisqualify, computeEffort, specId,
+  BUILD_TYPES, classifyFreeText, branchQuestions, assumptionsFor, checkDisqualify, computeEffort, fillUnknowns, specId,
 } from './estimator';
 
 describe('classifyFreeText', () => {
@@ -135,5 +135,45 @@ describe('computeEffort', () => {
     const result = computeEffort('product', { screens: '15+', roles: '4+' });
     // base 5-7, +3 screens, +2 roles = +5
     expect(result).toEqual({ low: 10, high: 12 });
+  });
+});
+
+describe('fillUnknowns', () => {
+  it('leaves answers we actually have alone', () => {
+    const { answers, assumed } = fillUnknowns('integration', { systems: '4 or more', apis: 'No' });
+    expect(answers.systems).toBe('4 or more');
+    expect(answers.apis).toBe('No');
+    expect(assumed.every(a => !a.includes('two or three systems'))).toBe(true);
+  });
+
+  // Unasked fields used to be worth zero, which quietly made every short
+  // conversation cheaper than a long one about the same build.
+  it('never estimates lower than asking would have', () => {
+    const asked = computeEffort('product', { systems: '2–3', apis: 'Not sure', approvers: '2', deadline: 'None', screens: '6–15', roles: '2–3' });
+    const { answers } = fillUnknowns('product', {});
+    expect(computeEffort('product', answers)).toEqual(asked);
+    expect(computeEffort('product', answers).low).toBeGreaterThan(computeEffort('product', {}).low);
+  });
+
+  it('only fills fields this build type actually asks', () => {
+    const { answers } = fillUnknowns('ai', {});
+    expect(answers.volume).toBeDefined();   // ai asks volume
+    expect(answers.screens).toBeUndefined(); // ai never asks screens
+  });
+
+  it('reports what it had to guess', () => {
+    const { assumed } = fillUnknowns('rescue', { systems: 'Just one' });
+    expect(assumed.length).toBeGreaterThan(0);
+    expect(assumed.some(a => a.includes('sign off'))).toBe(true);
+  });
+
+  // apis is still filled so it scores, but assumptionsFor already explains an
+  // unconfirmed answer — adding a second line said the same thing twice.
+  it('does not duplicate an assumption assumptionsFor already makes', () => {
+    const { answers, assumed } = fillUnknowns('rescue', {});
+    expect(answers.apis).toBe('Not sure');
+    const combined = [...assumptionsFor('rescue', answers), ...assumed];
+    const unconfirmed = combined.filter(a => a.toLowerCase().includes('unconfirmed'));
+    expect(unconfirmed).toHaveLength(1);
   });
 });

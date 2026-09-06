@@ -1,5 +1,6 @@
-// Plugabyte scoping-conversation engine — pure functions, no DOM, no LLM.
-// Deterministic: code computes effort, never a model.
+// Plugabyte scoping rules — pure functions, no DOM, no LLM.
+// The conversation is model-driven (see src/lib/scopeReply.ts), but everything
+// here is deterministic: code computes effort, never a model.
 
 export type BuildTypeId = 'product' | 'internal' | 'ai' | 'pipeline' | 'integration' | 'rescue';
 
@@ -124,7 +125,7 @@ export function checkDisqualify(typeId: BuildTypeId, answers: Answers): Disquali
   if ((typeId === 'integration' || typeId === 'pipeline') && easySystems && hasApis && lightApproval) {
     return {
       disqualified: true,
-      reason: "Two systems with APIs and one approver — that's a weekend on an off-the-shelf tool (Zapier, Make, n8n), not an agency engagement.",
+      reason: "Honestly, this one is within reach on your own — a couple of tools that already share their data, and one person deciding, is usually a weekend on something off-the-shelf like Zapier, Make or n8n. Plenty of people get there themselves. If you would rather it was just done, and done properly, we are happy to take it on.",
     };
   }
   return { disqualified: false };
@@ -169,6 +170,43 @@ const SPEC_ALPHABET = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
  * 32^6 is ~1.07e9, which keeps collisions negligible at any volume this site
  * will see, and stays short enough to read aloud.
  */
+/**
+ * What we assume when a question was never asked. computeEffort only ever adds,
+ * so an unknown field silently makes a build look cheaper than it is — which is
+ * the wrong direction to be wrong in. These are mid-range, not optimistic, and
+ * every one of them is surfaced to the reader as an assumption.
+ */
+const UNKNOWN_DEFAULTS: Record<string, { value: string; assumption: string }> = {
+  systems: { value: '2–3', assumption: 'Assumes this touches two or three systems — worth confirming, it moves the number.' },
+  // No assumption line: assumptionsFor already explains an unconfirmed 'Not sure'.
+  apis: { value: 'Not sure', assumption: '' },
+  approvers: { value: '2', assumption: 'Assumes a couple of people sign off rather than a committee.' },
+  deadline: { value: 'None', assumption: 'Assumes no fixed launch date. A hard date adds time, it does not remove it.' },
+  screens: { value: '6–15', assumption: 'Assumes a mid-sized surface, roughly six to fifteen screens.' },
+  roles: { value: '2–3', assumption: 'Assumes two or three kinds of user.' },
+  volume: { value: '100–1,000/day', assumption: 'Assumes hundreds a day rather than thousands.' },
+};
+
+export interface FilledAnswers {
+  answers: Answers;
+  /** Lines to show the reader, one per field we had to assume. */
+  assumed: string[];
+}
+
+/** Fills anything the conversation never established, for this build type only. */
+export function fillUnknowns(typeId: BuildTypeId, answers: Answers): FilledAnswers {
+  const filled: Answers = { ...answers };
+  const assumed: string[] = [];
+  for (const step of branchQuestions(typeId)) {
+    if (filled[step.id] !== undefined) continue;
+    const fallback = UNKNOWN_DEFAULTS[step.id];
+    if (!fallback) continue;
+    filled[step.id] = fallback.value;
+    if (fallback.assumption) assumed.push(fallback.assumption);
+  }
+  return { answers: filled, assumed };
+}
+
 export function specId(): string {
   const bytes = new Uint8Array(6);
   const cryptoObj = globalThis.crypto;
@@ -183,9 +221,9 @@ export function specId(): string {
 export function assumptionsFor(typeId: BuildTypeId, answers: Answers): string[] {
   const a = ['Effort excludes rate-card pricing — discussed on the call.'];
   if (typeId === 'ai') a.push('Includes eval harness, prompt/version management, human handoff path and cost modelling at stated volume.');
-  if (answers.apis === 'No') a.push('No public API on at least one system — expect scraping or a vendor call to unblock.');
-  if (answers.apis === 'Not sure') a.push('API access unconfirmed — first week includes a spike to verify reachability.');
+  if (answers.apis === 'No') a.push('At least one of those tools will not share its data directly — expect a workaround or a call with the vendor.');
+  if (answers.apis === 'Not sure') a.push('Whether those tools will share their data is unconfirmed — the first week includes a check.');
   if (answers.approvers === '3 or more') a.push("Multiple approvers add review cycles that aren't build time but do add calendar time.");
-  a.push('Assumes access to a staging environment within the first week.');
+  a.push('Assumes we get access to a test version of your systems in the first week.');
   return a;
 }

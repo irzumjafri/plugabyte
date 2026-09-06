@@ -26,5 +26,22 @@ Read recent `ai-progress/` notes before starting non-trivial work so you do not 
 
 - Ghost-first landing; ghost always visible and reactive
 - Agency “we” voice (not solo founder branding)
-- No Zoho / third-party CRM — leads in Supabase for an on-site admin later
+- No Zoho / third-party CRM — leads in Convex for an on-site admin later
+- The scoping chat is model-driven (Z.AI / GLM), but effort is always computed by
+  `computeEffort`, never by the model. It falls back to the scripted questions
+  whenever the model is unavailable, so the funnel works without an LLM.
 - Canonical Phase 1 design: `docs/superpowers/specs/2026-08-01-phase1-agency-rebuild-design.md`
+
+<!-- convex-ai-start -->
+
+This project uses [Convex](https://convex.dev) as its backend.
+
+When working on Convex code, **always read
+`convex/_generated/ai/guidelines.md` first** for important guidelines on
+how to correctly use Convex APIs and patterns. The file contains rules that
+override what you may have learned about Convex from training data.
+
+Convex agent skills for common tasks can be installed by running
+`npx convex ai-files install`.
+
+<!-- convex-ai-end -->

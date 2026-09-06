@@ -154,14 +154,10 @@ describe('advancePastRepeats — text-level repeats and length cap', () => {
     expect(advancePastRepeats(reply, {}, 'ai', ['Any hard deadline?'])).toBe(reply);
   });
 
-  it('replaces a bespoke field with the next catalogue question', () => {
-    const advanced = advancePastRepeats(
-      { status: 'ask', field: 'shop_platform', question: 'What does it connect to?', buildType: 'ai' },
-      {},
-      'ai',
-      [],
-    );
-    expect(advanced).toMatchObject({ status: 'ask', field: 'surface' });
+  // Bespoke questions are the design now — the model asks about the business.
+  it('lets a bespoke business question through', () => {
+    const reply = { status: 'ask', field: 'whats_breaking', question: 'What breaks first when it gets busy?', buildType: 'ai' } as const;
+    expect(advancePastRepeats(reply, {}, 'ai', [])).toBe(reply);
   });
 });
 
@@ -169,21 +165,22 @@ describe('advancePastRepeats — off-branch questions', () => {
   // Observed live: it asked an AI agent how many screens it needed. computeEffort
   // bumps on `screens` regardless of build type, so that answer would have
   // silently added weeks to an agent build.
-  it('rejects a field that belongs to a different build type', () => {
-    const advanced = advancePastRepeats(
-      { status: 'ask', field: 'screens', question: 'How many screens?', buildType: 'ai' },
-      { surface: 'WhatsApp', volume: 'Under 100/day' },
-      'ai',
-      [],
-    );
-    expect(advanced).toMatchObject({ status: 'ask' });
-    expect(branchQuestions('ai').map(s => s.id)).toContain((advanced as { field: string }).field);
-    expect((advanced as { field: string }).field).not.toBe('screens');
+  // The protection moved: the question is allowed, but the *value* must not be
+  // able to score, because computeEffort bumps on screens for every type.
+  it('refuses to score a field from a different build type', () => {
+    const reply = validateScopeReply({
+      status: 'ask', field: 'q', question: 'How busy does it get?', buildType: 'ai',
+      inferred: { screens: '15+', volume: '1,000+/day' },
+    });
+    expect((reply as { inferred?: Record<string, string> }).inferred).toEqual({ volume: '1,000+/day' });
   });
 
-  it('still accepts a field that is in this build type', () => {
-    const reply = { status: 'ask', field: 'screens', question: 'How many screens?', buildType: 'product' } as const;
-    expect(advancePastRepeats(reply, {}, 'product', [])).toBe(reply);
+  it('scores a field that does belong to this build type', () => {
+    const reply = validateScopeReply({
+      status: 'ask', field: 'q', question: 'How many screens?', buildType: 'product',
+      inferred: { screens: '15+' },
+    });
+    expect((reply as { inferred?: Record<string, string> }).inferred).toEqual({ screens: '15+' });
   });
 });
 
@@ -191,16 +188,13 @@ describe('advancePastRepeats — before the build type is known', () => {
   // Observed live: turn one asked an AI-agent prospect about screens. With no
   // type yet the union of fields was allowed, and computeEffort bumps on
   // `screens` for every type, so it inflated the band.
-  it('only allows questions common to every build type', () => {
-    const advanced = advancePastRepeats(
-      { status: 'ask', field: 'screens', question: 'How many screens?' },
-      {},
-      undefined,
-      [],
-    );
+  it('only scores fields common to every build type before the type is known', () => {
     expect(COMMON_FIELD_IDS).not.toContain('screens');
-    expect(advanced).toMatchObject({ status: 'ask' });
-    expect(COMMON_FIELD_IDS).toContain((advanced as { field: string }).field);
+    const reply = validateScopeReply({
+      status: 'ask', field: 'q', question: 'What is it?',
+      inferred: { screens: '15+', systems: '4 or more' },
+    });
+    expect((reply as { inferred?: Record<string, string> }).inferred).toEqual({ systems: '4 or more' });
   });
 
   it('lets a common question through before the type is known', () => {
