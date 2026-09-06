@@ -1,0 +1,32 @@
+.landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  position: relative;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.ghost {
+  margin-bottom: 36px;
+}
+
+@media (max-width: 640px) {
+  .chatFocused {
+    justify-content: flex-start;
+  }
+
+  .chatFocused .ghost {
+    width: 64px !important;
+    height: 64px !important;
+    margin-bottom: 12px;
+  }
+}

@@ -1,0 +1,31 @@
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 40px 32px;
+}
+
+.inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.wordmark {
+  font-size: 17px;
+}
+
+.links {
+  display: flex;
+  gap: 22px;
+  font-size: 13px;
+}
+
+.tagline {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--pb-text-faint);
+}

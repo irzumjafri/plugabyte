@@ -1,31 +1,44 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
+import Wordmark from './Wordmark';
 import styles from './Navbar.module.css';
 
-export default function Navbar() {
+interface Props {
+  onGetStarted?: () => void;
+}
+
+export default function Navbar({ onGetStarted }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+
+  const handleGetStarted = () => {
+    if (onGetStarted) {
+      onGetStarted();
+      return;
+    }
+    router.push('/');
+  };
+
   return (
-    <motion.nav 
-      className={styles.navbar}
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
-    >
-      <div className={styles.logo}>
-        <span className={styles.accent}>Plug</span>aByte
-      </div>
+    <nav className={styles.navbar}>
+      <Link href="/" className={styles.logoLink}>
+        <Wordmark />
+      </Link>
       <div className={styles.links}>
-        <a href="#services" className={styles.link}>Services</a>
-        <a href="#about" className={styles.link}>About</a>
-        <a href="#contact" className={styles.link}>Contact</a>
+        {isHome ? (
+          <a href="#work" className={styles.link}>Work</a>
+        ) : (
+          <Link href="/work" className={styles.link}>Work</Link>
+        )}
+        <Link href="/rescue" className={styles.link}>Rescue</Link>
+        <Link href="/about" className={styles.link}>About</Link>
       </div>
-      <motion.button 
-        className={styles.cta}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        Get Started
-      </motion.button>
-    </motion.nav>
+      <button className={styles.cta} onClick={handleGetStarted}>
+        {isHome ? 'What are you shipping?' : 'Get started'}
+      </button>
+    </nav>
   );
 }

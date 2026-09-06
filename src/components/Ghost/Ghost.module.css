@@ -1,0 +1,59 @@
+.wrap {
+  position: relative;
+  color: var(--pb-ghost);
+}
+
+/* Holds the space while WebGL mounts. Deliberately not ghost-shaped: a flat
+   stand-in that resembles the mascot only draws attention to the swap. */
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border-radius: 50%;
+  border: 2px solid rgba(143, 184, 232, 0.18);
+  border-top-color: var(--pb-ghost);
+  animation: ghostSpin 0.9s linear infinite;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.sceneReady {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  animation: ghostFadeIn 420ms ease-out;
+}
+
+@keyframes ghostSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ghostFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    animation: none;
+  }
+
+  .sceneReady {
+    animation: none;
+  }
+}

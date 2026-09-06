@@ -1,17 +1,15 @@
-import Navbar from '@/components/Navbar';
-import Hero from '@/components/Hero';
-import Services from '@/components/Services';
-import Contact from '@/components/Contact';
+import HomeClient from '@/components/Home/HomeClient';
+import { BUILD_TYPES, type BuildTypeId } from '@/lib/estimator';
 
-export default function Home() {
-  return (
-    <>
-      <Navbar />
-      <main>
-        <Hero />
-        <Services />
-        <Contact />
-      </main>
-    </>
-  );
+const VALID_IDS = new Set(BUILD_TYPES.map(b => b.id));
+
+interface Props {
+  searchParams: Promise<{ type?: string }>;
+}
+
+export default async function Home({ searchParams }: Props) {
+  const { type } = await searchParams;
+  const initialType = type && VALID_IDS.has(type as BuildTypeId) ? (type as BuildTypeId) : null;
+
+  return <HomeClient initialType={initialType} />;
 }

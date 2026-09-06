@@ -1,0 +1,20 @@
+/* Plugabyte brand v2.1 — standalone token sheet for client-facing decks/assets.
+   Kept in sync with src/app/globals.css. */
+:root {
+  --pb-void: #0d131b;      /* primary background */
+  --pb-panel: #0e1d2c;     /* card / panel background */
+  --pb-panel-2: #0b1826;   /* secondary panel background */
+  --pb-ghost: #8fb8e8;     /* ghost mark, links, primary accent */
+  --pb-ghost-hover: #b9d8f2;
+  --pb-bolt: #f4586a;      /* Bolt Red — CTAs, disqualification, failure states */
+
+  --pb-text: #e6eef5;
+  --pb-text-dim: #c4d3df;
+  --pb-text-muted: #8195a8;
+  --pb-text-faint: #6f8497;
+  --pb-text-ghosted: #4e6478;
+
+  --font-display: 'Nunito', sans-serif;      /* headings */
+  --font-body: 'Space Grotesk', sans-serif;  /* UI / body copy */
+  --font-mono: 'JetBrains Mono', monospace;  /* labels, meta, spec ids */
+}

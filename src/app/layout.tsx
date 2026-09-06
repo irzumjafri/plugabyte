@@ -1,21 +1,28 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Nunito, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const nunito = Nunito({
+  variable: '--font-display',
   subsets: ['latin'],
+  weight: ['700', '800', '900'],
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const spaceGrotesk = Space_Grotesk({
+  variable: '--font-body',
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: '--font-mono',
+  subsets: ['latin'],
+  weight: ['400', '500'],
 });
 
 export const metadata: Metadata = {
-  title: 'Plugabyte | Bespoke AI Consulting & Agentic Workflows',
-  description: 'Plugabyte develops custom generative AI solutions, multi-agent cognitive systems, and secure autonomous workflows to scale enterprise productivity.',
-  keywords: ['AI consulting', 'agentic workflows', 'generative AI', 'machine learning agency', 'automation architecture'],
+  title: 'Plugabyte — the demo was the easy part',
+  description: 'Plugabyte builds the part that stays up. Tell us what you\'re trying to ship — build type, integration, or a prototype that needs to become production-ready.',
 };
 
 export default function RootLayout({
@@ -24,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${nunito.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
       <body>{children}</body>
     </html>
   );

@@ -1,0 +1,31 @@
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: #fff;
+}
+
+/* Metrics from the brand guidelines: the bowl matches the surrounding x-height
+   and sits on the baseline, so it reads as a letter rather than punctuation. */
+.glyph {
+  position: relative;
+  height: 2.135ex;
+  width: 1.351ex;
+  top: 0.689ex;
+  margin: 0 -0.007ex 0 0.086ex;
+  color: var(--pb-ghost);
+  flex: none;
+}
+
+/* Keeps the accessible name "plugabyte" while the glyph carries the letter. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
