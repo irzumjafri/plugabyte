@@ -50,8 +50,123 @@
   border-color: rgba(255, 255, 255, 0.3);
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Hidden on desktop, where the inline links are already visible. */
+.menuToggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bar,
+.barTopOpen,
+.barBottomOpen,
+.barHidden {
+  display: block;
+  width: 16px;
+  height: 1.5px;
+  margin: 0 auto;
+  background: var(--pb-text);
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.barTopOpen {
+  transform: translateY(6.5px) rotate(45deg);
+}
+
+.barBottomOpen {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+.barHidden {
+  opacity: 0;
+}
+
+.mobileMenu {
+  display: none;
+}
+
+/* `display: flex` below is more specific than the [hidden] attribute's default
+   display:none, so without this the menu is permanently open on mobile. */
+.mobileMenu[hidden] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar,
+  .barTopOpen,
+  .barBottomOpen,
+  .barHidden {
+    transition: none;
+  }
+}
+
 @media (max-width: 640px) {
+  .navbar {
+    padding: 0 18px; /* 32px left too little room for the wordmark plus the CTA */
+    flex-wrap: wrap;
+  }
+
   .links {
     display: none;
   }
+
+  .menuToggle {
+    display: flex;
+  }
+
+  .cta {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+
+  /* The bar is a fixed 66px, so the wrapped menu had nowhere to go and was
+     open but clipped to zero height. It grows only while the menu is open, so
+     the closed bar keeps its exact height. */
+  .navbarOpen {
+    height: auto;
+  }
+
+  .navbarOpen .logoLink,
+  .navbarOpen .actions {
+    height: 66px;
+  }
+
+  .mobileMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+    padding: 6px 0 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .mobileMenu .link {
+    padding: 12px 4px; /* a comfortable touch target, not a 13px text line */
+    font-size: 15px;
+  }
+}
+
+/* The one focus style the site had nowhere: keyboard users could not see where
+   they were. Scoped to :focus-visible so it never shows on mouse clicks. */
+.link:focus-visible,
+.cta:focus-visible,
+.menuToggle:focus-visible,
+.logoLink:focus-visible {
+  outline: 2px solid var(--pb-ghost);
+  outline-offset: 3px;
+  border-radius: 4px;
 }

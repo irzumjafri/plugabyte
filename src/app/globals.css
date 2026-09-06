@@ -9,8 +9,8 @@
   --pb-text: #e6eef5;
   --pb-text-dim: #c4d3df;
   --pb-text-muted: #8195a8;
-  --pb-text-faint: #6f8497;
-  --pb-text-ghosted: #4e6478;
+  --pb-text-faint: #8fa3b5; /* was #6f8497 — 4.41:1 on panels, under AA */
+  --pb-text-ghosted: #7e93a6; /* was #4e6478 — 3.04:1, well under AA */
 
   --font-display: 'Nunito', sans-serif;
   --font-body: 'Space Grotesk', sans-serif;
@@ -64,11 +64,6 @@ textarea::placeholder {
   93% { transform: scaleY(0.08); }
 }
 
-@keyframes pb-wave {
-  0%, 100% { transform: rotate(-0.9rad); }
-  50% { transform: rotate(-0.4rad); }
-}
-
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -85,4 +80,26 @@ textarea::placeholder {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--pb-panel-2);
+}
+
+/* The site animated and smooth-scrolled regardless of the OS setting; only the
+   Ghost respected it. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Browser autofill and native controls render light-on-light without this. */
+:root {
+  color-scheme: dark;
 }

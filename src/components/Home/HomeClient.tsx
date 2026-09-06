@@ -23,8 +23,10 @@ export default function HomeClient({ initialType }: Props) {
   return (
     <>
       <Navbar onGetStarted={() => { chatRef.current?.focusInput(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
-      <LandingSection chatRef={chatRef} initialType={initialType} />
-      <HomeSections onStartHere={handleStartHere} />
+      <main>
+        <LandingSection chatRef={chatRef} initialType={initialType} />
+        <HomeSections onStartHere={handleStartHere} />
+      </main>
       <Footer />
     </>
   );

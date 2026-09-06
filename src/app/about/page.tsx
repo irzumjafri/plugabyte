@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function AboutPage() {
   return (
     <div className={styles.page}>
       <Navbar />
+      <main>
 
       {/* Hero */}
       <section className={styles.hero}>
@@ -116,8 +118,7 @@ export default function AboutPage() {
           <div className={styles.keynoteSig}>
             <div className={styles.keynoteLine} />
             <p className={styles.keynoteAuthor}>
-              <span className={styles.keynoteAuthorName}>Irzum Jafri</span><br />
-              Founder, Plugabyte
+              <span className={styles.keynoteAuthorName}>The Plugabyte team</span>
             </p>
           </div>
         </div>
@@ -150,6 +151,8 @@ export default function AboutPage() {
           Tell us what you&apos;re building →
         </Link>
       </section>
+      </main>
+      <Footer />
     </div>
   );
 }

@@ -134,6 +134,8 @@
 
 .teardownAll {
   font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .teardownList {
@@ -211,6 +213,8 @@
 
 .teaserLink {
   font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 @media (max-width: 768px) {
@@ -222,4 +226,11 @@
   .teaserGrid {
     grid-template-columns: 1fr;
   }
+}
+
+
+.teardownAll:focus-visible,
+.teaserLink:focus-visible {
+  outline: 2px solid var(--pb-ghost);
+  outline-offset: 3px;
 }

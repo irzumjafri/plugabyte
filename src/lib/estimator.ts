@@ -22,10 +22,32 @@ const KEYWORDS: Record<BuildTypeId, string[]> = {
   product: ['app', 'product', 'customer', 'saas', 'platform', 'signup', 'users'],
   internal: ['internal', 'dashboard', 'ops', 'admin', 'team tool', 'back office'],
   ai: ['ai', 'agent', 'chatbot', 'llm', 'gpt', 'model', 'assistant', 'whatsapp bot'],
-  pipeline: ['pipeline', 'etl', 'data', 'warehouse', 'sync data', 'reporting'],
+  pipeline: ['pipeline', 'etl', 'data', 'database', 'warehouse', 'sync data', 'reporting'],
   integration: ['integrate', 'integration', 'zapier', 'sync', 'connect', 'crm', 'webhook', 'api'],
   rescue: ['broken', 'rescue', 'bolt', 'lovable', 'v0', 'replit', 'prototype', 'demo fell over', 'production-ready', "doesn't work"],
 };
+
+/**
+ * Keywords have to start on a word boundary. Matching them as bare substrings
+ * classified "retail", "email" and "detail" as AI, and "rapid" as an API
+ * integration — so ordinary sentences came back ambiguous and the conversation
+ * bailed to "let's get on a call".
+ *
+ * Trailing inflections are allowed so "customers" and "integrated" still match,
+ * but only real ones — an open-ended wildcard let "product" match "production",
+ * which is the opposite build type. Short keywords ("ai", "api", "ops") take a
+ * plural "s" only, so "ai" cannot match "aim" or "aid".
+ */
+const MATCHERS: Record<BuildTypeId, RegExp[]> = Object.fromEntries(
+  (Object.entries(KEYWORDS) as [BuildTypeId, string[]][]).map(([id, words]) => [
+    id,
+    words.map(w => {
+      const escaped = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const tail = w.length >= 4 ? '(?:s|es|d|ed|ing)?' : 's?';
+      return new RegExp(`(?<![\\p{L}\\d])${escaped}${tail}(?![\\p{L}\\d])`, 'u');
+    }),
+  ])
+) as Record<BuildTypeId, RegExp[]>;
 
 export type Classification =
   | { status: 'clear'; type: BuildTypeId }
@@ -33,9 +55,10 @@ export type Classification =
   | { status: 'vague' };
 
 export function classifyFreeText(text: string): Classification {
-  const t = text.toLowerCase();
-  const scores = (Object.entries(KEYWORDS) as [BuildTypeId, string[]][])
-    .map(([id, words]) => ({ id, score: words.reduce((n, w) => n + (t.includes(w) ? 1 : 0), 0) }))
+  // Curly apostrophes are what phones type, and "doesn't work" would miss them.
+  const t = text.toLowerCase().replace(/[‘’]/g, "'");
+  const scores = (Object.entries(MATCHERS) as [BuildTypeId, RegExp[]][])
+    .map(([id, res]) => ({ id, score: res.reduce((n, re) => n + (re.test(t) ? 1 : 0), 0) }))
     .sort((a, b) => b.score - a.score);
 
   const top = scores[0];
@@ -58,23 +81,23 @@ export interface Step {
 
 export function branchQuestions(typeId: BuildTypeId): Step[] {
   const common: Step[] = [
-    { id: 'systems', prompt: 'How many systems does this touch?', kind: 'chips', options: ['Just one', '2–3', '4 or more'] },
-    { id: 'apis', prompt: 'Do the systems you need to reach have public APIs?', kind: 'chips', options: ['Yes', 'No', 'Not sure'] },
-    { id: 'approvers', prompt: 'How many people need to sign off before this ships?', kind: 'chips', options: ['Just me', '2', '3 or more'] },
-    { id: 'deadline', prompt: 'Any hard deadline?', kind: 'chips', options: ['None', 'Soft target', 'Hard date'] },
-    { id: 'prior', prompt: 'Has someone already tried building this?', kind: 'chips', options: ['No, starting fresh', 'Yes, and it failed', 'Yes, abandoned mid-build'] },
+    { id: 'systems', prompt: 'How many other tools does this need to work with?', kind: 'chips', options: ['Just one', '2–3', '4 or more'] },
+    { id: 'apis', prompt: 'Do those tools let other software pull data out of them?', kind: 'chips', options: ['Yes', 'No', 'Not sure'] },
+    { id: 'approvers', prompt: 'How many people need to say yes before this goes live?', kind: 'chips', options: ['Just me', '2', '3 or more'] },
+    { id: 'deadline', prompt: 'Is there a date this has to be ready by?', kind: 'chips', options: ['None', 'Soft target', 'Hard date'] },
+    { id: 'prior', prompt: 'Has anyone tried building this already?', kind: 'chips', options: ['No, starting fresh', 'Yes, and it failed', 'Yes, abandoned mid-build'] },
   ];
   if (typeId === 'ai') {
     return [
-      { id: 'surface', prompt: 'Where does the agent show up?', kind: 'chips', options: ['Chat widget', 'WhatsApp', 'Internal only', 'Voice'] },
-      { id: 'volume', prompt: "Rough volume once it's live?", kind: 'chips', options: ['Under 100/day', '100–1,000/day', '1,000+/day'] },
+      { id: 'surface', prompt: 'Where do people talk to it?', kind: 'chips', options: ['Chat widget', 'WhatsApp', 'Internal only', 'Voice'] },
+      { id: 'volume', prompt: 'Roughly how many of those a day, once it is live?', kind: 'chips', options: ['Under 100/day', '100–1,000/day', '1,000+/day'] },
       ...common,
     ];
   }
   if (typeId === 'product' || typeId === 'internal') {
     return [
-      { id: 'screens', prompt: 'Roughly how many screens?', kind: 'chips', options: ['1–5', '6–15', '15+'] },
-      { id: 'roles', prompt: 'How many distinct user roles need their own permissions?', kind: 'chips', options: ['1', '2–3', '4+'] },
+      { id: 'screens', prompt: 'Roughly how many screens or pages does it need?', kind: 'chips', options: ['1–5', '6–15', '15+'] },
+      { id: 'roles', prompt: 'How many different kinds of user, each seeing something different?', kind: 'chips', options: ['1', '2–3', '4+'] },
       ...common,
     ];
   }
@@ -136,8 +159,25 @@ export function computeEffort(typeId: BuildTypeId, answers: Answers): EffortResu
   return { low, high };
 }
 
+// Crockford-style alphabet: no I, L, O, U, so nothing is misheard on a call or
+// mistyped from a screenshot.
+const SPEC_ALPHABET = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+
+/**
+ * A prospect quotes this back at us, so it has to be unique in practice.
+ * The old PB-#### drew from 9,000 values: 2,000 specs produced ~190 collisions.
+ * 32^6 is ~1.07e9, which keeps collisions negligible at any volume this site
+ * will see, and stays short enough to read aloud.
+ */
 export function specId(): string {
-  return 'PB-' + (1000 + Math.floor(Math.random() * 9000));
+  const bytes = new Uint8Array(6);
+  const cryptoObj = globalThis.crypto;
+  if (cryptoObj?.getRandomValues) cryptoObj.getRandomValues(bytes);
+  else for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
+
+  let out = '';
+  for (const b of bytes) out += SPEC_ALPHABET[b % SPEC_ALPHABET.length];
+  return 'PB-' + out;
 }
 
 export function assumptionsFor(typeId: BuildTypeId, answers: Answers): string[] {

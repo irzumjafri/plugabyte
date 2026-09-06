@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Ghost, { type GhostHandle } from '@/components/Ghost/Ghost';
 import ScopingChat, { type ScopingChatHandle } from '@/components/ScopingChat/ScopingChat';
 import type { BuildTypeId } from '@/lib/estimator';
@@ -14,7 +14,14 @@ interface Props {
 export default function LandingSection({ chatRef, initialType }: Props) {
   const ghostRef = useRef<GhostHandle>(null);
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const focusWrapRef = useRef<HTMLDivElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+  const [chatFocused, setChatFocused] = useState(false);
+
+  // The timer re-armed itself inside its own callback with no cleanup, so the
+  // wave loop kept firing after this section unmounted.
+  useEffect(() => () => {
+    if (idleTimer.current) clearTimeout(idleTimer.current);
+  }, []);
 
   function resetIdleTimer() {
     if (idleTimer.current) clearTimeout(idleTimer.current);
@@ -24,23 +31,33 @@ export default function LandingSection({ chatRef, initialType }: Props) {
     }, 15000);
   }
 
-  function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
-    const r = e.currentTarget.getBoundingClientRect();
+  // Pointer events cover mouse, pen and touch — the ghost was mouse-only, so on
+  // a phone it never reacted at all, against the "always reactive" constraint.
+  function handlePointer(e: React.PointerEvent<HTMLElement>) {
+    // getBoundingClientRect on every move was a layout read per event.
+    const r = rectRef.current ?? e.currentTarget.getBoundingClientRect();
+    rectRef.current = r;
     const nx = ((e.clientX - r.left) / r.width) * 2 - 1;
     const ny = ((e.clientY - r.top) / r.height) * 2 - 1;
     ghostRef.current?.setLookAt(nx, -ny);
     resetIdleTimer();
   }
 
-  function handleFocusChange(focused: boolean) {
-    focusWrapRef.current?.classList.toggle(styles.chatFocused, focused);
+  function handlePointerEnter(e: React.PointerEvent<HTMLElement>) {
+    rectRef.current = e.currentTarget.getBoundingClientRect();
+    resetIdleTimer();
   }
 
   return (
-    <section className={styles.landing} onMouseMove={handleMouseMove} onMouseEnter={resetIdleTimer}>
-      <div ref={focusWrapRef} className={styles.inner}>
+    <section
+      className={`${styles.landing} ${chatFocused ? styles.chatFocused : ''}`}
+      onPointerMove={handlePointer}
+      onPointerDown={handlePointer}
+      onPointerEnter={handlePointerEnter}
+    >
+      <div className={styles.inner}>
         <Ghost ref={ghostRef} size={260} className={styles.ghost} />
-        <ScopingChat ref={chatRef} ghostRef={ghostRef} initialType={initialType} onFocusChange={handleFocusChange} />
+        <ScopingChat ref={chatRef} ghostRef={ghostRef} initialType={initialType} onFocusChange={setChatFocused} />
       </div>
     </section>
   );

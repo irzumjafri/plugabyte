@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { BUILD_TYPES, type BuildTypeId } from '@/lib/estimator';
+import { TEARDOWNS } from '@/lib/teardowns';
 import styles from './HomeSections.module.css';
 
 interface Props {
@@ -8,20 +9,14 @@ interface Props {
 
 const PROOF = [
   { value: '14', label: 'Builds shipped' },
-  { value: 'Now booking', label: 'Discovery spikes for this quarter' },
-  { value: 'Solo, expanding', label: 'Named agency, first line of support' },
+  { value: '6', label: 'Build types we scope' },
+  { value: 'This quarter', label: 'Discovery spikes open' },
 ];
 
-const TEARDOWNS = [
-  { type: 'AI agent', effort: '7 weeks', title: 'A WhatsApp agent that survives real volume' },
-  { type: 'Integration', effort: '4 weeks', title: 'Order sync between a storefront and a CRM that disagreed on "cancelled"' },
-  { type: 'Product build', effort: '9 weeks', title: 'An internal claims tool for a small insurer' },
-  { type: 'Prototype rescue', effort: '3 weeks', title: 'A Bolt-built booking app with no auth' },
-];
 
 export default function HomeSections({ onStartHere }: Props) {
   return (
-    <main className={styles.main}>
+    <div className={styles.main}>
       <section className={styles.proof}>
         {PROOF.map(p => (
           <div key={p.label} className={styles.proofCard}>
@@ -32,7 +27,7 @@ export default function HomeSections({ onStartHere }: Props) {
       </section>
 
       <section id="work" className={styles.section}>
-        <p className={styles.pretitle}>What plugabyte builds</p>
+        <p className={styles.pretitle}>What Plugabyte builds</p>
         <h2 className={styles.sectionTitle}>Six types. Integration is one branch, not the category.</h2>
         <div className={styles.typesGrid}>
           {BUILD_TYPES.map(bt => (
@@ -75,6 +70,6 @@ export default function HomeSections({ onStartHere }: Props) {
           <Link href="/about" className={styles.teaserLink}>Read the about page →</Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

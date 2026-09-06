@@ -1,5 +1,8 @@
 .landing {
-  min-height: 100vh;
+  /* 100vh plus the 66px sticky navbar always overflowed the first viewport, so
+     the ghost-first hero was never actually centred. dvh also tracks mobile
+     browser chrome, which vh does not. */
+  min-height: calc(100dvh - 66px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,6 +23,8 @@
 }
 
 @media (max-width: 640px) {
+  /* This lives on .landing now. It was on .inner, an auto-height flex column,
+     where justify-content does nothing at all. */
   .chatFocused {
     justify-content: flex-start;
   }

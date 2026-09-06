@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  BUILD_TYPES, classifyFreeText, branchQuestions, checkDisqualify, computeEffort,
+  BUILD_TYPES, classifyFreeText, branchQuestions, checkDisqualify, computeEffort, specId,
 } from './estimator';
 
 describe('classifyFreeText', () => {
@@ -17,6 +17,38 @@ describe('classifyFreeText', () => {
   it('returns vague when nothing matches', () => {
     const result = classifyFreeText('something cool');
     expect(result).toEqual({ status: 'vague' });
+  });
+
+  // Substring matching used to score these as AI ("retail", "email", "detail")
+  // and as an integration ("rapid" -> api), so real sentences came back
+  // ambiguous and the conversation bailed out to booking a call.
+  it('does not match a keyword buried inside a longer word', () => {
+    expect(classifyFreeText('a retail app for our customers')).toEqual({ status: 'clear', type: 'product' });
+    expect(classifyFreeText('an email pipeline that stops dropping rows')).toEqual({ status: 'clear', type: 'pipeline' });
+    expect(classifyFreeText('rapid prototype cleanup')).toEqual({ status: 'clear', type: 'rescue' });
+  });
+
+  it('still matches plurals and inflections', () => {
+    expect(classifyFreeText('a dashboard for our ops team')).toEqual({ status: 'clear', type: 'internal' });
+    expect(classifyFreeText('integrated with zapier and a webhook')).toEqual({ status: 'clear', type: 'integration' });
+  });
+
+  it('reads a curly apostrophe the way a phone types it', () => {
+    expect(classifyFreeText('the prototype doesn’t work in production')).toEqual({ status: 'clear', type: 'rescue' });
+  });
+});
+
+describe('specId', () => {
+  it('does not collide at realistic volume', () => {
+    // Probabilistic, so assert a bound rather than perfection: 32^6 expects
+    // ~0.2 collisions here. PB-#### produced ~190 collisions in only 2,000.
+    const ids = new Set(Array.from({ length: 20000 }, () => specId()));
+    expect(ids.size).toBeGreaterThan(19990);
+  });
+
+  it('avoids characters that are misheard when read aloud', () => {
+    const ids = Array.from({ length: 500 }, () => specId());
+    for (const id of ids) expect(id).toMatch(/^PB-[0-9A-HJKMNP-TV-Z]{6}$/);
   });
 });
 
