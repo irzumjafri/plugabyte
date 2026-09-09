@@ -44,3 +44,6 @@ next-env.d.ts
 
 # Local Convex backend (sqlite + storage from `convex dev` local mode)
 .convex
+
+# Generated page exports
+exports/
