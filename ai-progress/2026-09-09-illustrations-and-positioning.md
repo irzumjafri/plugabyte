@@ -12,10 +12,17 @@ images rather than boxes of text.
   what to automate, what to leave alone, what it costs to run — explicitly
   available whether or not they hire us to build.
 - **Schematic illustrations** (`src/components/Diagram.tsx`). Four line drawings,
-  one per case study, each drawing the system the teardown describes with the
-  failure point in bolt red. On `/work` full width under the prose; on the
-  homepage inside each teardown card. Colour comes from `currentColor` + two
-  CSS vars, so the same markup works on dark and on Chalk.
+  one per case study, each drawing the system the teardown describes. On `/work`
+  full width under the prose; on the homepage inside each teardown card. Colour
+  comes from `currentColor` + two CSS vars, so the same markup works on dark and
+  on Chalk.
+  - First pass was plain rects and arrows — correct and completely anonymous.
+    Rebuilt on two devices from the brand book and nothing else: every node is
+    cut with the **ghost hem** (three lobes, "the only trace of the ghost", which
+    is what makes a box one of ours), and the failure is pinned with the **actual
+    bolt glyph** from the mark rather than a red rectangle, since Shock is
+    already the brand's error state. One bolt per drawing; a second halves the
+    first. Wires stay hairline so those two read.
 - **Real mascot stills** (`public/ghost/*.png`). Rendered from the actual 3D rig
   via a new `/shot-rig` route + dev-only `/api/shot-save`, then alpha-trimmed to
   640px. Placed per the brand book's own state usage: Slouch on the `/rescue`

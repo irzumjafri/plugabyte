@@ -9,28 +9,30 @@
   overflow: visible;
 }
 
-/* Everything is stroked in currentColor at low opacity, so a diagram inherits
-   the ground it sits on instead of needing a light and a dark copy. */
-.node,
-.nodeKey,
-.nodeAlert {
-  fill: none;
+/* Nodes are hem-cut cards. Colour comes from currentColor at low opacity so a
+   diagram inherits the ground it sits on instead of needing a light copy. */
+.quiet,
+.key,
+.alert {
   stroke-width: 1;
 }
 
-.node {
+.quiet {
+  fill: rgba(143, 184, 232, 0.035);
   stroke: currentColor;
-  opacity: 0.34;
+  opacity: 0.42;
 }
 
-.nodeKey {
+/* The one node the story turns on gets the brand's 25% of sky. */
+.key {
+  fill: rgba(143, 184, 232, 0.1);
   stroke: var(--pb-ghost);
-  fill: rgba(143, 184, 232, 0.07);
 }
 
-.nodeAlert {
+.alert {
+  fill: rgba(244, 88, 106, 0.05);
   stroke: var(--pb-bolt);
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 .wire,
@@ -46,6 +48,18 @@
   fill: none;
   stroke: var(--pb-bolt);
   stroke-width: 1.2;
+}
+
+/* The bolt sits on its own disc of ground so it stays legible where it overlaps
+   a node's edge — it is a pin stuck into the drawing, not part of the node. */
+.boltDisc {
+  fill: var(--pb-void);
+  stroke: none;
+}
+
+.bolt {
+  fill: var(--pb-bolt);
+  stroke: none;
 }
 
 .label,
