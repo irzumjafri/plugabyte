@@ -59,3 +59,57 @@ fail WCAG. All fixed, all four pages now audit clean:
   re-grade — re-run `scripts/export-ghost.sh` to refresh it.
 - Windmill is still the brand's designated loading state; the app uses a
   generic spinner.
+
+---
+
+## Round two — the imagery, and a ghost bug
+
+Feedback: the 3D ghost had vanished on `/rescue`, and the scene imagery — the
+main impact of the comps — had been skipped on the inner pages.
+
+### The ghost bug (real, mine)
+`Ghost`'s `.wrap` had **zero height**. Making `size` optional in round one
+removed the only thing giving that box dimensions, so the r3f canvas fell back
+to its own 300×150 default and rendered a stretched ghost — invisible on
+`/rescue`, oversized behind the headline elsewhere. Fixed at the root: `.wrap`
+now defaults to `width/height: 100%`, so the parent sizes it and an explicit
+`size` still wins.
+
+### Imagery — nine more plates
+Round one used only the four standalone plates and left `/work` and `/rescue`
+with typographic heroes. The full-page comps carry far more art, so it was
+harvested: `rescue-bridge`, `rescue-tower`, `rescue-ba`, `work-shelf`, `relay`,
+`conduit`, `daybreak`, `about-boards`, `about-city`. Cropped past the comps'
+own baked headlines, Lanczos-upscaled 2×.
+
+- **Home:** all four concepts are now image cards (relay/conduit/daybreak had
+  been type-only); the shelf plate heads the section, where the spines actually
+  name those four.
+- **`/work`:** boards-plate hero, live ghost at the CTA.
+- **`/rescue`:** bridge hero, the tower alongside the accordion, and a real
+  before/after.
+- **`/about`:** city closing scene.
+- `SceneHero` gained `objectPosition` and a `heavy` scrim — the crops are busier
+  and lower-resolution than the wide plates, so the standard falloff left copy
+  sitting on detail.
+- The Chalk bands now break out of the 1180px wrapper to run edge to edge, as
+  the comps do; `margin: 0 -gutter` only reached the wrapper's padding.
+
+### Export script fixed (it had silently broken)
+Its dvh workaround targeted `[class*="landing"]`, a class this redesign deleted,
+so `SceneHero`'s `min-height: 78vh` re-inflated during export. Now it freezes
+every resolved non-zero `min-height` inline — no class coupling — forces lazy
+images eager and awaits `decode()`, and waits for the page height to stop moving
+before measuring. Verified against the real PDF output.
+
+### Honest limits
+- The nine harvested plates come from 941px-wide comps. Upscaling does not
+  invent detail; they are sharp enough as contained section images and behind
+  a scrim, but they are **not** true retina art. High-resolution originals of
+  these scenes would visibly improve `/rescue` and `/work`.
+- Several plates have a ghost painted into them. That is native to the comps
+  (they use several per page), but it is why the `/rescue` hero has no live
+  ghost overlaid — two mascots in one frame read as a duplicate. The live ghost
+  sits at that page's CTA instead.
+- `about-city` has "brighter tomorrow" hand-lettered into it; our own
+  `Annotation` there was removed rather than print the same words twice.

@@ -7,7 +7,7 @@ import path from 'node:path';
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const PORT = 9333;
 const WIDTH = 1280;
-const VIEW_H = 1400;
+const VIEW_H = Number(process.env.PB_VIEW_H ?? 1400);
 const ORIGIN = process.argv[2] ?? 'http://localhost:3000';
 const OUT = process.argv[3] ?? 'exports';
 // PB_TARGETS overrides the site routes, as `url|name` pairs separated by commas.
@@ -98,17 +98,42 @@ for (const [route, name] of ROUTES) {
   await page.send('Page.navigate', { url: /^[a-z]+:/.test(route) ? route : ORIGIN + route });
   await sleep(5000); // fonts, WebGL first frame, next/image
 
-  // The landing is sized in dvh. Both printToPDF and captureBeyondViewport
-  // re-resolve viewport units against the output surface, so a page sized from
-  // the layout makes the hero swell to fill it — which shoved every other
-  // section off the sheet, and on the second attempt repeated the whole page.
-  // Pinning that one rule to pixels breaks the circularity for good.
+  // Viewport units are the whole problem here. Both printToPDF and
+  // captureBeyondViewport re-resolve vh/dvh against the output surface, so any
+  // section sized that way swells to fill a tall sheet — which first pushed
+  // every other section off the page, then duplicated the whole document.
+  //
+  // Freezing them by class name broke the moment the classes changed, so
+  // instead: getComputedStyle has already resolved vh to px at the real
+  // viewport, so write that pixel value back inline. No class coupling, and it
+  // keeps each section's own height rather than pinning them all to one.
+  //
+  // Lazy images are the other half — below-the-fold art had not decoded when
+  // the capture ran, so it came out blank.
   await page.send('Runtime.evaluate', {
-    expression: `(()=>{const s=document.createElement('style');s.id='pb-export';
-      s.textContent='@page{margin:0}html,body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}[class*="landing"]{min-height:${VIEW_H - 66}px!important}';
-      document.head.appendChild(s);})()`,
+    expression: `(async () => {
+      const s = document.createElement('style');
+      s.textContent = '@page{margin:0}html,body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}';
+      document.head.appendChild(s);
+
+      // Only min-height, and only where something actually set one: a vh value
+      // may come from a stylesheet rather than an inline style, so match on the
+      // resolved value instead of the declaration. Freezing height outright
+      // would pin every auto-sized box on the page.
+      for (const el of document.querySelectorAll('*')) {
+        const mh = getComputedStyle(el).minHeight;
+        if (mh && mh !== '0px' && mh !== 'auto' && mh.endsWith('px')) {
+          el.style.minHeight = mh;
+        }
+      }
+
+      const imgs = [...document.images];
+      imgs.forEach(i => { i.loading = 'eager'; });
+      await Promise.all(imgs.map(i => i.decode().catch(() => {})));
+    })()`,
+    awaitPromise: true,
   });
-  await sleep(400);
+  await sleep(900);
 
   // Scroll the whole page once so anything lazy has been in the viewport.
   await page.send('Runtime.evaluate', {
@@ -117,8 +142,17 @@ for (const [route, name] of ROUTES) {
   });
   await sleep(1200);
 
-  const { cssContentSize } = await page.send('Page.getLayoutMetrics');
-  const height = Math.ceil(cssContentSize.height);
+  // Wait for the height to stop moving before measuring. Measuring too early
+  // gave a taller figure than the settled page, and Chrome filled the surplus
+  // by repeating the document from the top.
+  let height = 0;
+  for (let i = 0; i < 20; i++) {
+    const { cssContentSize } = await page.send('Page.getLayoutMetrics');
+    const h = Math.ceil(cssContentSize.height);
+    if (h === height) break;
+    height = h;
+    await sleep(400);
+  }
 
   // printToPDF keeps real, selectable, searchable text.
   const { data } = await page.send('Page.printToPDF', {

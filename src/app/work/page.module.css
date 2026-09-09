@@ -7,24 +7,31 @@
 .main {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 0 clamp(20px, 5vw, 64px) clamp(72px, 9vw, 120px);
+  padding: clamp(56px, 7vw, 88px) clamp(20px, 5vw, 64px) clamp(72px, 9vw, 120px);
 }
 
 /* No scene plate exists for this page yet, so the hero is typographic and the
    live ghost carries it. Better an honest empty stage than a plate borrowed
    from another page, which would make both mean less. */
-.hero {
-  position: relative;
-  padding: clamp(64px, 9vw, 110px) 0 clamp(48px, 6vw, 72px);
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 32px;
+.heroNote {
+  position: absolute;
+  top: clamp(80px, 14vh, 130px);
+  right: clamp(24px, 6vw, 80px);
+  color: #fff;
+  text-align: right;
+  z-index: 3;
 }
 
 .heroGhost {
-  width: clamp(140px, 20vw, 230px);
+  width: 132px;
   aspect-ratio: 1;
+  flex: none;
+}
+
+@media (max-width: 900px) {
+  .heroNote {
+    display: none;
+  }
 }
 
 .pretitle {
@@ -61,8 +68,10 @@
 .studies {
   background: var(--pb-chalk);
   color: var(--pb-ink);
-  margin: 0 calc(-1 * clamp(20px, 5vw, 64px));
-  padding: clamp(48px, 6vw, 80px) clamp(20px, 5vw, 64px) clamp(56px, 7vw, 90px);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: clamp(48px, 6vw, 80px) max(clamp(20px, 5vw, 64px), calc(50vw - 590px)) clamp(56px, 7vw, 90px);
 }
 
 .item {
@@ -179,8 +188,4 @@
   flex-wrap: wrap;
 }
 
-.ctaGhost {
-  width: 132px;
-  height: auto;
-  flex: none;
-}
+

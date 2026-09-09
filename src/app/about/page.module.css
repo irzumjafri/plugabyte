@@ -375,3 +375,89 @@
   color: var(--pb-ink-soft);
   max-width: 46ch;
 }
+
+/* ---- closing scene ------------------------------------------------------ */
+
+.closing {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-height: min(52vh, 420px);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--pb-void);
+}
+
+.closingArt {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% center;
+  z-index: 0;
+}
+
+.closing::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    100deg,
+    var(--pb-void) 0%,
+    rgba(13, 19, 27, 0.94) 32%,
+    rgba(13, 19, 27, 0.55) 60%,
+    rgba(13, 19, 27, 0.15) 86%
+  );
+}
+
+.closingCopy {
+  position: relative;
+  z-index: 2;
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(48px, 7vw, 88px) clamp(20px, 5vw, 64px);
+}
+
+.closingTitle {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(30px, 4.8vw, 54px);
+  line-height: 1.0;
+  letter-spacing: -0.042em;
+  color: #fff;
+}
+
+.closingAccent {
+  color: var(--pb-sky-tint);
+}
+
+.closingLead {
+  margin: 0;
+  max-width: 30ch;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--pb-text-dim);
+}
+
+.closingNote {
+  position: absolute;
+  z-index: 2;
+  right: clamp(20px, 6vw, 80px);
+  bottom: clamp(20px, 5vw, 56px);
+  color: #fff;
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+  .closingNote {
+    display: none;
+  }
+
+  .closing::after {
+    background: linear-gradient(180deg, rgba(13, 19, 27, 0.8) 0%, rgba(13, 19, 27, 0.95) 65%);
+  }
+}

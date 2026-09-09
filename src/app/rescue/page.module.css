@@ -91,13 +91,7 @@
 /* The mascot is the illustration system — the brand book assigns Slouch to off
    and empty states, which is what a prototype that fell over is. Decorative, so
    alt="" and hidden from the reading order rather than described twice. */
-.hero {
-  display: grid;
-  grid-template-columns: 1fr minmax(160px, 260px);
-  align-items: center;
-  gap: 40px;
-  padding-bottom: clamp(40px, 5vw, 64px);
-}
+
 
 .titleAccent {
   color: var(--pb-azure);
@@ -139,10 +133,15 @@
   color: var(--pb-text-faint);
 }
 
-.heroGhost,
-.ctaGhost {
+.heroGhost {
   width: 100%;
-  height: auto;
+  aspect-ratio: 1;
+}
+
+.ctaGhost {
+  width: 132px;
+  aspect-ratio: 1;
+  flex: none;
 }
 
 .ctaRow {
@@ -153,10 +152,7 @@
   flex-wrap: wrap;
 }
 
-.ctaGhost {
-  width: 132px;
-  flex: none;
-}
+
 
 @media (max-width: 720px) {
   .hero {
@@ -176,8 +172,10 @@
   position: relative;
   background: var(--pb-chalk);
   color: var(--pb-ink);
-  margin: 0 calc(-1 * clamp(20px, 5vw, 64px));
-  padding: clamp(56px, 8vw, 96px) clamp(20px, 5vw, 64px);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: clamp(56px, 8vw, 96px) max(clamp(20px, 5vw, 64px), calc(50vw - 590px));
 }
 
 .checksLabel {
@@ -291,5 +289,78 @@
 
   .checksNote {
     display: none;
+  }
+}
+
+.heroNote {
+  position: absolute;
+  top: clamp(90px, 15vh, 140px);
+  right: clamp(24px, 6vw, 80px);
+  color: #fff;
+  text-align: right;
+  z-index: 3;
+}
+
+@media (max-width: 900px) {
+  .heroNote {
+    display: none;
+  }
+}
+
+/* The artwork stands beside the accordion so the seven checks read as layers of
+   one system, which is what the plate is drawing. */
+.checksLayout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.82fr) 1fr;
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+
+.checksArt {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* ---- a real rescue ----------------------------------------------------- */
+
+.realRescue {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) 1fr;
+  align-items: center;
+  gap: clamp(28px, 4vw, 56px);
+  padding: clamp(56px, 8vw, 96px) 0 0;
+}
+
+.realTitle {
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.realArt img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.realCaption {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pb-text-faint);
+}
+
+@media (max-width: 900px) {
+  .checksLayout,
+  .realRescue {
+    grid-template-columns: 1fr;
   }
 }

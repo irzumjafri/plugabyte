@@ -47,9 +47,15 @@
   max-width: var(--measure);
   margin: 0 auto clamp(40px, 5vw, 64px);
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr minmax(200px, 300px) minmax(180px, auto);
   align-items: start;
   gap: 32px;
+}
+
+.shelf {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
 }
 
 .headAside {
@@ -69,23 +75,41 @@
   background: rgba(13, 19, 27, 0.3);
 }
 
-.feature {
+.conceptGrid {
+  list-style: none;
   max-width: var(--measure);
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(24px, 3vw, 40px);
 }
 
-.featureShot {
-  display: block;
+/* The first two lead the section at full column width; the other two sit
+   half-size beneath, which is the rhythm the comps use. */
+.conceptCardWide {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: clamp(20px, 3vw, 40px);
+  align-items: center;
+}
+
+.conceptCard {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.conceptShot {
   width: 100%;
   height: auto;
   border-radius: 6px;
 }
 
-.featureCaption {
+.conceptText {
   display: grid;
-  grid-template-columns: minmax(220px, 0.5fr) 1fr;
-  gap: 12px 40px;
-  padding-top: 20px;
+  gap: 6px;
+  align-content: start;
 }
 
 .conceptName {
@@ -113,23 +137,8 @@
   max-width: 52ch;
 }
 
-.conceptList {
-  list-style: none;
-  max-width: var(--measure);
-  margin: clamp(44px, 5vw, 64px) auto 0;
-  border-top: 1px solid rgba(13, 19, 27, 0.14);
-}
-
-.conceptRow {
-  display: grid;
-  grid-template-columns: minmax(160px, 0.28fr) 1fr auto;
-  gap: 10px 40px;
-  align-items: baseline;
-  padding: 24px 0;
-  border-bottom: 1px solid rgba(13, 19, 27, 0.14);
-}
-
 .conceptKind {
+  margin-top: 8px;
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.14em;
@@ -228,12 +237,7 @@
     grid-template-columns: 1fr;
   }
 
-  .conceptRow {
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
-
-  .closeNote {
+    .closeNote {
     display: none;
   }
 

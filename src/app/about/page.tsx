@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import SceneHero from '@/components/Scene/SceneHero';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -138,6 +139,25 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className={styles.closing}>
+        <Image
+          className={styles.closingArt}
+          src="/scenes/about-city.jpg"
+          alt=""
+          width={1130}
+          height={524}
+          sizes="100vw"
+        />
+        <div className={styles.closingCopy}>
+          <h2 className={styles.closingTitle}>
+            Still curious.
+            <br />
+            <span className={styles.closingAccent}>Still building.</span>
+          </h2>
+          <p className={styles.closingLead}>Good ideas deserve a life outside the demo.</p>
         </div>
       </section>
 

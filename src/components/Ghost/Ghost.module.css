@@ -1,5 +1,11 @@
 .wrap {
   position: relative;
+  /* Fills its parent by default. `size` sets an inline width/height and wins;
+     without one, the parent is the sizer — and with neither, this box collapsed
+     to zero height and the canvas fell back to its own 300x150, which is what
+     stretched the ghost. */
+  width: 100%;
+  height: 100%;
   color: var(--pb-ghost);
 }
 

@@ -31,6 +31,7 @@ export const CONCEPTS: Concept[] = [
     kind: 'Support platform',
     tagline: 'A more human kind of support.',
     blurb: 'WhatsApp-style support for growing brands. Fast answers, happier customers, healthier teams.',
+    image: '/scenes/relay.jpg',
   },
   {
     slug: 'conduit',
@@ -38,6 +39,7 @@ export const CONCEPTS: Concept[] = [
     kind: 'Integration platform',
     tagline: 'Two systems. Finally on speaking terms.',
     blurb: 'Connect your tools. Unblock your team. Less manual work, more momentum.',
+    image: '/scenes/conduit.jpg',
   },
   {
     slug: 'daybreak',
@@ -45,5 +47,6 @@ export const CONCEPTS: Concept[] = [
     kind: 'Booking platform',
     tagline: 'A fresh start for a promising product.',
     blurb: 'A modern booking experience for independent studios, coaches and creators.',
+    image: '/scenes/daybreak.jpg',
   },
 ];

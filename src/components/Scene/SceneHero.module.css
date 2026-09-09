@@ -43,6 +43,29 @@
   );
 }
 
+/* The comp crops are busier and lower-resolution than the wide standalone
+   plates, so they need a longer, deeper falloff before the copy is safe on
+   them. */
+.scrimHeavy.scrimLeft {
+  background: linear-gradient(
+    100deg,
+    var(--pb-void) 0%,
+    rgba(13, 19, 27, 0.97) 34%,
+    rgba(13, 19, 27, 0.72) 58%,
+    rgba(13, 19, 27, 0.3) 84%
+  );
+}
+
+.scrimHeavy.scrimRight {
+  background: linear-gradient(
+    260deg,
+    var(--pb-void) 0%,
+    rgba(13, 19, 27, 0.97) 34%,
+    rgba(13, 19, 27, 0.72) 58%,
+    rgba(13, 19, 27, 0.3) 84%
+  );
+}
+
 .ghost {
   position: absolute;
   z-index: 2;
@@ -82,7 +105,30 @@
     background: linear-gradient(180deg, rgba(13, 19, 27, 0.82) 0%, rgba(13, 19, 27, 0.94) 62%);
   }
 
-  .ghost {
+  /* The comp crops are busier and lower-resolution than the wide standalone
+   plates, so they need a longer, deeper falloff before the copy is safe on
+   them. */
+.scrimHeavy.scrimLeft {
+  background: linear-gradient(
+    100deg,
+    var(--pb-void) 0%,
+    rgba(13, 19, 27, 0.97) 34%,
+    rgba(13, 19, 27, 0.72) 58%,
+    rgba(13, 19, 27, 0.3) 84%
+  );
+}
+
+.scrimHeavy.scrimRight {
+  background: linear-gradient(
+    260deg,
+    var(--pb-void) 0%,
+    rgba(13, 19, 27, 0.97) 34%,
+    rgba(13, 19, 27, 0.72) 58%,
+    rgba(13, 19, 27, 0.3) 84%
+  );
+}
+
+.ghost {
     width: 150px;
     right: 4%;
     bottom: 3%;

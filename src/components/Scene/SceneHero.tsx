@@ -16,6 +16,8 @@ export default function SceneHero({
   children,
   ghost,
   minHeight = 'min(78vh, 660px)',
+  objectPosition = 'center',
+  scrim = 'standard',
 }: {
   src: string;
   /** Empty when the plate is atmosphere; real text when it carries meaning. */
@@ -25,6 +27,10 @@ export default function SceneHero({
   /** Live ghost, composited over the plate. */
   ghost?: React.ReactNode;
   minHeight?: string;
+  /** Which part of the plate to hold when it is cropped to the hero's shape. */
+  objectPosition?: string;
+  /** 'heavy' for busier plates, where the standard falloff leaves text on detail. */
+  scrim?: 'standard' | 'heavy';
 }) {
   return (
     <section className={styles.hero} style={{ minHeight }}>
@@ -35,8 +41,14 @@ export default function SceneHero({
         fill
         priority
         sizes="100vw"
+        style={{ objectPosition }}
       />
-      <div className={side === 'left' ? styles.scrimLeft : styles.scrimRight} />
+      <div
+        className={[
+          side === 'left' ? styles.scrimLeft : styles.scrimRight,
+          scrim === 'heavy' ? styles.scrimHeavy : '',
+        ].join(' ')}
+      />
       {ghost && <div className={styles.ghost}>{ghost}</div>}
       <div className={`${styles.inner} ${side === 'left' ? styles.innerLeft : styles.innerRight}`}>
         {children}

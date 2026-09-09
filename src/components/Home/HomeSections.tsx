@@ -8,8 +8,6 @@ import styles from './HomeSections.module.css';
 const LAYERS = ['Auth that holds.', 'Retries that recover.', 'Someone watching.'];
 
 export default function HomeSections() {
-  const [feature, ...rest] = CONCEPTS;
-
   return (
     <div className={styles.main}>
       {/* Light ground, per the comps — the page alternates rather than running
@@ -22,43 +20,39 @@ export default function HomeSections() {
               A few things we could<br />put into the world.
             </h2>
           </div>
+          <Image
+            className={styles.shelf}
+            src="/scenes/work-shelf.jpg"
+            alt="Four project volumes stacked on a desk: relay, folio, conduit, daybreak."
+            width={1130}
+            height={930}
+            sizes="(max-width: 860px) 100vw, 340px"
+          />
           <p className={styles.headAside}>
             Real problems. Thoughtful products.<br />Built end to end.
             <span className={styles.rule} aria-hidden="true" />
           </p>
         </div>
 
-        {feature.image && (
-          <figure className={styles.feature}>
-            <Image
-              className={styles.featureShot}
-              src={feature.image}
-              alt={`${feature.name} — ${feature.tagline}`}
-              width={1672}
-              height={941}
-              sizes="(max-width: 900px) 100vw, 1100px"
-            />
-            <figcaption className={styles.featureCaption}>
-              <div>
-                <p className={styles.conceptName}>{feature.name}</p>
-                <p className={styles.conceptTagline}>{feature.tagline}</p>
-              </div>
-              <p className={styles.conceptBlurb}>{feature.blurb}</p>
-            </figcaption>
-          </figure>
-        )}
-
-        {/* The other three have no artwork yet, so they are set as type rather
-            than as cards with an empty picture frame in them. */}
-        <ul className={styles.conceptList}>
-          {rest.map(c => (
-            <li key={c.slug} className={styles.conceptRow}>
-              <p className={styles.conceptName}>{c.name}</p>
-              <div>
+        <ul className={styles.conceptGrid}>
+          {CONCEPTS.map((c, i) => (
+            <li key={c.slug} className={i < 2 ? styles.conceptCardWide : styles.conceptCard}>
+              {c.image && (
+                <Image
+                  className={styles.conceptShot}
+                  src={c.image}
+                  alt={`${c.name} — ${c.tagline}`}
+                  width={1262}
+                  height={668}
+                  sizes="(max-width: 860px) 100vw, (max-width: 1200px) 50vw, 560px"
+                />
+              )}
+              <div className={styles.conceptText}>
+                <p className={styles.conceptName}>{c.name}</p>
                 <p className={styles.conceptTagline}>{c.tagline}</p>
                 <p className={styles.conceptBlurb}>{c.blurb}</p>
+                <span className={styles.conceptKind}>{c.kind}</span>
               </div>
-              <span className={styles.conceptKind}>{c.kind}</span>
             </li>
           ))}
         </ul>

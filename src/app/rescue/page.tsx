@@ -5,6 +5,7 @@ import Annotation from '@/components/Scene/Annotation';
 import GhostStage from '@/components/Scene/GhostStage';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import SceneHero from '@/components/Scene/SceneHero';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -34,30 +35,37 @@ export default function RescuePage() {
   return (
     <div className={styles.page}>
       <Navbar />
-      <main className={styles.main}>
-        <div className={styles.hero}>
-          <div>
-            <p className={styles.pretitle}>Prototype rescue</p>
-            <h1 className={styles.title}>
-              Good idea.
-              <br />
-              <span className={styles.titleAccent}>Rough landing?</span>
-            </h1>
-            <p className={styles.lead}>
-              The demo worked. Then real users arrived. This is production-readiness
-              triage — no code upload, no repo scan up front, just a conversation about
-              what&apos;s actually broken.
-            </p>
-            <Link href="/?type=rescue" className={styles.heroCta}>
-              Tell us what&apos;s broken <span aria-hidden="true">↗</span>
-            </Link>
-            <ul className={styles.steps}>
-              {['Debug', 'Stabilize', 'Scale', 'Get back to building'].map(x => <li key={x}>{x}</li>)}
-            </ul>
-          </div>
-          <GhostStage className={styles.heroGhost} />
+      <main>
+        <SceneHero
+        src="/scenes/rescue-bridge.jpg"
+        alt=""
+        side="left"
+        minHeight="min(74vh, 620px)"
+        objectPosition="72% center"
+        scrim="heavy"
+      >
+        <div>
+          <p className={styles.pretitle}>Prototype rescue</p>
+          <h1 className={styles.title}>
+            Good idea.
+            <br />
+            <span className={styles.titleAccent}>Rough landing?</span>
+          </h1>
+          <p className={styles.lead}>
+            The demo worked. Then real users arrived. Let&apos;s get it back on its feet.
+          </p>
+          <Link href="/?type=rescue" className={styles.heroCta}>
+            Tell us what&apos;s broken <span aria-hidden="true">↗</span>
+          </Link>
+          <ul className={styles.steps}>
+            {['Debug', 'Stabilize', 'Scale', 'Get back to building'].map(x => <li key={x}>{x}</li>)}
+          </ul>
         </div>
-
+        <Annotation className={styles.heroNote} arrow="down-left">
+          Same idea.<br />Stronger tomorrow.
+        </Annotation>
+        </SceneHero>
+        <div className={styles.main}>
         <section className={styles.checks}>
           <p className={styles.checksLabel}>Inside the fix</p>
           <h2 className={styles.checksTitle}>
@@ -65,6 +73,15 @@ export default function RescuePage() {
             <br />
             <span className={styles.titleAccentInk}>Nothing skipped.</span>
           </h2>
+          <div className={styles.checksLayout}>
+            <Image
+              className={styles.checksArt}
+              src="/scenes/rescue-tower.jpg"
+              alt="A system drawn as stacked floors: product and UI, API layer, business logic, data, infrastructure, monitoring."
+              width={942}
+              height={810}
+              sizes="(max-width: 900px) 100vw, 420px"
+            />
           <div className={styles.checksBox}>
             {CHECKS.map((c, i) => (
               <details key={c.n} className={styles.check} open={i === 0}>
@@ -76,6 +93,7 @@ export default function RescuePage() {
                 <p className={styles.checkDesc}>{c.desc}</p>
               </details>
             ))}
+          </div>
           </div>
           <Annotation className={styles.checksNote}>Details make ideas endure.</Annotation>
         </section>
@@ -92,9 +110,36 @@ export default function RescuePage() {
           </div>
         </div>
 
+        <section className={styles.realRescue}>
+          <div className={styles.realCopy}>
+            <p className={styles.pretitle}>A real rescue</p>
+            <h2 className={styles.realTitle}>
+              Keep the idea.
+              <br />
+              <span className={styles.titleAccent}>Fix the foundations.</span>
+            </h2>
+            <p className={styles.lead}>
+              A promising booking product where real users exposed breaking issues. We
+              stabilised the core, improved reliability and shipped a production-ready
+              experience — without losing what made it special.
+            </p>
+          </div>
+          <figure className={styles.realArt}>
+            <Image
+              src="/scenes/rescue-ba.jpg"
+              alt="The same product before and after: a crashed error screen, then a working bookings calendar."
+              width={1244}
+              height={476}
+              sizes="(max-width: 900px) 100vw, 640px"
+            />
+            <figcaption className={styles.realCaption}>Before, and after.</figcaption>
+          </figure>
+        </section>
+
         <div className={styles.ctaRow}>
-          <Image src="/ghost/ghost-point.png" alt="" width={640} height={427} className={styles.ctaGhost} />
+          <GhostStage className={styles.ctaGhost} />
           <Link href="/?type=rescue" className={styles.cta}>Start the triage conversation →</Link>
+        </div>
         </div>
       </main>
       <Footer />

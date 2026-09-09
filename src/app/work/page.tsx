@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Diagram from '@/components/Diagram';
 import Annotation from '@/components/Scene/Annotation';
+import SceneHero from '@/components/Scene/SceneHero';
 import GhostStage from '@/components/Scene/GhostStage';
 import { TEARDOWNS } from '@/lib/teardowns';
 import styles from './page.module.css';
@@ -18,24 +18,32 @@ export default function WorkPage() {
   return (
     <div className={styles.page}>
       <Navbar />
-      <main className={styles.main}>
-        <div className={styles.hero}>
-          <div>
-            <p className={styles.pretitle}>Work</p>
-            <h1 className={styles.title}>
-              Real builds.
-              <br />
-              <span className={styles.titleAccent}>Ugly parts included.</span>
-            </h1>
-            <p className={styles.lead}>
-              Four, spanning the range on purpose — a product, an agent, an integration, a
-              rescue. Depth beats breadth; twelve thin case studies would say less than
-              these four.
-            </p>
-          </div>
-          <GhostStage className={styles.heroGhost} />
+      <main>
+        <SceneHero
+        src="/scenes/about-boards.jpg"
+        alt=""
+        side="left"
+        minHeight="min(66vh, 540px)"
+        scrim="heavy"
+        objectPosition="70% center"
+      >
+        <div>
+          <p className={styles.pretitle}>Work</p>
+          <h1 className={styles.title}>
+            Real builds.
+            <br />
+            <span className={styles.titleAccent}>Ugly parts included.</span>
+          </h1>
+          <p className={styles.lead}>
+            Four, spanning the range on purpose — a product, an agent, an integration, a
+            rescue. Depth beats breadth.
+          </p>
         </div>
-
+        <Annotation className={styles.heroNote} arrow="down-left">
+          Small steps.<br />Bigger things.
+        </Annotation>
+        </SceneHero>
+        <div className={styles.main}>
         <div className={styles.studies}>
           {TEARDOWNS.map(t => (
             <div key={t.title} className={styles.item}>
@@ -62,9 +70,10 @@ export default function WorkPage() {
         </div>
 
         <div className={styles.ctaRow}>
-          <Image src="/ghost/ghost-point.png" alt="" width={640} height={427} className={styles.ctaGhost} />
+          <GhostStage className={styles.heroGhost} />
           <Link href="/#scope" className={styles.cta}>Start scoping yours →</Link>
           <Annotation className={styles.ctaNote} arrow="down-left">Yours is next.</Annotation>
+        </div>
         </div>
       </main>
       <Footer />
