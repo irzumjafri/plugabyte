@@ -12,10 +12,31 @@ export interface GhostHandle {
   playThinking(on: boolean): void;
 }
 
+/**
+ * A held pose, in radians. The brand system's sprite states are all expressed
+ * as shoulder rotation plus sign rotation, so a pose is exactly those two
+ * numbers plus how far the eyes are shut.
+ */
+export interface GhostPose {
+  arm: number;
+  bolt: number;
+  /** 0 open, 1 fully closed. */
+  lid?: number;
+}
+
+/** Named states from the brand system's sign-spinner set. */
+export const POSES = {
+  shoulder: { arm: 0.62, bolt: 0.95 },
+  pointer: { arm: -0.42, bolt: 1.45 },
+  slouch: { arm: -1.15, bolt: 0.55, lid: 0.72 },
+} satisfies Record<string, GhostPose>;
+
 interface Props {
   boltColor?: string;
   ghostColor?: string;
   onReady?: () => void;
+  /** Holds a static pose and stops the idle loop — used to shoot stills. */
+  pose?: GhostPose;
 }
 
 type RigState = 'idle' | 'wave' | 'thinking';
@@ -56,7 +77,7 @@ function useStudioEnvMap(): THREE.Texture {
 }
 
 const GhostRig = forwardRef<GhostHandle, Props>(function GhostRig(
-  { boltColor = '#F4586A', ghostColor = '#8FB8E8', onReady },
+  { boltColor = '#F4586A', ghostColor = '#8FB8E8', onReady, pose },
   ref
 ) {
   const rootRef = useRef<THREE.Group>(null);
@@ -153,11 +174,16 @@ const GhostRig = forwardRef<GhostHandle, Props>(function GhostRig(
     const phase = t.current % BLINK_PERIOD;
     const lid = phase < BLINK_TIME ? Math.sin((phase / BLINK_TIME) * Math.PI) : 0;
     for (const eye of eyeRefs.current) {
-      if (eye) eye.scale.y = 1 - 0.88 * lid;
+      if (eye) eye.scale.y = 1 - 0.88 * (pose ? (pose.lid ?? 0) : lid);
     }
 
     const armGroup = armRef.current;
     const boltGroup = boltRef.current;
+    if (pose) {
+      if (armGroup) armGroup.rotation.z = pose.arm;
+      if (boltGroup) boltGroup.rotation.z = BOLT_TILT + pose.bolt;
+      return;
+    }
     if (state.current === 'wave' && t.current < stateUntil.current && armGroup) {
       armGroup.rotation.z = Math.sin(t.current * 10) * 0.35;
     } else if (state.current === 'thinking' && t.current < stateUntil.current && boltGroup) {
@@ -187,14 +213,18 @@ const GhostRig = forwardRef<GhostHandle, Props>(function GhostRig(
       <Eye anchor={eyeL} envMap={envMap} innerRef={el => { eyeRefs.current[0] = el; }} />
       <Eye anchor={eyeR} envMap={envMap} innerRef={el => { eyeRefs.current[1] = el; }} />
 
-      <group ref={boltRef} position={[boltX, boltY, boltZ]} rotation={[0, -0.15, BOLT_TILT]} scale={BOLT_SCALE}>
-        <mesh geometry={boltGeo}>
-          <meshPhysicalMaterial color={boltColor} envMap={envMap} roughness={0.28} clearcoat={0.6} clearcoatRoughness={0.2} envMapIntensity={0.14} flatShading />
-        </mesh>
-      </group>
-
       <group ref={armRef} position={rightArm.position}>
         <Limb dx={handX - rightArm.position[0]} dy={handY - rightArm.position[1]} skin={skin} />
+        <group
+          ref={boltRef}
+          position={[boltX - rightArm.position[0], boltY - rightArm.position[1], boltZ - rightArm.position[2]]}
+          rotation={[0, -0.15, BOLT_TILT]}
+          scale={BOLT_SCALE}
+        >
+          <mesh geometry={boltGeo}>
+            <meshPhysicalMaterial color={boltColor} envMap={envMap} roughness={0.28} clearcoat={0.6} clearcoatRoughness={0.2} envMapIntensity={0.14} flatShading />
+          </mesh>
+        </group>
       </group>
 
       {/* The mark has a second arm; without it the 3D ghost reads one-sided. */}
@@ -254,7 +284,7 @@ const GhostScene = forwardRef<GhostHandle, Props>(function GhostScene(props, ref
     <Canvas
       camera={{ position: [0, 0, 17.6], fov: 32 }}
       dpr={[1, 2]}
-      gl={{ alpha: true, antialias: true, toneMappingExposure: 0.55 }}
+      gl={{ alpha: true, antialias: true, toneMappingExposure: 0.55, preserveDrawingBuffer: !!props.pose }}
       style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
     >
       <directionalLight position={[3, 5, 6]} intensity={1.5} />

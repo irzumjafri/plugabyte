@@ -1,0 +1,87 @@
+/* Capped, because the labels are drawn at mono sizes that only read correctly
+   near 1:1 — stretched to a 620px column they came out at twenty-odd pixels. */
+.svg {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+/* Everything is stroked in currentColor at low opacity, so a diagram inherits
+   the ground it sits on instead of needing a light and a dark copy. */
+.node,
+.nodeKey,
+.nodeAlert {
+  fill: none;
+  stroke-width: 1;
+}
+
+.node {
+  stroke: currentColor;
+  opacity: 0.34;
+}
+
+.nodeKey {
+  stroke: var(--pb-ghost);
+  fill: rgba(143, 184, 232, 0.07);
+}
+
+.nodeAlert {
+  stroke: var(--pb-bolt);
+  opacity: 0.85;
+}
+
+.wire,
+.head {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.34;
+}
+
+.wireAlert,
+.headAlert {
+  fill: none;
+  stroke: var(--pb-bolt);
+  stroke-width: 1.2;
+}
+
+.label,
+.labelKey,
+.labelAlert,
+.sub,
+.subAlert {
+  font-family: var(--font-mono);
+  text-anchor: middle;
+  stroke: none;
+}
+
+.label {
+  font-size: 10px;
+  fill: currentColor;
+  opacity: 0.72;
+}
+
+.labelKey {
+  font-size: 11px;
+  fill: var(--pb-ghost);
+}
+
+.labelAlert {
+  font-size: 10px;
+  fill: var(--pb-bolt);
+}
+
+.sub {
+  font-size: 8.5px;
+  fill: currentColor;
+  opacity: 0.5;
+}
+
+.subAlert {
+  font-size: 8.5px;
+  fill: var(--pb-bolt);
+  opacity: 0.8;
+}

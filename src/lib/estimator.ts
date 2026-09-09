@@ -131,8 +131,11 @@ export function checkDisqualify(typeId: BuildTypeId, answers: Answers): Disquali
   return { disqualified: false };
 }
 
+// Bases assume AI-assisted delivery, which is what we sell — a buyer comparing
+// us to a traditional shop expects weeks, not quarters. Complexity still
+// escalates through the bumps below; it is the floor that came down.
 const BASE_WEEKS: Record<BuildTypeId, number> = {
-  product: 5, internal: 3, ai: 6, pipeline: 4, integration: 3, rescue: 2,
+  product: 3, internal: 2, ai: 3, pipeline: 2, integration: 2, rescue: 1,
 };
 
 export interface EffortResult {
@@ -145,16 +148,17 @@ export function computeEffort(typeId: BuildTypeId, answers: Answers): EffortResu
   let high = low + 2;
   const bump = (n: number) => { low += n; high += n; };
 
-  if (answers.systems === '4 or more') bump(2);
-  else if (answers.systems === '2–3') bump(1);
-  if (answers.apis === 'No') bump(2);
-  if (answers.apis === 'Not sure') bump(1);
+  // Only genuine complexity adds time. The mid-range answers cost nothing:
+  // charging a week for "two or three systems" or an unconfirmed answer made
+  // every ordinary build look hard, and stacked up fastest on the shortest
+  // conversations, where those values are assumed rather than given.
+  if (answers.systems === '4 or more') bump(1);
+  if (answers.apis === 'No') bump(1);
   if (answers.approvers === '3 or more') bump(1);
   if (answers.deadline === 'Hard date') bump(1);
-  if (answers.screens === '15+') bump(3);
-  else if (answers.screens === '6–15') bump(1);
-  if (answers.roles === '4+') bump(2);
-  if (answers.volume === '1,000+/day') bump(2);
+  if (answers.screens === '15+') bump(2);
+  if (answers.roles === '4+') bump(1);
+  if (answers.volume === '1,000+/day') bump(1);
   if (typeId === 'ai') bump(1); // eval harness + grounding, always present
 
   return { low, high };

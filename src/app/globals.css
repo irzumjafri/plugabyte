@@ -6,6 +6,13 @@
   --pb-ghost-hover: #b9d8f2;
   --pb-bolt: #f4586a;
 
+  /* From the brand system, and unused until now: Chalk is a light ground, and
+     Deep Sky is the only sky that holds contrast on it (Sky on Chalk fails). */
+  --pb-chalk: #f3f7fa;
+  --pb-deep-sky: #4e6c93;
+  --pb-ink: #0d131b;
+  --pb-ink-soft: #3b4a5a;
+
   --pb-text: #e6eef5;
   --pb-text-dim: #c4d3df;
   --pb-text-muted: #8195a8;

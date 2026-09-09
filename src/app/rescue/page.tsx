@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import styles from './page.module.css';
@@ -32,11 +33,23 @@ export default function RescuePage() {
     <div className={styles.page}>
       <Navbar />
       <main className={styles.main}>
-        <p className={styles.pretitle}>Prototype rescue</p>
-        <h1 className={styles.title}>The demo was the easy part.</h1>
-        <p className={styles.lead}>
-          You&apos;ve spent money and it fell over on real data. You know exactly what hurts. This is production-readiness triage — no code upload, no repo scan up front, just a conversation about what&apos;s actually broken.
-        </p>
+        <div className={styles.hero}>
+          <div>
+            <p className={styles.pretitle}>Prototype rescue</p>
+            <h1 className={styles.title}>The demo was the easy part.</h1>
+            <p className={styles.lead}>
+              You&apos;ve spent money and it fell over on real data. You know exactly what hurts. This is production-readiness triage — no code upload, no repo scan up front, just a conversation about what&apos;s actually broken.
+            </p>
+          </div>
+          <Image
+            className={styles.heroGhost}
+            src="/ghost/ghost-slouch.png"
+            alt=""
+            width={640}
+            height={422}
+            priority
+          />
+        </div>
 
         <div className={styles.checksBox}>
           {CHECKS.map(c => (
@@ -62,7 +75,10 @@ export default function RescuePage() {
           </div>
         </div>
 
-        <Link href="/?type=rescue" className={styles.cta}>Start the triage conversation →</Link>
+        <div className={styles.ctaRow}>
+          <Image src="/ghost/ghost-point.png" alt="" width={640} height={427} className={styles.ctaGhost} />
+          <Link href="/?type=rescue" className={styles.cta}>Start the triage conversation →</Link>
+        </div>
       </main>
       <Footer />
     </div>

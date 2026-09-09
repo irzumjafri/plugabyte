@@ -302,11 +302,18 @@
 
 
 /* outline:none above removed the only cue a keyboard user had for where they
-   were. :focus-visible restores it without showing a ring on mouse clicks. */
-.input:focus-visible,
+   were. The ring goes on the row rather than the bare input: the input has no
+   border of its own and sits inside a rounded container, so an outline on it
+   drew a square inside a rounded box. */
+.inputRow:focus-within {
+  border-color: var(--pb-ghost);
+  box-shadow: 0 0 0 3px rgba(143, 184, 232, 0.18);
+}
+
 .contactInput:focus-visible {
-  outline: 2px solid var(--pb-ghost);
-  outline-offset: 2px;
+  outline: none;
+  border-color: var(--pb-ghost);
+  box-shadow: 0 0 0 3px rgba(143, 184, 232, 0.18);
 }
 
 .chip:focus-visible,

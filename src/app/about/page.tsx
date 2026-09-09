@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import styles from './page.module.css';
@@ -50,6 +51,14 @@ export default function AboutPage() {
         <p className={styles.heroLead}>
           Plugabyte started as a hardware venture and became something much harder — and more interesting. This is the story of what we learned along the way.
         </p>
+        <Image
+          className={styles.heroGhost}
+          src="/ghost/ghost-idle.png"
+          alt=""
+          width={640}
+          height={430}
+          priority
+        />
       </section>
 
       {/* Origin */}

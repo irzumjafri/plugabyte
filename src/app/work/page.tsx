@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { TEARDOWNS } from '@/lib/teardowns';
+import Diagram from '@/components/Diagram';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -32,11 +34,23 @@ export default function WorkPage() {
               <h2 className={styles.itemTitle}>{t.title}</h2>
               <p className={styles.itemSummary}>{t.summary}</p>
               <p className={styles.itemUgly}><strong>The ugly part: </strong>{t.ugly}</p>
+              <figure className={styles.itemFigure}>
+                {t.image
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  ? <img src={t.image.src} alt={t.image.alt} className={styles.itemShot} />
+                  : <Diagram id={t.diagram} />}
+                <figcaption className={styles.itemCaption}>
+                  {t.image ? t.image.alt : 'How it fits together — the part in red is the part that hurt.'}
+                </figcaption>
+              </figure>
             </div>
           </div>
         ))}
 
-        <Link href="/" className={styles.cta}>Start scoping yours →</Link>
+        <div className={styles.ctaRow}>
+          <Image src="/ghost/ghost-point.png" alt="" width={640} height={427} className={styles.ctaGhost} />
+          <Link href="/" className={styles.cta}>Start scoping yours →</Link>
+        </div>
       </main>
       <Footer />
     </div>

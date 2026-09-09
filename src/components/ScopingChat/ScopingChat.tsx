@@ -341,11 +341,17 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
     if (!text) return;
     setFreeText('');
 
-    // A free-text step the model asked for: record it and let the model react.
-    if (step && step.kind === 'text' && step.id !== 'vague-followup') {
+    // Any step the model asked for, whether it offered chips or not.
+    if (step && step.id !== 'vague-followup') {
       pushMessage('user', text);
-      answersRef.current[step.id] = text;
+      if (step.options?.includes(text)) {
+        answersRef.current[step.id] = text;
+      } else {
+        answersRef.current[`${step.id}_note`] = text;
+      }
       setStep(null);
+      trackEvent('answered_in_own_words', { field: step.id }, sessionIdRef.current);
+      snapshot();
       askNext();
       return;
     }
@@ -365,7 +371,7 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
       return;
     }
     resolveClassification(text);
-  }, [freeText, step, pushMessage, resolveClassification, askNext]);
+  }, [freeText, step, pushMessage, resolveClassification, askNext, snapshot]);
 
   const resetAll = useCallback(() => {
     answersRef.current = {};
@@ -506,11 +512,26 @@ const ScopingChat = forwardRef<ScopingChatHandle, Props>(function ScopingChat(
           </div>
 
           {step && step.kind === 'chips' && (
-            <div className={styles.chips}>
-              {step.options?.map(o => (
-                <button key={o} className={styles.stepChip} onClick={() => handleAnswer(o)}>{o}</button>
-              ))}
-            </div>
+            <>
+              <div className={styles.chips}>
+                {step.options?.map(o => (
+                  <button key={o} className={styles.stepChip} onClick={() => handleAnswer(o)}>{o}</button>
+                ))}
+              </div>
+              <div className={styles.inputRow}>
+                <input
+                  className={styles.input}
+                  value={freeText}
+                  onChange={e => setFreeText(e.target.value)}
+                  onFocus={() => onFocusChange?.(true)}
+                  onBlur={() => onFocusChange?.(false)}
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); submitFreeText(); } }}
+                  placeholder="Or say it in your own words…"
+                  aria-label="Answer in your own words instead of choosing an option"
+                />
+                <button className={styles.send} onClick={submitFreeText} aria-label="Send">→</button>
+              </div>
+            </>
           )}
 
           {step && step.kind === 'text' && (

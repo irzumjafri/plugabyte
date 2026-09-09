@@ -115,26 +115,26 @@ describe('checkDisqualify', () => {
 describe('computeEffort', () => {
   it('returns the base band with no bumps', () => {
     const result = computeEffort('internal', {});
-    expect(result).toEqual({ low: 3, high: 5 });
+    expect(result).toEqual({ low: 2, high: 4 });
   });
 
   it('bumps for systems, apis, approvers and deadline', () => {
     const result = computeEffort('integration', {
       systems: '4 or more', apis: 'No', approvers: '3 or more', deadline: 'Hard date',
     });
-    // base 3-5, +2 systems, +2 apis, +1 approvers, +1 deadline = +6
-    expect(result).toEqual({ low: 9, high: 11 });
+    // base 2-4, +1 systems, +1 apis, +1 approvers, +1 deadline = +4
+    expect(result).toEqual({ low: 6, high: 8 });
   });
 
   it('always adds the AI eval-harness bump', () => {
     const result = computeEffort('ai', {});
-    expect(result).toEqual({ low: 7, high: 9 });
+    expect(result).toEqual({ low: 4, high: 6 });
   });
 
   it('bumps for screens and roles on product builds', () => {
     const result = computeEffort('product', { screens: '15+', roles: '4+' });
-    // base 5-7, +3 screens, +2 roles = +5
-    expect(result).toEqual({ low: 10, high: 12 });
+    // base 3-5, +2 screens, +1 roles = +3
+    expect(result).toEqual({ low: 6, high: 8 });
   });
 });
 
@@ -152,7 +152,7 @@ describe('fillUnknowns', () => {
     const asked = computeEffort('product', { systems: '2–3', apis: 'Not sure', approvers: '2', deadline: 'None', screens: '6–15', roles: '2–3' });
     const { answers } = fillUnknowns('product', {});
     expect(computeEffort('product', answers)).toEqual(asked);
-    expect(computeEffort('product', answers).low).toBeGreaterThan(computeEffort('product', {}).low);
+    expect(computeEffort('product', answers).low).toBeGreaterThanOrEqual(computeEffort('product', {}).low);
   });
 
   it('only fills fields this build type actually asks', () => {

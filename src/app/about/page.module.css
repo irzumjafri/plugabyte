@@ -296,3 +296,11 @@
     position: static;
   }
 }
+
+/* Idle mark — the brand book's default state for marketing surfaces. */
+.heroGhost {
+  display: block;
+  width: min(280px, 60vw);
+  height: auto;
+  margin: 44px auto 0;
+}

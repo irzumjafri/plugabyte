@@ -125,3 +125,42 @@
   font-weight: 700;
   font-size: 14px;
 }
+
+/* The mascot is the illustration system — the brand book assigns Slouch to off
+   and empty states, which is what a prototype that fell over is. Decorative, so
+   alt="" and hidden from the reading order rather than described twice. */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr minmax(200px, 300px);
+  align-items: center;
+  gap: 40px;
+}
+
+.heroGhost,
+.ctaGhost {
+  width: 100%;
+  height: auto;
+}
+
+.ctaRow {
+  margin-top: 56px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.ctaGhost {
+  width: 132px;
+  flex: none;
+}
+
+@media (max-width: 720px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .heroGhost {
+    max-width: 240px;
+  }
+}
