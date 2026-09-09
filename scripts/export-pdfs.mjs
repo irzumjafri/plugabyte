@@ -10,12 +10,19 @@ const WIDTH = 1280;
 const VIEW_H = 1400;
 const ORIGIN = process.argv[2] ?? 'http://localhost:3000';
 const OUT = process.argv[3] ?? 'exports';
-const ROUTES = [
-  ['/', 'plugabyte-home'],
-  ['/work', 'plugabyte-work'],
-  ['/rescue', 'plugabyte-rescue'],
-  ['/about', 'plugabyte-about'],
-];
+// PB_TARGETS overrides the site routes, as `url|name` pairs separated by commas.
+// Used for one-offs that are not routes at all, e.g. the brand system HTML.
+const ROUTES = process.env.PB_TARGETS
+  ? process.env.PB_TARGETS.split(',').map(pair => {
+      const [url, name] = pair.split('|');
+      return [url, name];
+    })
+  : [
+      ['/', 'plugabyte-home'],
+      ['/work', 'plugabyte-work'],
+      ['/rescue', 'plugabyte-rescue'],
+      ['/about', 'plugabyte-about'],
+    ];
 
 const chrome = spawn(CHROME, [
   '--headless=new',
@@ -25,6 +32,7 @@ const chrome = spawn(CHROME, [
   '--no-first-run',
   '--no-default-browser-check',
   '--user-data-dir=/tmp/pb-pdf-profile',
+  '--allow-file-access-from-files',
   // The homepage hero is WebGL; without a software rasteriser it prints blank.
   '--enable-unsafe-swiftshader',
   '--use-angle=swiftshader',
@@ -87,7 +95,7 @@ for (const [route, name] of ROUTES) {
   await page.send('Emulation.setDeviceMetricsOverride', {
     width: WIDTH, height: VIEW_H, deviceScaleFactor: 2, mobile: false,
   });
-  await page.send('Page.navigate', { url: ORIGIN + route });
+  await page.send('Page.navigate', { url: /^[a-z]+:/.test(route) ? route : ORIGIN + route });
   await sleep(5000); // fonts, WebGL first frame, next/image
 
   // The landing is sized in dvh. Both printToPDF and captureBeyondViewport
