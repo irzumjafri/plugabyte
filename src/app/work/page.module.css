@@ -5,9 +5,26 @@
 }
 
 .main {
-  max-width: 1040px;
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 80px 32px 120px;
+  padding: 0 clamp(20px, 5vw, 64px) clamp(72px, 9vw, 120px);
+}
+
+/* No scene plate exists for this page yet, so the hero is typographic and the
+   live ghost carries it. Better an honest empty stage than a plate borrowed
+   from another page, which would make both mean less. */
+.hero {
+  position: relative;
+  padding: clamp(64px, 9vw, 110px) 0 clamp(48px, 6vw, 72px);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 32px;
+}
+
+.heroGhost {
+  width: clamp(140px, 20vw, 230px);
+  aspect-ratio: 1;
 }
 
 .pretitle {
@@ -23,18 +40,29 @@
   margin: 0 0 20px;
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(2.2rem, 4.6vw, 3.2rem);
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.4rem, 5.6vw, 4rem);
+  line-height: 1.0;
+  letter-spacing: -0.042em;
   color: #fff;
 }
 
+.titleAccent {
+  color: var(--pb-azure);
+}
+
 .lead {
-  margin: 0 0 60px;
+  margin: 0;
   max-width: 600px;
   color: var(--pb-text-muted);
   font-size: 16px;
   line-height: 1.75;
+}
+
+.studies {
+  background: var(--pb-chalk);
+  color: var(--pb-ink);
+  margin: 0 calc(-1 * clamp(20px, 5vw, 64px));
+  padding: clamp(48px, 6vw, 80px) clamp(20px, 5vw, 64px) clamp(56px, 7vw, 90px);
 }
 
 .item {
@@ -42,7 +70,7 @@
   grid-template-columns: 200px 1fr;
   gap: 40px;
   padding: 44px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(13, 19, 27, 0.14);
 }
 
 .itemType {
@@ -51,9 +79,9 @@
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--pb-ghost);
-  background: rgba(143, 184, 232, 0.1);
-  border: 1px solid rgba(143, 184, 232, 0.25);
+  color: var(--pb-deep-sky);
+  background: rgba(78, 108, 147, 0.045);
+  border: 1px solid rgba(78, 108, 147, 0.28);
   border-radius: 3px;
   padding: 4px 8px;
 }
@@ -62,20 +90,21 @@
   margin: 14px 0 0;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--pb-text-faint);
+  color: var(--pb-ink-soft);
 }
 
 .itemTitle {
   margin: 0 0 10px;
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 22px;
-  color: #fff;
+  font-weight: 900;
+  font-size: clamp(21px, 2.6vw, 28px);
+  letter-spacing: -0.03em;
+  color: var(--pb-ink);
 }
 
 .itemSummary {
   margin: 0 0 16px;
-  color: var(--pb-text-dim);
+  color: var(--pb-ink-soft);
   font-size: 15px;
   line-height: 1.75;
   max-width: 620px;
@@ -83,14 +112,14 @@
 
 .itemUgly {
   margin: 0;
-  color: var(--pb-text-muted);
+  color: var(--pb-ink-soft);
   font-size: 14px;
   line-height: 1.7;
   max-width: 620px;
 }
 
 .itemUgly strong {
-  color: var(--pb-bolt);
+  color: var(--pb-red-cta);
   font-weight: 600;
 }
 
@@ -101,9 +130,10 @@
   margin: 28px 0 0;
   max-width: 620px;
   padding: 26px 24px 18px;
-  border: 1px solid rgba(143, 184, 232, 0.16);
-  border-radius: 4px;
-  background: var(--pb-panel-2);
+  border-radius: 6px;
+  /* The diagrams were drawn for the dark ground and read their colour from
+     currentColor, so they keep their own panel rather than being re-tuned. */
+  background: var(--pb-void);
   color: var(--pb-text);
 }
 
@@ -123,11 +153,13 @@
 }
 
 .cta {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
   padding: 14px 26px;
   border-radius: 4px;
-  background: var(--pb-bolt);
-  color: var(--pb-void);
+  background: var(--pb-red-cta);
+  color: #fff;
   font-weight: 700;
   font-size: 14px;
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import Annotation from '@/components/Scene/Annotation';
+import GhostStage from '@/components/Scene/GhostStage';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import styles from './page.module.css';
@@ -36,32 +38,47 @@ export default function RescuePage() {
         <div className={styles.hero}>
           <div>
             <p className={styles.pretitle}>Prototype rescue</p>
-            <h1 className={styles.title}>The demo was the easy part.</h1>
+            <h1 className={styles.title}>
+              Good idea.
+              <br />
+              <span className={styles.titleAccent}>Rough landing?</span>
+            </h1>
             <p className={styles.lead}>
-              You&apos;ve spent money and it fell over on real data. You know exactly what hurts. This is production-readiness triage — no code upload, no repo scan up front, just a conversation about what&apos;s actually broken.
+              The demo worked. Then real users arrived. This is production-readiness
+              triage — no code upload, no repo scan up front, just a conversation about
+              what&apos;s actually broken.
             </p>
+            <Link href="/?type=rescue" className={styles.heroCta}>
+              Tell us what&apos;s broken <span aria-hidden="true">↗</span>
+            </Link>
+            <ul className={styles.steps}>
+              {['Debug', 'Stabilize', 'Scale', 'Get back to building'].map(x => <li key={x}>{x}</li>)}
+            </ul>
           </div>
-          <Image
-            className={styles.heroGhost}
-            src="/ghost/ghost-slouch.png"
-            alt=""
-            width={640}
-            height={422}
-            priority
-          />
+          <GhostStage className={styles.heroGhost} />
         </div>
 
-        <div className={styles.checksBox}>
-          {CHECKS.map(c => (
-            <div key={c.n} className={styles.checkRow}>
-              <span className={styles.checkNum}>{c.n}</span>
-              <div>
-                <p className={styles.checkTitle}>{c.title}</p>
+        <section className={styles.checks}>
+          <p className={styles.checksLabel}>Inside the fix</p>
+          <h2 className={styles.checksTitle}>
+            Under the hood.
+            <br />
+            <span className={styles.titleAccentInk}>Nothing skipped.</span>
+          </h2>
+          <div className={styles.checksBox}>
+            {CHECKS.map((c, i) => (
+              <details key={c.n} className={styles.check} open={i === 0}>
+                <summary className={styles.checkSummary}>
+                  <span className={styles.checkNum}>{c.n}</span>
+                  <span className={styles.checkTitle}>{c.title}</span>
+                  <span className={styles.checkSign} aria-hidden="true" />
+                </summary>
                 <p className={styles.checkDesc}>{c.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+              </details>
+            ))}
+          </div>
+          <Annotation className={styles.checksNote}>Details make ideas endure.</Annotation>
+        </section>
 
         <div className={styles.aiBox}>
           <p className={styles.aiLabel}>For AI builds — the five-item set</p>

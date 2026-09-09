@@ -58,7 +58,7 @@ export default function Navbar({ onGetStarted }: Props) {
 
       <div className={styles.actions}>
         <button className={styles.cta} onClick={handleGetStarted}>
-          {isHome ? 'What are you shipping?' : 'Get started'}
+          Start a project
         </button>
         <button
           type="button"

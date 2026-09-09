@@ -37,46 +37,8 @@
   line-height: 1.75;
 }
 
-.checksBox {
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 4px;
-  background: var(--pb-panel);
-  padding: 8px;
-  margin-bottom: 40px;
-}
-
-.checkRow {
-  display: flex;
-  gap: 20px;
-  align-items: baseline;
-  padding: 22px 26px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
 .checkRow:last-child {
   border-bottom: none;
-}
-
-.checkNum {
-  width: 26px;
-  flex-shrink: 0;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--pb-text-ghosted);
-}
-
-.checkTitle {
-  margin: 0 0 5px;
-  color: #fff;
-  font-weight: 600;
-  font-size: 15px;
-}
-
-.checkDesc {
-  margin: 0;
-  color: var(--pb-text-muted);
-  font-size: 13.5px;
-  line-height: 1.7;
 }
 
 .aiBox {
@@ -131,9 +93,50 @@
    alt="" and hidden from the reading order rather than described twice. */
 .hero {
   display: grid;
-  grid-template-columns: 1fr minmax(200px, 300px);
+  grid-template-columns: 1fr minmax(160px, 260px);
   align-items: center;
   gap: 40px;
+  padding-bottom: clamp(40px, 5vw, 64px);
+}
+
+.titleAccent {
+  color: var(--pb-azure);
+}
+
+.titleAccentInk {
+  color: var(--pb-deep-sky);
+}
+
+.heroCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 26px;
+  padding: 14px 24px;
+  border-radius: 999px;
+  background: var(--pb-red-cta);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.heroCta:hover {
+  color: #fff;
+  filter: brightness(1.07);
+}
+
+.steps {
+  list-style: none;
+  margin-top: clamp(30px, 4vw, 48px);
+  padding-top: 18px;
+  border-top: 1px solid rgba(143, 184, 232, 0.2);
+  display: grid;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pb-text-faint);
 }
 
 .heroGhost,
@@ -162,5 +165,131 @@
 
   .heroGhost {
     max-width: 240px;
+  }
+}
+
+/* ---- the seven checks, as an accordion --------------------------------- */
+
+/* Light break, and <details> rather than a bespoke widget: it brings its own
+   open/close, keyboard handling and summary semantics. */
+.checks {
+  position: relative;
+  background: var(--pb-chalk);
+  color: var(--pb-ink);
+  margin: 0 calc(-1 * clamp(20px, 5vw, 64px));
+  padding: clamp(56px, 8vw, 96px) clamp(20px, 5vw, 64px);
+}
+
+.checksLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--pb-deep-sky);
+  margin-bottom: 20px;
+}
+
+.checksTitle {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(30px, 4.6vw, 52px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: var(--pb-ink);
+  margin-bottom: clamp(32px, 4vw, 52px);
+}
+
+.checksBox {
+  border-top: 1px solid rgba(13, 19, 27, 0.14);
+}
+
+.check {
+  border-bottom: 1px solid rgba(13, 19, 27, 0.14);
+}
+
+.checkSummary {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 2px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.checkSummary::-webkit-details-marker {
+  display: none; /* the +/- below is the affordance */
+}
+
+.checkSummary:focus-visible {
+  outline: 2px solid var(--pb-deep-sky);
+  outline-offset: -2px;
+}
+
+.checkNum {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(24px, 3vw, 34px);
+  letter-spacing: -0.04em;
+  color: var(--pb-azure-deep);
+}
+
+.checkTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(17px, 2vw, 21px);
+  letter-spacing: -0.02em;
+  color: var(--pb-ink);
+}
+
+/* Drawn rather than typed, so the two states are the same mark rotated and
+   there is no font-dependent +/- to line up. */
+.checkSign {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+
+.checkSign::before,
+.checkSign::after {
+  content: '';
+  position: absolute;
+  inset: 50% 0 auto 0;
+  height: 1.5px;
+  background: var(--pb-ink-soft);
+}
+
+.checkSign::after {
+  transform: rotate(90deg);
+  transition: transform 180ms ease;
+}
+
+.check[open] .checkSign::after {
+  transform: rotate(0deg);
+}
+
+.checkDesc {
+  padding: 0 0 22px 54px;
+  max-width: 62ch;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--pb-ink-soft);
+}
+
+.checksNote {
+  position: absolute;
+  right: clamp(20px, 5vw, 64px);
+  bottom: clamp(20px, 4vw, 44px);
+  color: var(--pb-ink-soft);
+}
+
+@media (max-width: 760px) {
+  .checkDesc {
+    padding-left: 0;
+  }
+
+  .checksNote {
+    display: none;
   }
 }

@@ -16,6 +16,10 @@ const eslintConfig = defineConfig([
     "Plugabyte prototype directions/**",
     // Written by `npx convex dev`; not ours to lint.
     "convex/_generated/**",
+    // Generated exports: PDFs, the bundled standalone ghost, its copied sources.
+    "exports/**",
+    // Direction comps and reference art.
+    "brand-inspiration/**",
   ]),
 ]);
 

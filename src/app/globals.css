@@ -13,6 +13,17 @@
   --pb-ink: #0d131b;
   --pb-ink-soft: #3b4a5a;
 
+  /* Sampled from the direction comps. These run hotter than the brand book's
+     Sky #8FB8E8 / Bolt #F4586A, which stay below as the type and UI blues. */
+  --pb-azure: #52a8fd;
+  --pb-azure-deep: #2b7fd4;
+  --pb-red: #fb2b37;
+  /* White on --pb-red is 3.82:1 — fine for the mark, short of 4.5:1 for a
+     button label. This is the same red carried deeper so text can sit on it;
+     the bolt and the graphics keep --pb-red exactly. */
+  --pb-red-cta: #dd1f2b;
+  --pb-sky-tint: #cfe6ff; /* the light-blue CTA band in the comps */
+
   --pb-text: #e6eef5;
   --pb-text-dim: #c4d3df;
   --pb-text-muted: #8195a8;
@@ -22,6 +33,7 @@
   --font-display: 'Nunito', sans-serif;
   --font-body: 'Space Grotesk', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+  --font-hand: 'Caveat', 'Bradley Hand', cursive;
 }
 
 * {

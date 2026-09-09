@@ -304,3 +304,74 @@
   height: auto;
   margin: 44px auto 0;
 }
+
+/* ---- principles, restyled to the direction comps ----------------------- */
+
+/* Light break: the comps alternate grounds down the page rather than running
+   dark throughout, and the principles are where About turns from story to
+   statement. */
+.beliefs {
+  background: var(--pb-chalk);
+  color: var(--pb-ink);
+  padding: clamp(64px, 9vw, 110px) clamp(20px, 5vw, 64px);
+}
+
+.beliefsLabel {
+  display: block;
+  margin-bottom: clamp(30px, 4vw, 46px);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--pb-deep-sky);
+}
+
+/* The numerals are the structure here, so they are set large and quiet rather
+   than as labels on cards — four beliefs is a set, not a sequence, but the
+   comps number them and the numbers do the ordering work of a grid. */
+.beliefs .beliefsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
+  gap: 0;
+  background: none;
+  border: none;
+}
+
+.beliefs .beliefCard {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 20px;
+  align-items: start;
+  padding: 26px 34px 26px 0;
+  background: none;
+  border: none;
+  border-top: 1px solid rgba(13, 19, 27, 0.14);
+}
+
+.beliefs .beliefNum {
+  grid-row: span 2;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(38px, 5vw, 52px);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  color: var(--pb-azure-deep);
+  margin: 0;
+}
+
+.beliefs .beliefTitle {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: -0.02em;
+  color: var(--pb-ink);
+}
+
+.beliefs .beliefDesc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--pb-ink-soft);
+  max-width: 46ch;
+}

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import PageViews from '@/components/PageViews';
-import { Nunito, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import { Nunito, Space_Grotesk, JetBrains_Mono, Caveat } from 'next/font/google';
 import './globals.css';
 
 const nunito = Nunito({
@@ -13,6 +13,15 @@ const spaceGrotesk = Space_Grotesk({
   variable: '--font-body',
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
+});
+
+// Not in the brand book. The direction comps annotate the artwork in a marker
+// hand ("Big ideas. Working parts."), and that aside-in-the-margin voice has no
+// equivalent in the three specified faces. Used only for those annotations.
+const caveat = Caveat({
+  variable: '--font-hand',
+  subsets: ['latin'],
+  weight: ['600', '700'],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -32,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${nunito.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${nunito.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${caveat.variable}`}>
       <body>
         <PageViews />
         {children}

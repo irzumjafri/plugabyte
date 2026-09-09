@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
+import SceneHero from '@/components/Scene/SceneHero';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import styles from './page.module.css';
@@ -39,27 +39,19 @@ export default function AboutPage() {
       <Navbar />
       <main>
 
-      {/* Hero */}
-      <section className={styles.hero}>
-        <div className={styles.heroGlow} />
-        <span className={styles.heroEyebrow}>Our Story</span>
-        <h1 className={styles.heroTitle}>
-          We failed building computers.
-          <br />
-          <span className={styles.heroAccent}>Now we build what runs on them.</span>
-        </h1>
-        <p className={styles.heroLead}>
-          Plugabyte started as a hardware venture and became something much harder — and more interesting. This is the story of what we learned along the way.
-        </p>
-        <Image
-          className={styles.heroGhost}
-          src="/ghost/ghost-idle.png"
-          alt=""
-          width={640}
-          height={430}
-          priority
-        />
-      </section>
+      <SceneHero src="/scenes/workbench.jpg" alt="" side="left" minHeight="min(72vh, 600px)">
+        <div>
+          <p className={styles.heroEyebrow}>The people behind the ghost</p>
+          <h1 className={styles.heroTitle}>
+            We started with circuits.
+            <br />
+            <span className={styles.heroAccent}>We kept the curiosity.</span>
+          </h1>
+          <p className={styles.heroLead}>
+            Same questions. Bigger systems. A more useful tomorrow.
+          </p>
+        </div>
+      </SceneHero>
 
       {/* Origin */}
       <section className={styles.section}>
@@ -134,10 +126,9 @@ export default function AboutPage() {
       </section>
 
       {/* What we believe */}
-      <section className={styles.section}>
+      <section className={styles.beliefs}>
         <div className={styles.inner}>
-          <span className={styles.sectionLabel}>What we believe</span>
-          <h2 className={styles.storyHeading}>The principles we build on</h2>
+          <span className={styles.beliefsLabel}>Our principles</span>
           <div className={styles.beliefsGrid}>
             {BELIEFS.map(b => (
               <div key={b.num} className={styles.beliefCard}>

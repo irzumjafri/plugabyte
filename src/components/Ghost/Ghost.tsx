@@ -11,6 +11,10 @@ const GhostScene = dynamic(() => import('./GhostScene'), { ssr: false });
 export type { GhostHandle };
 
 interface Props {
+  /**
+   * Fixed square size in px. Omit to let the parent size it — the scene heroes
+   * need a fluid ghost, and an inline width beats any class they could set.
+   */
   size?: number;
   className?: string;
 }
@@ -20,7 +24,7 @@ interface Props {
 // line up. A neutral spinner holds the space instead, so only the 3D ghost ever
 // reads as the mascot. The flat mark is still the fallback when WebGL never
 // arrives at all, since a spinner that never resolves is worse than a swap.
-const Ghost = forwardRef<GhostHandle, Props>(function Ghost({ size = 230, className }, ref) {
+const Ghost = forwardRef<GhostHandle, Props>(function Ghost({ size, className }, ref) {
   const [sceneReady, setSceneReady] = useState(false);
   const [gaveUp, setGaveUp] = useState(false);
   const sceneRef = useRef<GhostHandle>(null);
@@ -44,7 +48,10 @@ const Ghost = forwardRef<GhostHandle, Props>(function Ghost({ size = 230, classN
   }), []);
 
   return (
-    <div className={`${styles.wrap} ${className ?? ''}`} style={{ width: size, height: size }}>
+    <div
+      className={`${styles.wrap} ${className ?? ''}`}
+      style={size ? { width: size, height: size } : undefined}
+    >
       {!sceneReady && !gaveUp && (
         <span className={styles.loader} role="status" aria-label="Loading" />
       )}

@@ -3,8 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { TEARDOWNS } from '@/lib/teardowns';
 import Diagram from '@/components/Diagram';
+import Annotation from '@/components/Scene/Annotation';
+import GhostStage from '@/components/Scene/GhostStage';
+import { TEARDOWNS } from '@/lib/teardowns';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -12,44 +14,57 @@ export const metadata: Metadata = {
   description: 'Real builds, ugly parts included — one product, one AI agent, one integration, one rescue.',
 };
 
-
 export default function WorkPage() {
   return (
     <div className={styles.page}>
       <Navbar />
       <main className={styles.main}>
-        <p className={styles.pretitle}>Work</p>
-        <h1 className={styles.title}>Real builds. Ugly parts included.</h1>
-        <p className={styles.lead}>
-          Four, spanning the range on purpose — a product, an agent, an integration, a rescue. Depth beats breadth; twelve thin case studies would say less than these four.
-        </p>
-
-        {TEARDOWNS.map(t => (
-          <div key={t.title} className={styles.item}>
-            <div className={styles.itemMeta}>
-              <span className={styles.itemType}>{t.type}</span>
-              <p className={styles.itemEffort}>{t.effort}</p>
-            </div>
-            <div>
-              <h2 className={styles.itemTitle}>{t.title}</h2>
-              <p className={styles.itemSummary}>{t.summary}</p>
-              <p className={styles.itemUgly}><strong>The ugly part: </strong>{t.ugly}</p>
-              <figure className={styles.itemFigure}>
-                {t.image
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  ? <img src={t.image.src} alt={t.image.alt} className={styles.itemShot} />
-                  : <Diagram id={t.diagram} />}
-                <figcaption className={styles.itemCaption}>
-                  {t.image ? t.image.alt : 'How it fits together — the part in red is the part that hurt.'}
-                </figcaption>
-              </figure>
-            </div>
+        <div className={styles.hero}>
+          <div>
+            <p className={styles.pretitle}>Work</p>
+            <h1 className={styles.title}>
+              Real builds.
+              <br />
+              <span className={styles.titleAccent}>Ugly parts included.</span>
+            </h1>
+            <p className={styles.lead}>
+              Four, spanning the range on purpose — a product, an agent, an integration, a
+              rescue. Depth beats breadth; twelve thin case studies would say less than
+              these four.
+            </p>
           </div>
-        ))}
+          <GhostStage className={styles.heroGhost} />
+        </div>
+
+        <div className={styles.studies}>
+          {TEARDOWNS.map(t => (
+            <div key={t.title} className={styles.item}>
+              <div className={styles.itemMeta}>
+                <span className={styles.itemType}>{t.type}</span>
+                <p className={styles.itemEffort}>{t.effort}</p>
+              </div>
+              <div>
+                <h2 className={styles.itemTitle}>{t.title}</h2>
+                <p className={styles.itemSummary}>{t.summary}</p>
+                <p className={styles.itemUgly}><strong>The ugly part: </strong>{t.ugly}</p>
+                <figure className={styles.itemFigure}>
+                  {t.image
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    ? <img src={t.image.src} alt={t.image.alt} className={styles.itemShot} />
+                    : <Diagram id={t.diagram} />}
+                  <figcaption className={styles.itemCaption}>
+                    {t.image ? t.image.alt : 'How it fits together — the part in red is the part that hurt.'}
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+          ))}
+        </div>
 
         <div className={styles.ctaRow}>
           <Image src="/ghost/ghost-point.png" alt="" width={640} height={427} className={styles.ctaGhost} />
-          <Link href="/" className={styles.cta}>Start scoping yours →</Link>
+          <Link href="/#scope" className={styles.cta}>Start scoping yours →</Link>
+          <Annotation className={styles.ctaNote} arrow="down-left">Yours is next.</Annotation>
         </div>
       </main>
       <Footer />

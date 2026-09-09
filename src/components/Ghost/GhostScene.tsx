@@ -41,7 +41,13 @@ interface Props {
 
 type RigState = 'idle' | 'wave' | 'thinking';
 
-const FACE_COLOR = '#0e1d2c';
+// Sampled from the direction comps rather than picked by eye. These run hotter
+// than the brand book's Sky #8FB8E8 / Bolt #F4586A on purpose — the comps are
+// the reference now, and a lit 3D surface reads duller than flat art at the
+// same value, so matching the book here would land visibly greyer than the art.
+const GHOST_COLOR = '#52a8fd';
+const BOLT_COLOR = '#fb2b37';
+const FACE_COLOR = '#090e17';
 // Eye bumps follow the sculpt, but sized and set from the mark, which draws them
 // large and low. Big low eyes on a round head is the whole friendliness cue.
 const EYE_RADIUS = 9 * SCALE;
@@ -59,7 +65,7 @@ const ARM_RADIUS = 4 * SCALE;
 const HAND_RADIUS = 6.5 * SCALE;
 // RoomEnvironment is a bright studio box; at full strength it out-lights the key
 // lights and ACES tone mapping bleaches the brand blue to white.
-const SKIN = { roughness: 0.42, metalness: 0, clearcoat: 0.55, clearcoatRoughness: 0.25, envMapIntensity: 0.105 };
+const SKIN = { roughness: 0.94, metalness: 0, clearcoat: 0, clearcoatRoughness: 1, envMapIntensity: 0.09 };
 
 // Soft studio reflections — what actually sells a glossy moulded surface. Built
 // locally from three's RoomEnvironment, so there is no HDRI fetch at runtime, and
@@ -77,7 +83,7 @@ function useStudioEnvMap(): THREE.Texture {
 }
 
 const GhostRig = forwardRef<GhostHandle, Props>(function GhostRig(
-  { boltColor = '#F4586A', ghostColor = '#8FB8E8', onReady, pose },
+  { boltColor = BOLT_COLOR, ghostColor = GHOST_COLOR, onReady, pose },
   ref
 ) {
   const rootRef = useRef<THREE.Group>(null);
@@ -222,7 +228,7 @@ const GhostRig = forwardRef<GhostHandle, Props>(function GhostRig(
           scale={BOLT_SCALE}
         >
           <mesh geometry={boltGeo}>
-            <meshPhysicalMaterial color={boltColor} envMap={envMap} roughness={0.28} clearcoat={0.6} clearcoatRoughness={0.2} envMapIntensity={0.14} flatShading />
+            <meshPhysicalMaterial color={boltColor} envMap={envMap} roughness={0.88} clearcoat={0} envMapIntensity={0.06} flatShading />
           </mesh>
         </group>
       </group>
@@ -253,11 +259,11 @@ function Eye({
         <meshPhysicalMaterial
           color={FACE_COLOR}
           envMap={envMap}
-          envMapIntensity={0.45}
-          roughness={0.14}
+          envMapIntensity={0.12}
+          roughness={0.62}
           metalness={0}
-          clearcoat={1}
-          clearcoatRoughness={0.1}
+          clearcoat={0.25}
+          clearcoatRoughness={0.5}
         />
       </mesh>
     </group>
@@ -284,12 +290,25 @@ const GhostScene = forwardRef<GhostHandle, Props>(function GhostScene(props, ref
     <Canvas
       camera={{ position: [0, 0, 17.6], fov: 32 }}
       dpr={[1, 2]}
-      gl={{ alpha: true, antialias: true, toneMappingExposure: 0.55, preserveDrawingBuffer: !!props.pose }}
+      gl={{
+        alpha: true,
+        antialias: true,
+        // Flat art is not photographed, so filmic tone mapping is the wrong
+        // transfer: ACES desaturated the blue toward pale as soon as the scene
+        // was bright enough to read as matte. Without it the material renders
+        // close to its literal hex, which is what matching the comps means.
+        toneMapping: THREE.NoToneMapping,
+        preserveDrawingBuffer: !!props.pose,
+      }}
       style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
     >
-      <directionalLight position={[3, 5, 6]} intensity={1.5} />
-      <directionalLight position={[-5, 1, -4]} intensity={0.5} color="#8fb8e8" />
-      <directionalLight position={[4, -1, -4]} intensity={0.75} color={props.boltColor ?? '#F4586A'} />
+      {/* Flat art has no key light, so the old three-point rig (which sold the
+          glossy sculpt through its speculars) reads as mud on a matte surface.
+          Mostly ambient, one soft key for form, and no coloured rim — the red
+          rim in particular dirtied the blue. */}
+      <ambientLight intensity={1.55} />
+      <directionalLight position={[2, 4, 6]} intensity={0.72} />
+      <directionalLight position={[-4, 2, 3]} intensity={0.34} color="#cfe6ff" />
       <GhostRig ref={ref} {...props} />
     </Canvas>
   );

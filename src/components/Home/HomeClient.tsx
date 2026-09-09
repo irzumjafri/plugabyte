@@ -15,17 +15,12 @@ interface Props {
 export default function HomeClient({ initialType }: Props) {
   const chatRef = useRef<ScopingChatHandle>(null);
 
-  const handleStartHere = (id: BuildTypeId) => {
-    chatRef.current?.selectType(id);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <>
       <Navbar onGetStarted={() => { chatRef.current?.focusInput(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
       <main>
         <LandingSection chatRef={chatRef} initialType={initialType} />
-        <HomeSections onStartHere={handleStartHere} />
+        <HomeSections />
       </main>
       <Footer />
     </>

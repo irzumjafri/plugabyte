@@ -1,427 +1,245 @@
 .main {
   --gutter: clamp(20px, 5vw, 64px);
-  --measure: 1080px;
+  --measure: 1180px;
 }
 
-/* Shared section rhythm. Kept on one class so nothing further down has to
-   fight it with a more specific selector. */
-.section,
-.teardowns,
-.teaserGrid {
-  max-width: var(--measure);
-  margin: 0 auto;
-  padding: clamp(72px, 11vw, 132px) var(--gutter);
-}
+/* ---- shared type ------------------------------------------------------- */
 
-/* ---- facts ------------------------------------------------------------- */
-
-.factLine {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  padding: 22px var(--gutter);
-  border-top: 1px solid rgba(143, 184, 232, 0.14);
-  border-bottom: 1px solid rgba(143, 184, 232, 0.14);
+.eyebrowInk,
+.eyebrowLight {
   font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  color: var(--pb-text-faint);
-}
-
-.factLine strong {
-  color: var(--pb-ghost);
-  font-weight: 500;
-}
-
-.factDot {
-  color: rgba(143, 184, 232, 0.4);
-}
-
-/* ---- the light break --------------------------------------------------- */
-
-/* Chalk is in the palette and was never used. One light section stops the page
-   reading as an endless dark wireframe, and it lands on the thesis. */
-.failure {
-  background: var(--pb-chalk);
-  color: var(--pb-ink);
-  padding: clamp(72px, 11vw, 132px) var(--gutter);
-}
-
-.failureInner {
-  max-width: var(--measure);
-  margin: 0 auto;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
 }
 
 .eyebrowInk {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--pb-deep-sky); /* Sky itself fails contrast on Chalk */
-  margin-bottom: 26px;
+  color: var(--pb-deep-sky); /* Sky itself fails contrast on a light ground */
 }
 
-.failureTitle {
+.titleInk,
+.titleLight {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(30px, 4.6vw, 52px);
-  line-height: 1.06;
-  letter-spacing: -0.035em;
+  font-size: clamp(32px, 5vw, 58px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.titleInk {
   color: var(--pb-ink);
-  margin-bottom: clamp(36px, 5vw, 56px);
 }
 
-.failureList {
-  list-style: none;
-  border-top: 1px solid rgba(13, 19, 27, 0.14);
+.titleLight {
+  color: #fff;
 }
 
-.failureItem {
+/* ---- concept projects -------------------------------------------------- */
+
+.concepts {
+  background: var(--pb-chalk);
+  color: var(--pb-ink);
+  padding: clamp(72px, 10vw, 128px) var(--gutter);
+}
+
+.conceptsHead {
+  max-width: var(--measure);
+  margin: 0 auto clamp(40px, 5vw, 64px);
   display: grid;
-  grid-template-columns: minmax(150px, 0.34fr) 1fr;
-  gap: 8px 28px;
-  padding: 18px 0;
-  border-bottom: 1px solid rgba(13, 19, 27, 0.14);
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 32px;
 }
 
-.failureWhen {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(16px, 1.7vw, 19px);
-  letter-spacing: -0.015em;
-  color: var(--pb-ink);
-}
-
-.failureThen {
-  font-size: clamp(15px, 1.6vw, 17px);
-  line-height: 1.55;
+.headAside {
+  position: relative;
+  max-width: 28ch;
+  padding-top: 6px;
+  font-size: 14px;
+  line-height: 1.6;
   color: var(--pb-ink-soft);
 }
 
-.failureClose {
-  margin-top: clamp(28px, 4vw, 40px);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(17px, 2vw, 21px);
-  color: var(--pb-deep-sky);
+.rule {
+  display: block;
+  width: 26px;
+  height: 1px;
+  margin-top: 14px;
+  background: rgba(13, 19, 27, 0.3);
 }
 
-/* ---- section furniture ------------------------------------------------- */
-
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--pb-ghost);
-  margin-bottom: 22px;
-}
-
-.sectionTitle {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(28px, 4.2vw, 46px);
-  line-height: 1.08;
-  letter-spacing: -0.035em;
-  color: var(--pb-text);
-  max-width: 20ch;
-  margin-bottom: clamp(40px, 5vw, 60px);
-}
-
-.sectionTitleSmall {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(24px, 3vw, 34px);
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: var(--pb-text);
-  margin-bottom: 16px;
-}
-
-/* Sky carries the emphasis. The brand budget is 25% sky and the site was
-   spending almost none of it. */
-.em {
-  font-style: normal;
-  color: var(--pb-ghost);
-}
-
-.textLink {
-  font-size: 13px;
-  color: var(--pb-ghost);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-/* ---- the index --------------------------------------------------------- */
-
-.index {
-  list-style: none;
-  border-top: 1px solid rgba(143, 184, 232, 0.16);
-}
-
-.indexRow {
-  display: grid;
-  grid-template-columns: minmax(180px, 0.42fr) 1fr auto;
-  align-items: baseline;
-  gap: 6px 28px;
-  width: 100%;
-  padding: 22px 4px;
-  border: none;
-  border-bottom: 1px solid rgba(143, 184, 232, 0.16);
-  background: none;
-  text-align: left;
-  cursor: pointer;
-  font-family: var(--font-body);
-  transition: background 160ms ease;
-}
-
-.indexRow:hover,
-.indexRow:focus-visible {
-  background: rgba(143, 184, 232, 0.06);
-}
-
-/* The nudge is on the text, not the row's padding: animating padding relaid out
-   the grid every frame, and shifting the row itself would drag its rule along
-   with it. Transform is composited and leaves the hairlines still. */
-.indexName,
-.indexBlurb {
-  transition: transform 160ms ease;
-}
-
-.indexRow:hover .indexName,
-.indexRow:hover .indexBlurb,
-.indexRow:focus-visible .indexName,
-.indexRow:focus-visible .indexBlurb {
-  transform: translateX(8px);
-}
-
-.indexRow:focus-visible {
-  outline: 2px solid var(--pb-ghost);
-  outline-offset: -2px;
-}
-
-.indexName {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(20px, 2.6vw, 27px);
-  letter-spacing: -0.03em;
-  color: var(--pb-text);
-}
-
-.indexBlurb {
-  font-size: 15px;
-  line-height: 1.5;
-  color: var(--pb-text-muted);
-}
-
-.indexGo {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--pb-ghost);
-  opacity: 0;
-  transition: opacity 160ms ease;
-}
-
-.indexRow:hover .indexGo,
-.indexRow:focus-visible .indexGo {
-  opacity: 1;
-}
-
-.sectionLead {
-  max-width: 56ch;
-  margin: -28px 0 clamp(40px, 5vw, 56px);
-  font-size: 16px;
-  line-height: 1.7;
-  color: var(--pb-text-muted);
-}
-
-/* ---- advisory ---------------------------------------------------------- */
-
-/* Panel rather than plain ground: advisory is a different kind of engagement
-   from building, and it should not read as one more list of builds. */
-.advisory {
-  background: var(--pb-panel-2);
-  border-top: 1px solid rgba(143, 184, 232, 0.16);
-  border-bottom: 1px solid rgba(143, 184, 232, 0.16);
-  padding: clamp(72px, 11vw, 120px) var(--gutter);
-}
-
-.advisoryInner {
+.feature {
   max-width: var(--measure);
   margin: 0 auto;
 }
 
-.advisoryLead {
-  max-width: 58ch;
-  margin-bottom: clamp(32px, 4vw, 44px);
-  font-size: 16px;
-  line-height: 1.75;
-  color: var(--pb-text-dim);
-}
-
-.advisoryList {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-  gap: 28px;
-}
-
-.advisoryItem {
-  font-size: 15px;
-  line-height: 1.65;
-  color: var(--pb-text-muted);
-  padding-top: 16px;
-  border-top: 1px solid rgba(143, 184, 232, 0.2);
-}
-
-.advisoryTerm {
+.featureShot {
   display: block;
-  margin-bottom: 8px;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.featureCaption {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.5fr) 1fr;
+  gap: 12px 40px;
+  padding-top: 20px;
+}
+
+.conceptName {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(24px, 3vw, 34px);
+  letter-spacing: -0.04em;
+  color: var(--pb-ink);
+  line-height: 1.1;
+}
+
+.conceptTagline {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 17px;
   letter-spacing: -0.02em;
-  color: var(--pb-text);
+  color: var(--pb-ink);
+  margin-bottom: 6px;
 }
 
-/* ---- teardowns --------------------------------------------------------- */
-
-.teardownHead {
-  margin-bottom: clamp(34px, 4vw, 48px);
+.conceptBlurb {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--pb-ink-soft);
+  max-width: 52ch;
 }
 
-.teardownList {
+.conceptList {
   list-style: none;
+  max-width: var(--measure);
+  margin: clamp(44px, 5vw, 64px) auto 0;
+  border-top: 1px solid rgba(13, 19, 27, 0.14);
+}
+
+.conceptRow {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  gap: 1px;
-  background: rgba(143, 184, 232, 0.16);
-  border: 1px solid rgba(143, 184, 232, 0.16);
-}
-
-.teardownItem {
-  background: var(--pb-void);
-  padding: 26px 24px 28px;
-}
-
-.teardownMeta {
-  display: flex;
-  justify-content: space-between;
+  grid-template-columns: minmax(160px, 0.28fr) 1fr auto;
+  gap: 10px 40px;
   align-items: baseline;
-  gap: 12px;
-  margin-bottom: 14px;
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(13, 19, 27, 0.14);
+}
+
+.conceptKind {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  color: var(--pb-deep-sky);
+  white-space: nowrap;
 }
 
-.teardownType {
-  color: var(--pb-ghost);
+/* ---- the last 20% ------------------------------------------------------ */
+
+.lastTwenty {
+  background: var(--pb-void);
+  padding: clamp(72px, 10vw, 128px) var(--gutter);
 }
 
-.teardownEffort {
-  color: var(--pb-text-faint);
-}
-
-.teardownTitle {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 18px;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  color: var(--pb-text);
-  margin-bottom: 12px;
-}
-
-/* The bolt earns its 5% here: it marks the admission, once per card. */
-.teardownUgly {
-  padding-left: 13px;
-  border-left: 2px solid var(--pb-bolt);
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--pb-text-muted);
-}
-
-.teardownDiagram {
-  margin-top: 22px;
-  color: var(--pb-text);
-}
-
-/* ---- teasers ----------------------------------------------------------- */
-
-.teaserGrid {
+.lastInner {
+  max-width: var(--measure);
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  gap: 18px;
+  grid-template-columns: minmax(280px, 0.8fr) 1fr;
+  align-items: center;
+  gap: clamp(32px, 5vw, 64px);
 }
 
-.teaser {
-  display: block;
-  padding: 30px 28px;
-  border: 1px solid rgba(143, 184, 232, 0.16);
-  border-radius: 4px;
-  transition: border-color 160ms ease, transform 160ms ease;
-}
-
-.teaser:hover,
-.teaser:focus-visible {
-  border-color: var(--pb-ghost);
-  transform: translateY(-2px);
-}
-
-.teaser:focus-visible {
-  outline: 2px solid var(--pb-ghost);
-  outline-offset: 3px;
-}
-
-.teaserLabel {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--pb-ghost);
-  margin-bottom: 14px;
-}
-
-.teaserBody {
-  font-size: 15px;
-  line-height: 1.65;
+.lastLead {
+  margin-top: 22px;
+  max-width: 40ch;
+  font-size: 16px;
+  line-height: 1.7;
   color: var(--pb-text-dim);
-  margin-bottom: 18px;
 }
 
-.teaserGo {
-  font-size: 13px;
-  color: var(--pb-ghost);
+.layers {
+  list-style: none;
+  margin-top: 30px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(143, 184, 232, 0.2);
+  display: grid;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--pb-azure);
+}
+
+.lastArt img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* ---- close ------------------------------------------------------------- */
+
+.close {
+  position: relative;
+  overflow: hidden;
+  background: var(--pb-sky-tint);
+  color: var(--pb-ink);
+  padding: clamp(72px, 10vw, 120px) var(--gutter);
+}
+
+/* Deep Sky clears 4.5:1 on Chalk but only reaches 4.22:1 on the tint band,
+   and the eyebrow is 11px, so it needs the normal-text bar not the large one. */
+.close .eyebrowInk {
+  color: var(--pb-ink-soft);
+}
+
+.closeInner {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+
+.closeLink {
+  display: inline-block;
+  margin-top: 28px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--pb-ink);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: 5px;
 }
 
-@media (max-width: 640px) {
-  .failureItem,
-  .indexRow {
+.closeNote {
+  position: absolute;
+  right: clamp(20px, 6vw, 90px);
+  bottom: clamp(24px, 6vw, 70px);
+  color: var(--pb-ink-soft);
+  text-align: right;
+}
+
+@media (max-width: 860px) {
+  .conceptsHead,
+  .featureCaption,
+  .lastInner {
     grid-template-columns: 1fr;
   }
 
-  .indexGo {
-    opacity: 1; /* no hover on touch, so the affordance has to be visible */
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .indexRow,
-  .indexGo,
-  .indexName,
-  .indexBlurb,
-  .teaser {
-    transition: none;
+  .conceptRow {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 
-  .indexRow:hover .indexName,
-  .indexRow:hover .indexBlurb,
-  .teaser:hover {
-    transform: none;
+  .closeNote {
+    display: none;
+  }
+
+  /* The plate is 16:9 and full of fine detail; below this it stops being
+     legible as an exploded system and is just texture. */
+  .lastArt {
+    order: -1;
   }
 }

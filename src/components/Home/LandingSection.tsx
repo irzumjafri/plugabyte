@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import Ghost, { type GhostHandle } from '@/components/Ghost/Ghost';
 import ScopingChat, { type ScopingChatHandle } from '@/components/ScopingChat/ScopingChat';
+import SceneHero from '@/components/Scene/SceneHero';
+import Annotation from '@/components/Scene/Annotation';
 import type { BuildTypeId } from '@/lib/estimator';
 import styles from './LandingSection.module.css';
 
@@ -10,6 +12,8 @@ interface Props {
   chatRef: React.RefObject<ScopingChatHandle | null>;
   initialType?: BuildTypeId | null;
 }
+
+const CAPABILITIES = ['Product engineering', 'Integrations', 'Rescue & scale', 'Independent and proud'];
 
 export default function LandingSection({ chatRef, initialType }: Props) {
   const ghostRef = useRef<GhostHandle>(null);
@@ -49,16 +53,49 @@ export default function LandingSection({ chatRef, initialType }: Props) {
   }
 
   return (
-    <section
-      className={`${styles.landing} ${chatFocused ? styles.chatFocused : ''}`}
+    <div
       onPointerMove={handlePointer}
       onPointerDown={handlePointer}
       onPointerEnter={handlePointerEnter}
     >
-      <div className={styles.inner}>
-        <Ghost ref={ghostRef} size={260} className={styles.ghost} />
-        <ScopingChat ref={chatRef} ghostRef={ghostRef} initialType={initialType} onFocusChange={setChatFocused} />
-      </div>
-    </section>
+      <SceneHero
+        src="/scenes/workshop-night.jpg"
+        alt=""
+        side="left"
+        ghost={<Ghost ref={ghostRef} className={styles.heroGhost} />}
+      >
+        <div className={styles.heroCopy}>
+          <h1 className={styles.title}>
+            Plug in.<br />Light up.<br /><span className={styles.titleAccent}>Ship it.</span>
+          </h1>
+          <p className={styles.lead}>Good ideas deserve a life outside the demo.</p>
+          <button
+            type="button"
+            className={styles.cta}
+            onClick={() => {
+              chatRef.current?.focusInput();
+              document.getElementById('scope')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }}
+          >
+            What are you building? <span aria-hidden="true">↗</span>
+          </button>
+          <ul className={styles.capabilities}>
+            {CAPABILITIES.map(c => <li key={c}>{c}</li>)}
+          </ul>
+        </div>
+        <Annotation className={styles.heroNote} arrow="down-left">
+          Big ideas.<br />Working parts.
+        </Annotation>
+      </SceneHero>
+
+      {/* The comps end the hero at the CTA, but the scoping conversation is the
+          product, not a page section — so it sits immediately below and the
+          hero button focuses it, rather than being buried further down. */}
+      <section id="scope" className={`${styles.scope} ${chatFocused ? styles.scopeFocused : ''}`}>
+        <div className={styles.scopeInner}>
+          <ScopingChat ref={chatRef} ghostRef={ghostRef} initialType={initialType} onFocusChange={setChatFocused} />
+        </div>
+      </section>
+    </div>
   );
 }
