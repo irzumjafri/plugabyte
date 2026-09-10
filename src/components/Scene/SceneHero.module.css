@@ -82,6 +82,27 @@
   filter: drop-shadow(0 14px 18px rgba(4, 8, 14, 0.55));
 }
 
+/* A ghost standing on one spot reads as a sticker no matter how well it is
+   lit. Letting it wander the terrace is what makes it look like it lives here.
+   The path is deliberately slow and uneven — a steady sweep reads as a carousel
+   — and it scales down as it drifts back, so the movement has depth rather than
+   sliding flatly across the frame. */
+@keyframes pb-roam {
+  0%   { transform: translate(0, 0) scale(1); }
+  16%  { transform: translate(-55px, -5px) scale(0.98); }
+  34%  { transform: translate(-130px, -11px) scale(0.93); }
+  46%  { transform: translate(-145px, -10px) scale(0.93); }  /* pauses to look */
+  62%  { transform: translate(-195px, -16px) scale(0.89); }
+  78%  { transform: translate(-110px, -8px) scale(0.94); }
+  92%  { transform: translate(-30px, -2px) scale(0.99); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.ghostRoams {
+  animation: pb-roam 54s ease-in-out infinite;
+  will-change: transform;
+}
+
 /* The pool of shadow the body would actually cast on the floor beneath it. */
 .ghost::after {
   content: '';
@@ -119,6 +140,14 @@
 
 /* The plates put their subject on one side, so on a narrow screen the copy has
    to stop competing with it: the art drops back and the text takes the frame. */
+/* Site-wide reduced-motion already kills transitions, but an infinite keyframe
+   loop is exactly the kind of ambient movement that rule exists for. */
+@media (prefers-reduced-motion: reduce) {
+  .ghostRoams {
+    animation: none;
+  }
+}
+
 @media (max-width: 760px) {
   .scrimLeft,
   .scrimRight {

@@ -40,7 +40,6 @@ export default function RescuePage() {
         src="/scenes/rescue-bridge.jpg"
         alt=""
         side="left"
-        minHeight="min(74vh, 620px)"
         objectPosition="70% 62%"
         scrim="heavy"
       >

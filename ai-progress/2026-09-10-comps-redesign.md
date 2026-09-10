@@ -137,3 +137,20 @@ the comps, where it is *working in the scene* rather than sitting on top of it.
 - Learned while tuning: `object-position` has very little travel when the plate
   is only slightly wider than its frame (~230px of sweep on the work hero), so
   framing has to be fixed in the crop, not in CSS.
+
+## Round four — full-height heroes, and a ghost that roams
+
+- **Heroes were capped in pixels** (`min(78vh, 660px)` and friends), so they
+  never filled the viewport no matter how tall the screen. All four now default
+  to `calc(100svh - 66px)` — svh rather than vh, so a collapsing mobile URL bar
+  does not make the hero jump mid-scroll. Verified: hero 834px + 66px nav on a
+  900px viewport.
+- **The ghost roams.** Standing still on one spot is why it still read as pasted
+  on even at the right size and with a shadow. It now drifts along the terrace
+  on a 54s loop, uneven and with a pause partway, scaling down as it moves back
+  so the movement has depth instead of sliding flatly across the frame.
+  Measured the path against the hero box rather than eyeballing it — the first
+  attempt reached 53% of the width, which put it out over the water; pulled in
+  to 62–88%, which is the terrace.
+  Disabled under `prefers-reduced-motion`, and on phones where there is no room
+  to wander without leaving frame.

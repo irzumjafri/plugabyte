@@ -23,7 +23,6 @@ export default function WorkPage() {
         src="/scenes/about-boards.jpg"
         alt=""
         side="left"
-        minHeight="min(66vh, 540px)"
         objectPosition="78% center"
       >
         <div>

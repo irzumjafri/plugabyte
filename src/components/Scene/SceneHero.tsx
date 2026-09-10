@@ -15,7 +15,8 @@ export default function SceneHero({
   side = 'left',
   children,
   ghost,
-  minHeight = 'min(78vh, 660px)',
+  roam = false,
+  minHeight = 'calc(100svh - 66px)',
   objectPosition = 'center',
   scrim = 'standard',
 }: {
@@ -26,6 +27,8 @@ export default function SceneHero({
   children: React.ReactNode;
   /** Live ghost, composited over the plate. */
   ghost?: React.ReactNode;
+  /** Let the ghost wander the set instead of standing on one spot. */
+  roam?: boolean;
   minHeight?: string;
   /** Which part of the plate to hold when it is cropped to the hero's shape. */
   objectPosition?: string;
@@ -49,7 +52,9 @@ export default function SceneHero({
           scrim === 'heavy' ? styles.scrimHeavy : '',
         ].join(' ')}
       />
-      {ghost && <div className={styles.ghost}>{ghost}</div>}
+      {ghost && (
+        <div className={`${styles.ghost} ${roam ? styles.ghostRoams : ''}`}>{ghost}</div>
+      )}
       <div className={`${styles.inner} ${side === 'left' ? styles.innerLeft : styles.innerRight}`}>
         {children}
       </div>

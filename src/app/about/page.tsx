@@ -40,7 +40,7 @@ export default function AboutPage() {
       <Navbar />
       <main>
 
-      <SceneHero src="/scenes/workbench.jpg" alt="" side="left" minHeight="min(72vh, 600px)">
+      <SceneHero src="/scenes/workbench.jpg" alt="" side="left">
         <div>
           <p className={styles.heroEyebrow}>The people behind the ghost</p>
           <h1 className={styles.heroTitle}>

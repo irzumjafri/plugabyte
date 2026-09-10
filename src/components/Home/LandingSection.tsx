@@ -62,6 +62,7 @@ export default function LandingSection({ chatRef, initialType }: Props) {
         src="/scenes/workshop-night.jpg"
         alt=""
         side="left"
+        roam
         ghost={<Ghost ref={ghostRef} className={styles.heroGhost} />}
       >
         <div className={styles.heroCopy}>
