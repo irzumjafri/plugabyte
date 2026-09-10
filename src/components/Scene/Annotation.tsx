@@ -10,14 +10,20 @@ import styles from './Annotation.module.css';
 export default function Annotation({
   children,
   arrow = 'none',
+  onArt = false,
   className,
 }: {
   children: React.ReactNode;
   arrow?: 'down-left' | 'down-right' | 'none';
+  /** Sitting on a photographic plate, where it needs its own ground. */
+  onArt?: boolean;
   className?: string;
 }) {
   return (
-    <span aria-hidden="true" className={`${styles.note} ${className ?? ''}`}>
+    <span
+      aria-hidden="true"
+      className={`${styles.note} ${onArt ? styles.onArt : ''} ${className ?? ''}`}
+    >
       {children}
       {arrow !== 'none' && (
         <svg

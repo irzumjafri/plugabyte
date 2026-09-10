@@ -24,8 +24,7 @@ export default function WorkPage() {
         alt=""
         side="left"
         minHeight="min(66vh, 540px)"
-        scrim="heavy"
-        objectPosition="70% center"
+        objectPosition="78% center"
       >
         <div>
           <p className={styles.pretitle}>Work</p>
@@ -39,7 +38,7 @@ export default function WorkPage() {
             rescue. Depth beats breadth.
           </p>
         </div>
-        <Annotation className={styles.heroNote} arrow="down-left">
+        <Annotation className={styles.heroNote} arrow="down-left" onArt>
           Small steps.<br />Bigger things.
         </Annotation>
         </SceneHero>

@@ -83,7 +83,7 @@ export default function LandingSection({ chatRef, initialType }: Props) {
             {CAPABILITIES.map(c => <li key={c}>{c}</li>)}
           </ul>
         </div>
-        <Annotation className={styles.heroNote} arrow="down-left">
+        <Annotation className={styles.heroNote} arrow="down-left" onArt>
           Big ideas.<br />Working parts.
         </Annotation>
       </SceneHero>

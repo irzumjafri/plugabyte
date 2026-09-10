@@ -66,13 +66,33 @@
   );
 }
 
+/* The comps put the mascot *in* the scene: small, standing on the set, at a
+   scale that reads as a character in the space rather than a sticker over it.
+   It was roughly twice this size and floating, which is what made it look
+   pasted on. */
 .ghost {
   position: absolute;
   z-index: 2;
-  right: clamp(4%, 10vw, 18%);
-  bottom: 10%;
-  width: clamp(150px, 22vw, 300px);
+  right: clamp(6%, 12vw, 22%);
+  bottom: 12%;
+  width: clamp(96px, 13vw, 190px);
   aspect-ratio: 1;
+  /* Seats it on the surface. Without a contact shadow a lit 3D object over a
+     photograph always reads as a cut-out. */
+  filter: drop-shadow(0 14px 18px rgba(4, 8, 14, 0.55));
+}
+
+/* The pool of shadow the body would actually cast on the floor beneath it. */
+.ghost::after {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -4%;
+  height: 12%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(4, 8, 14, 0.55), rgba(4, 8, 14, 0) 70%);
+  z-index: -1;
 }
 
 .inner {

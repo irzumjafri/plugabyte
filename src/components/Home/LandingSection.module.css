@@ -75,10 +75,11 @@
 
 .heroNote {
   position: absolute;
-  top: clamp(90px, 16vh, 150px);
-  right: clamp(24px, 6vw, 90px);
+  top: clamp(74px, 13vh, 128px);
+  right: clamp(24px, 5vw, 72px);
   color: #fff;
   text-align: right;
+  font-size: clamp(19px, 2.1vw, 27px);
   z-index: 3;
 }
 

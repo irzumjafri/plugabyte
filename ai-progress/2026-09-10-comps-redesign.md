@@ -113,3 +113,27 @@ before measuring. Verified against the real PDF output.
   sits at that page's CTA instead.
 - `about-city` has "brighter tomorrow" hand-lettered into it; our own
   `Annotation` there was removed rather than print the same words twice.
+
+---
+
+## Round three — legibility and the ghost's scale
+
+Feedback: the hand-lettered note was invisible, and the ghost looked better in
+the comps, where it is *working in the scene* rather than sitting on top of it.
+
+- **Annotations** now take an `onArt` flag that gives them a soft dark halo
+  (layered text-shadow, plus a drop-shadow on the arrow). White script on a
+  photographic plate had nothing behind it wherever the art was bright.
+- **The ghost was roughly twice the size it should be, and floating.** Cut to
+  `clamp(96px, 13vw, 190px)` and given both a drop-shadow and an elliptical
+  contact shadow on the floor beneath it. A lit 3D object over a photograph
+  reads as a cut-out until something grounds it.
+- Re-cropped `rescue-bridge` and `work-shelf` to start *below* the comps' own
+  hand-lettered notes — the old bounds sliced through them, leaving a fragment
+  that looked like damage and repeated words our annotation already said.
+- `/work` went back to the standard scrim. The heavy one was dimming that
+  plate's own ghost into a grey smudge; the headline sits far enough left that
+  the gradient is near-solid there regardless.
+- Learned while tuning: `object-position` has very little travel when the plate
+  is only slightly wider than its frame (~230px of sweep on the work hero), so
+  framing has to be fixed in the crop, not in CSS.

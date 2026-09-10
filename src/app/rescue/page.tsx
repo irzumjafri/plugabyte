@@ -41,7 +41,7 @@ export default function RescuePage() {
         alt=""
         side="left"
         minHeight="min(74vh, 620px)"
-        objectPosition="72% center"
+        objectPosition="70% 62%"
         scrim="heavy"
       >
         <div>
@@ -61,7 +61,7 @@ export default function RescuePage() {
             {['Debug', 'Stabilize', 'Scale', 'Get back to building'].map(x => <li key={x}>{x}</li>)}
           </ul>
         </div>
-        <Annotation className={styles.heroNote} arrow="down-left">
+        <Annotation className={styles.heroNote} arrow="down-left" onArt>
           Same idea.<br />Stronger tomorrow.
         </Annotation>
         </SceneHero>
