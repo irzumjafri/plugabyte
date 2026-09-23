@@ -1,6 +1,10 @@
+/* The 560px cap needs auto margins to go with it. Without them the block sat
+   flush left inside any wider parent — invisible in the old narrow band, but an
+   80px offset once the overlay gave it a 720px column. */
 .chat {
   width: 100%;
   max-width: 560px;
+  margin-inline: auto;
   text-align: center;
 }
 

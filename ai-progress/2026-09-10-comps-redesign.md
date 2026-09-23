@@ -185,3 +185,14 @@ the comps, where it is *working in the scene* rather than sitting on top of it.
 A viewport size set via the browser pane's emulation letterboxes inside a wider
 pane, which looks exactly like a broken full-bleed background. Measure the scrim
 against `window.innerWidth` before believing it.
+
+### The off-centre chat (round five, follow-up)
+Real after all, and it was in `ScopingChat`, not the overlay: `.chat` capped
+itself at `max-width: 560px` with zero margins, so it sat flush left inside any
+wider parent. Invisible in the old narrow band; an 80px offset once the overlay
+gave it a 720px column. Fixed with `margin-inline: auto`.
+
+Measured rather than eyeballed, at 1600px: viewport, scrim, dialogue and chat
+all centre on 800. Worth repeating that the earlier "it's off-centre" report was
+*also* real — I dismissed it once because the pane's small width hid it. Check a
+centring bug at a wide viewport before concluding it is fine.
