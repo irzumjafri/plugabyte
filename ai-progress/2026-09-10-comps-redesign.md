@@ -154,3 +154,34 @@ the comps, where it is *working in the scene* rather than sitting on top of it.
   to 62–88%, which is the terrace.
   Disabled under `prefers-reduced-motion`, and on phones where there is no room
   to wander without leaving frame.
+
+## Round five — full-screen chat, ghost on the stage, layout fixes
+
+- **The scoping chat is now a full-screen conversation** (`ChatOverlay`), not a
+  band parked halfway down the page. The hero CTA and the navbar open it; the
+  ghost is present at full size above the thread so answering feels like talking
+  to it. It is a real modal, so it carries the debts: labelled `role="dialog"`,
+  `aria-modal`, focus moved to the input and restored on close, Escape to leave,
+  Tab trapped inside, body scroll locked — with padding compensation, because
+  locking scroll removed the scrollbar and shifted the page sideways.
+  Deep links became search params (`/?chat=1`, `?type=…`) rather than `#scope`:
+  the server sees a param, so the first render already matches and the modal
+  does not have to pop open after hydration.
+- **Roam removed.** The ghost stands on the round stage, floating just above it
+  — the shadow is thrown further down and blurred wider than a contact shadow,
+  and that gap is what reads as height. Position derived from the plate
+  (stage centre ≈71% across, surface ≈79% down once cover-fitted) rather than
+  nudged by eye.
+- **Hero asides moved to a `note` slot on `SceneHero`,** anchored to the hero
+  instead of to the centred copy column — that column's box moves with the
+  viewport, which is why the annotation kept landing somewhere different at
+  different widths.
+- **Fixed a `ch`-unit trap:** `.innerLeft > * { max-width: 40ch }` sat on the
+  wrapper, where `ch` resolves against the *body* font (~8px) — capping the
+  column near 320px and making an 88px About headline wrap every single word.
+- Dropped "Independent and proud" from the hero capability list.
+
+### Note for next time
+A viewport size set via the browser pane's emulation letterboxes inside a wider
+pane, which looks exactly like a broken full-bleed background. Measure the scrim
+against `window.innerWidth` before believing it.

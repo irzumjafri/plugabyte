@@ -73,46 +73,53 @@
 .ghost {
   position: absolute;
   z-index: 2;
-  right: clamp(6%, 12vw, 22%);
-  bottom: 12%;
+  /* Standing on the round stage. Derived from the plate rather than guessed:
+     the stage centre sits at ~71% across and its surface at ~79% down once the
+     plate is cover-fitted, so the ghost is centred there with its feet on the
+     deck instead of hanging off the right-hand edge. */
+  right: 22%;
+  bottom: 26%;
   width: clamp(96px, 13vw, 190px);
   aspect-ratio: 1;
-  /* Seats it on the surface. Without a contact shadow a lit 3D object over a
-     photograph always reads as a cut-out. */
-  filter: drop-shadow(0 14px 18px rgba(4, 8, 14, 0.55));
+  /* Hovering, not standing — so the shadow is thrown further below and blurred
+     wider than a contact shadow would be. That gap between body and shadow is
+     what reads as height off the deck. */
+  filter: drop-shadow(0 26px 24px rgba(4, 8, 14, 0.5));
 }
 
-/* A ghost standing on one spot reads as a sticker no matter how well it is
-   lit. Letting it wander the terrace is what makes it look like it lives here.
-   The path is deliberately slow and uneven — a steady sweep reads as a carousel
-   — and it scales down as it drifts back, so the movement has depth rather than
-   sliding flatly across the frame. */
-@keyframes pb-roam {
-  0%   { transform: translate(0, 0) scale(1); }
-  16%  { transform: translate(-55px, -5px) scale(0.98); }
-  34%  { transform: translate(-130px, -11px) scale(0.93); }
-  46%  { transform: translate(-145px, -10px) scale(0.93); }  /* pauses to look */
-  62%  { transform: translate(-195px, -16px) scale(0.89); }
-  78%  { transform: translate(-110px, -8px) scale(0.94); }
-  92%  { transform: translate(-30px, -2px) scale(0.99); }
-  100% { transform: translate(0, 0) scale(1); }
+/* Anchored to the hero, not to the centred copy column — that column's box
+   moves with the viewport, which is why the aside kept landing somewhere
+   different at different widths. Hidden where the plate is too cropped to have
+   any clear sky to sit on. */
+.note {
+  position: absolute;
+  z-index: 3;
+  top: clamp(70px, 12vh, 122px);
+  right: clamp(28px, 6vw, 96px);
+  color: #fff;
+  text-align: right;
+  pointer-events: none;
 }
 
-.ghostRoams {
-  animation: pb-roam 54s ease-in-out infinite;
-  will-change: transform;
+@media (max-width: 1100px) {
+  .note {
+    display: none;
+  }
 }
 
+/* Standing inside the workshop rather than out on the terrace. It is further
+   into the frame, so it sits higher, reads smaller, and casts a shorter shadow
+   — the floor in there is lit, so a long dark pool would look wrong. */
 /* The pool of shadow the body would actually cast on the floor beneath it. */
 .ghost::after {
   content: '';
   position: absolute;
-  left: 12%;
-  right: 12%;
-  bottom: -4%;
-  height: 12%;
+  left: 6%;
+  right: 6%;
+  bottom: -22%;
+  height: 13%;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(4, 8, 14, 0.55), rgba(4, 8, 14, 0) 70%);
+  background: radial-gradient(ellipse at center, rgba(4, 8, 14, 0.45), rgba(4, 8, 14, 0) 72%);
   z-index: -1;
 }
 
@@ -125,8 +132,11 @@
   padding: clamp(56px, 8vw, 96px) clamp(20px, 5vw, 64px);
 }
 
+/* Not ch: this is the wrapper, so ch resolved against the body font (~8px) and
+   capped the column near 320px — which is why an 88px headline was wrapping
+   every single word. Individual elements set their own measure. */
 .innerLeft > * {
-  max-width: 40ch;
+  max-width: min(46rem, 100%);
 }
 
 .innerRight {
@@ -135,19 +145,11 @@
 }
 
 .innerRight > * {
-  max-width: 40ch;
+  max-width: min(46rem, 100%);
 }
 
 /* The plates put their subject on one side, so on a narrow screen the copy has
    to stop competing with it: the art drops back and the text takes the frame. */
-/* Site-wide reduced-motion already kills transitions, but an infinite keyframe
-   loop is exactly the kind of ambient movement that rule exists for. */
-@media (prefers-reduced-motion: reduce) {
-  .ghostRoams {
-    animation: none;
-  }
-}
-
 @media (max-width: 760px) {
   .scrimLeft,
   .scrimRight {

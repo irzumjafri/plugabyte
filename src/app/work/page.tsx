@@ -24,6 +24,7 @@ export default function WorkPage() {
         alt=""
         side="left"
         objectPosition="78% center"
+        note={<Annotation arrow="down-left" onArt>Small steps.<br />Bigger things.</Annotation>}
       >
         <div>
           <p className={styles.pretitle}>Work</p>
@@ -37,9 +38,6 @@ export default function WorkPage() {
             rescue. Depth beats breadth.
           </p>
         </div>
-        <Annotation className={styles.heroNote} arrow="down-left" onArt>
-          Small steps.<br />Bigger things.
-        </Annotation>
         </SceneHero>
         <div className={styles.main}>
         <div className={styles.studies}>
@@ -69,7 +67,7 @@ export default function WorkPage() {
 
         <div className={styles.ctaRow}>
           <GhostStage className={styles.heroGhost} />
-          <Link href="/#scope" className={styles.cta}>Start scoping yours →</Link>
+          <Link href="/?chat=1" className={styles.cta}>Start scoping yours →</Link>
           <Annotation className={styles.ctaNote} arrow="down-left">Yours is next.</Annotation>
         </div>
         </div>

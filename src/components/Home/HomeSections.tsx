@@ -91,7 +91,7 @@ export default function HomeSections() {
           <h2 className={styles.titleInk}>
             Something in mind?<br />Let&apos;s make it real.
           </h2>
-          <Link href="/#scope" className={styles.closeLink}>Get in touch →</Link>
+          <Link href="/?chat=1" className={styles.closeLink}>Get in touch →</Link>
         </div>
         <Annotation className={styles.closeNote}>Same<br />brighter<br />tomorrow.</Annotation>
       </section>

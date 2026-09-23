@@ -15,7 +15,7 @@ export default function SceneHero({
   side = 'left',
   children,
   ghost,
-  roam = false,
+  note,
   minHeight = 'calc(100svh - 66px)',
   objectPosition = 'center',
   scrim = 'standard',
@@ -27,8 +27,8 @@ export default function SceneHero({
   children: React.ReactNode;
   /** Live ghost, composited over the plate. */
   ghost?: React.ReactNode;
-  /** Let the ghost wander the set instead of standing on one spot. */
-  roam?: boolean;
+  /** Hand-lettered aside, anchored to the hero rather than to the copy column. */
+  note?: React.ReactNode;
   minHeight?: string;
   /** Which part of the plate to hold when it is cropped to the hero's shape. */
   objectPosition?: string;
@@ -53,8 +53,9 @@ export default function SceneHero({
         ].join(' ')}
       />
       {ghost && (
-        <div className={`${styles.ghost} ${roam ? styles.ghostRoams : ''}`}>{ghost}</div>
+        <div className={styles.ghost}>{ghost}</div>
       )}
+      {note && <div className={styles.note}>{note}</div>}
       <div className={`${styles.inner} ${side === 'left' ? styles.innerLeft : styles.innerRight}`}>
         {children}
       </div>

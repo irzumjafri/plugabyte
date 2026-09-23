@@ -42,6 +42,7 @@ export default function RescuePage() {
         side="left"
         objectPosition="70% 62%"
         scrim="heavy"
+        note={<Annotation arrow="down-left" onArt>Same idea.<br />Stronger tomorrow.</Annotation>}
       >
         <div>
           <p className={styles.pretitle}>Prototype rescue</p>
@@ -60,9 +61,6 @@ export default function RescuePage() {
             {['Debug', 'Stabilize', 'Scale', 'Get back to building'].map(x => <li key={x}>{x}</li>)}
           </ul>
         </div>
-        <Annotation className={styles.heroNote} arrow="down-left" onArt>
-          Same idea.<br />Stronger tomorrow.
-        </Annotation>
         </SceneHero>
         <div className={styles.main}>
         <section className={styles.checks}>

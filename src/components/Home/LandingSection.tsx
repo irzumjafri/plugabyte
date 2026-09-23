@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Ghost, { type GhostHandle } from '@/components/Ghost/Ghost';
 import ScopingChat, { type ScopingChatHandle } from '@/components/ScopingChat/ScopingChat';
 import SceneHero from '@/components/Scene/SceneHero';
+import ChatOverlay from '@/components/ScopingChat/ChatOverlay';
 import Annotation from '@/components/Scene/Annotation';
 import type { BuildTypeId } from '@/lib/estimator';
 import styles from './LandingSection.module.css';
@@ -11,15 +12,17 @@ import styles from './LandingSection.module.css';
 interface Props {
   chatRef: React.RefObject<ScopingChatHandle | null>;
   initialType?: BuildTypeId | null;
+  chatOpen: boolean;
+  onOpenChat: () => void;
+  onCloseChat: () => void;
 }
 
-const CAPABILITIES = ['Product engineering', 'Integrations', 'Rescue & scale', 'Independent and proud'];
+const CAPABILITIES = ['Product engineering', 'Integrations', 'Rescue & scale'];
 
-export default function LandingSection({ chatRef, initialType }: Props) {
+export default function LandingSection({ chatRef, initialType, chatOpen, onOpenChat, onCloseChat }: Props) {
   const ghostRef = useRef<GhostHandle>(null);
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rectRef = useRef<DOMRect | null>(null);
-  const [chatFocused, setChatFocused] = useState(false);
 
   // The timer re-armed itself inside its own callback with no cleanup, so the
   // wave loop kept firing after this section unmounted.
@@ -62,8 +65,8 @@ export default function LandingSection({ chatRef, initialType }: Props) {
         src="/scenes/workshop-night.jpg"
         alt=""
         side="left"
-        roam
         ghost={<Ghost ref={ghostRef} className={styles.heroGhost} />}
+        note={<Annotation arrow="down-left" onArt>Big ideas.<br />Working parts.</Annotation>}
       >
         <div className={styles.heroCopy}>
           <h1 className={styles.title}>
@@ -73,10 +76,7 @@ export default function LandingSection({ chatRef, initialType }: Props) {
           <button
             type="button"
             className={styles.cta}
-            onClick={() => {
-              chatRef.current?.focusInput();
-              document.getElementById('scope')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }}
+            onClick={onOpenChat}
           >
             What are you building? <span aria-hidden="true">↗</span>
           </button>
@@ -84,19 +84,11 @@ export default function LandingSection({ chatRef, initialType }: Props) {
             {CAPABILITIES.map(c => <li key={c}>{c}</li>)}
           </ul>
         </div>
-        <Annotation className={styles.heroNote} arrow="down-left" onArt>
-          Big ideas.<br />Working parts.
-        </Annotation>
       </SceneHero>
 
-      {/* The comps end the hero at the CTA, but the scoping conversation is the
-          product, not a page section — so it sits immediately below and the
-          hero button focuses it, rather than being buried further down. */}
-      <section id="scope" className={`${styles.scope} ${chatFocused ? styles.scopeFocused : ''}`}>
-        <div className={styles.scopeInner}>
-          <ScopingChat ref={chatRef} ghostRef={ghostRef} initialType={initialType} onFocusChange={setChatFocused} />
-        </div>
-      </section>
+      <ChatOverlay open={chatOpen} onClose={onCloseChat} ghostRef={ghostRef}>
+        <ScopingChat ref={chatRef} ghostRef={ghostRef} initialType={initialType} />
+      </ChatOverlay>
     </div>
   );
 }
