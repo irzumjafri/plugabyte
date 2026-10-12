@@ -1,6 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Plugabyte">
-  <rect width="120" height="120" rx="26" fill="#0d131b"/>
-  <g transform="translate(16,20) scale(0.98)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132 132" role="img" aria-label="Plugabyte">
+  <!-- No plate behind it: the mark alone, on transparency, so the browser's own
+       tab colour shows through. The mark's bounding box is 94x132, so it is
+       centred horizontally in a square frame rather than stretched. -->
+  <g transform="translate(19,0)">
     <path fill-rule="evenodd" fill="#52a8fd"
       d="M 0 44 A 44 44 0 0 1 88 44 L 88 86 C 88 95 82 101 71 101 C 60 101 55 81 44 81 C 33 81 28 101 17 101 C 6 101 0 95 0 86 Z M 18.5 36.6 a 9.5 11.5 0 1 0 19 0 a 9.5 11.5 0 1 0 -19 0 Z M 56.2 36.6 a 9.5 11.5 0 1 0 19 0 a 9.5 11.5 0 1 0 -19 0 Z"/>
     <path fill="#fb2b37" d="M 82 73 L 62 112 L 75 112 L 69 132 L 94 92 L 79 92 Z"/>

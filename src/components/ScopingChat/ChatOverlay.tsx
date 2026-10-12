@@ -29,6 +29,7 @@ export default function ChatOverlay({
   children: React.ReactNode;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const convRef = useRef<HTMLDivElement>(null);
   const localGhost = useRef<GhostHandle>(null);
   const restoreTo = useRef<HTMLElement | null>(null);
 
@@ -91,6 +92,34 @@ export default function ChatOverlay({
     };
   }, [open, onClose]);
 
+  // Keep the newest message in view as the conversation grows — but only when
+  // the reader is already at the bottom. Yanking someone back down while they
+  // are scrolled up re-reading an earlier answer is worse than not scrolling.
+  useEffect(() => {
+    const el = convRef.current;
+    if (!open || !el || typeof MutationObserver === 'undefined') return;
+
+    const NEAR_BOTTOM = 80;
+    let pinned = true;
+
+    const onScroll = () => {
+      pinned = el.scrollHeight - el.scrollTop - el.clientHeight <= NEAR_BOTTOM;
+    };
+    const stick = () => {
+      if (pinned) el.scrollTop = el.scrollHeight;
+    };
+
+    el.addEventListener('scroll', onScroll, { passive: true });
+    const mo = new MutationObserver(stick);
+    mo.observe(el, { childList: true, subtree: true, characterData: true });
+    stick();
+
+    return () => {
+      el.removeEventListener('scroll', onScroll);
+      mo.disconnect();
+    };
+  }, [open]);
+
   if (!open) return null;
 
   return (
@@ -114,7 +143,7 @@ export default function ChatOverlay({
           <div className={styles.ghost}>
             <Ghost ref={setGhost} />
           </div>
-          <div className={styles.conversation}>{children}</div>
+          <div ref={convRef} className={styles.conversation}>{children}</div>
           <p className={styles.escape}>
             <EmailLink label="Rather not chat? Email us —" subject="Project enquiry" />
           </p>

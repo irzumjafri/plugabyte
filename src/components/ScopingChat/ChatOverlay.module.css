@@ -3,6 +3,13 @@
   inset: 0;
   z-index: 100;
   display: grid;
+  /* The whole height chain has to be definite from here down. This element is
+     the only one with a real height (fixed inset:0), so if its row is left
+     implicit it sizes to the panel's content and every `height: 100%` below
+     resolves circularly to auto — the panel grew past the viewport and the
+     conversation never became scrollable. */
+  grid-template-rows: minmax(0, 1fr);
+  overflow: hidden;
   place-items: stretch;
   background: rgba(6, 10, 16, 0.82);
   backdrop-filter: blur(18px) saturate(0.85);
@@ -14,9 +21,15 @@
 .panel {
   position: relative;
   display: grid;
+  /* An explicit row, not an implicit one. With `place-items: center` alone the
+     row was sized to its content, so .dialogue's `max-height: 100%` had no
+     definite height to resolve against — it grew past the viewport instead of
+     capping, and the conversation inside it never became scrollable. */
+  grid-template-rows: minmax(0, 1fr);
   place-items: center;
   width: 100%;
   height: 100%;
+  min-height: 0;
   padding: clamp(20px, 4vw, 48px);
   background:
     radial-gradient(120% 80% at 50% 8%, rgba(82, 168, 253, 0.12), transparent 62%),
@@ -32,6 +45,7 @@
   width: 100%;
   max-width: 720px;
   max-height: 100%;
+  min-height: 0;
 }
 
 .ghost {
