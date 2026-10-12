@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_NAME, SITE_URL } from '@/lib/site';
 import PageViews from '@/components/PageViews';
+import Analytics from '@/components/Analytics';
 import { Nunito, Space_Grotesk, JetBrains_Mono, Caveat } from 'next/font/google';
 import './globals.css';
 
@@ -102,6 +103,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANISATION_JSONLD) }}
         />
         <PageViews />
+        <Analytics />
         {children}
       </body>
     </html>
