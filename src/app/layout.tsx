@@ -33,15 +33,21 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400', '500'],
 });
 
+// Titles and descriptions have to carry search intent as well as voice. The
+// old title was the tagline alone — memorable, but nobody types it, so the
+// homepage could not rank for anything. The slogan moves into the description,
+// where it still gets read in the result snippet.
 const DESCRIPTION =
-  "Plugabyte builds the part that stays up. Tell us what you're trying to ship — build type, integration, or a prototype that needs to become production-ready.";
+  'AI systems and software built to survive production — for companies across the Middle East. We build from scratch, integrate what you already run, and rescue prototypes that broke on real users. The demo was the easy part.';
+
+const TITLE = 'AI & Software Development Studio — Middle East | Plugabyte';
 
 export const metadata: Metadata = {
   // Without metadataBase every canonical and Open Graph URL resolves relative,
   // which means a crawler or a shared link gets a path with no origin.
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Plugabyte — the demo was the easy part',
+    default: TITLE,
     // Page titles read "Work | Plugabyte" without each page repeating the brand.
     template: `%s | ${SITE_NAME}`,
   },
@@ -52,13 +58,13 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: SITE_NAME,
     url: '/',
-    title: 'Plugabyte — the demo was the easy part',
+    title: TITLE,
     description: DESCRIPTION,
     images: [{ url: '/scenes/workshop-night.jpg', width: 1672, height: 940, alt: SITE_NAME }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Plugabyte — the demo was the easy part',
+    title: TITLE,
     description: DESCRIPTION,
     images: ['/scenes/workshop-night.jpg'],
   },
@@ -86,6 +92,27 @@ const ORGANISATION_JSONLD = {
     'AI systems engineering',
     'Systems integration',
     'Prototype rescue',
+    'AI consulting',
+  ],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Dubai',
+    addressCountry: 'AE',
+  },
+  // Dubai is where we are; the Middle East is who we serve. Both are listed so
+  // neither local nor regional intent is excluded.
+  areaServed: [
+    { '@type': 'Place', name: 'Middle East' },
+    { '@type': 'Country', name: 'United Arab Emirates' },
+    { '@type': 'Country', name: 'Saudi Arabia' },
+    { '@type': 'City', name: 'Dubai' },
+  ],
+  knowsAbout: [
+    'AI agents',
+    'Retrieval-augmented generation',
+    'LLM evaluation harnesses',
+    'Systems integration',
+    'Production readiness',
   ],
 };
 

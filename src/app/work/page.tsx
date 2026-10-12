@@ -11,20 +11,20 @@ import { TEARDOWNS } from '@/lib/teardowns';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Work',
-  description: "Real builds, ugly parts included — one product, one AI agent, one integration, one rescue.",
+  title: 'Case Studies — AI Agents, Integrations & Rescues',
+  description: "Four real builds from a Dubai-based studio working across the Middle East: a WhatsApp AI agent, an order-sync integration, an internal claims tool and a prototype rescue. Ugly parts included.",
   alternates: { canonical: '/work' },
   openGraph: {
     type: 'website',
     url: '/work',
-    title: 'Work | Plugabyte',
-    description: "Real builds, ugly parts included — one product, one AI agent, one integration, one rescue.",
+    title: 'Case Studies — AI Agents, Integrations & Rescues | Plugabyte',
+    description: "Four real builds from a Dubai-based studio working across the Middle East: a WhatsApp AI agent, an order-sync integration, an internal claims tool and a prototype rescue. Ugly parts included.",
     images: [{ url: '/scenes/about-boards.jpg' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Work | Plugabyte',
-    description: "Real builds, ugly parts included — one product, one AI agent, one integration, one rescue.",
+    title: 'Case Studies — AI Agents, Integrations & Rescues | Plugabyte',
+    description: "Four real builds from a Dubai-based studio working across the Middle East: a WhatsApp AI agent, an order-sync integration, an internal claims tool and a prototype rescue. Ugly parts included.",
     images: ['/scenes/about-boards.jpg'],
   },
 };

@@ -13,6 +13,9 @@ export default function Footer() {
           <Link href="/about">About</Link>
           <a href="mailto:hello@plugabyte.com">hello@plugabyte.com</a>
         </div>
+        <p className={styles.place}>
+          Dubai, UAE — building for teams across the Middle East
+        </p>
         <p className={styles.tagline}>Plug in. Light up. Ship it.</p>
       </div>
     </footer>
