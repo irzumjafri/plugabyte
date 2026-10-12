@@ -65,12 +65,26 @@ export default function WorkPage() {
           ))}
         </div>
 
-        <div className={styles.ctaRow}>
-          <GhostStage className={styles.heroGhost} />
-          <Link href="/?chat=1" className={styles.cta}>Start scoping yours →</Link>
-          <Annotation className={styles.ctaNote} arrow="down-left">Yours is next.</Annotation>
         </div>
-        </div>
+
+        <section className={styles.close}>
+          <div className={styles.closeInner}>
+            <p className={styles.closeEyebrow}>Yours is next</p>
+            <h2 className={styles.closeTitle}>
+              Tell us what you&apos;re building.
+              <br />
+              <span className={styles.titleAccent}>We&apos;ll tell you what it takes.</span>
+            </h2>
+            <p className={styles.closeLead}>
+              A few questions, then effort in weeks — and the ugly parts named up front,
+              the way they are on this page.
+            </p>
+            <Link href="/?chat=1" className={styles.closeCta}>
+              Start scoping yours <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+          <GhostStage className={styles.closeGhost} />
+        </section>
       </main>
       <Footer />
     </div>

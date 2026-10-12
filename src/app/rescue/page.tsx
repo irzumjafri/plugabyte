@@ -133,11 +133,28 @@ export default function RescuePage() {
           </figure>
         </section>
 
-        <div className={styles.ctaRow}>
-          <GhostStage className={styles.ctaGhost} />
-          <Link href="/?type=rescue" className={styles.cta}>Start the triage conversation →</Link>
         </div>
-        </div>
+
+        {/* A button alone in a dark field had nothing holding it — the page just
+            stopped. This closes it: its own ground, a reason to click, and the
+            ghost waiting rather than floating beside a rectangle. */}
+        <section className={styles.close}>
+          <div className={styles.closeInner}>
+            <p className={styles.closeEyebrow}>Let&apos;s get it back on its feet</p>
+            <h2 className={styles.closeTitle}>
+              Tell us what broke.
+              <br />
+              <span className={styles.titleAccent}>We&apos;ll tell you what it takes.</span>
+            </h2>
+            <p className={styles.closeLead}>
+              No code upload, no repo scan up front. A few questions, then effort in weeks.
+            </p>
+            <Link href="/?type=rescue" className={styles.closeCta}>
+              Start the triage conversation <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+          <GhostStage className={styles.closeGhost} />
+        </section>
       </main>
       <Footer />
     </div>
