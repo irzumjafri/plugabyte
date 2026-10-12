@@ -15,8 +15,9 @@ interface LeadPayload {
 }
 
 // Best-effort, per-instance rate limit — no LLM cost risk in Phase 1, this just
-// keeps obvious junk out of the leads table. Move to a real store (Upstash/Supabase)
-// before this needs to hold across multiple server instances.
+// keeps obvious junk out of the leads table. Move it to a shared store before
+// this needs to hold across more than one server instance — Convex is already
+// here, so that is the obvious place.
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
 const hits = new Map<string, number[]>();
