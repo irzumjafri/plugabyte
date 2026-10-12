@@ -13,13 +13,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: '/about',
-    title: 'About — AI & Software Studio in Dubai, UAE | Plugabyte',
+    title: 'Plugabyte · About — AI & Software Studio in Dubai, UAE',
     description: "A small engineering studio in Dubai serving the Middle East. We started with circuits and kept the curiosity — building AI systems and software that survive production.",
     images: [{ url: '/scenes/workbench.jpg' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About — AI & Software Studio in Dubai, UAE | Plugabyte',
+    title: 'Plugabyte · About — AI & Software Studio in Dubai, UAE',
     description: "A small engineering studio in Dubai serving the Middle East. We started with circuits and kept the curiosity — building AI systems and software that survive production.",
     images: ['/scenes/workbench.jpg'],
   },

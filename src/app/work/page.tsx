@@ -17,13 +17,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: '/work',
-    title: 'Case Studies — AI Agents, Integrations & Rescues | Plugabyte',
+    title: 'Plugabyte · Case Studies — AI Agents, Integrations & Rescues',
     description: "Four real builds from a Dubai-based studio working across the Middle East: a WhatsApp AI agent, an order-sync integration, an internal claims tool and a prototype rescue. Ugly parts included.",
     images: [{ url: '/scenes/about-boards.jpg' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Case Studies — AI Agents, Integrations & Rescues | Plugabyte',
+    title: 'Plugabyte · Case Studies — AI Agents, Integrations & Rescues',
     description: "Four real builds from a Dubai-based studio working across the Middle East: a WhatsApp AI agent, an order-sync integration, an internal claims tool and a prototype rescue. Ugly parts included.",
     images: ['/scenes/about-boards.jpg'],
   },

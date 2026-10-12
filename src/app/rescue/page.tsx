@@ -16,13 +16,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: '/rescue',
-    title: 'Prototype Rescue — Fix a Broken MVP or AI Prototype | Plugabyte',
+    title: 'Plugabyte · Prototype Rescue — Fix a Broken MVP or AI Prototype',
     description: "Your demo worked, then real users arrived. Production-readiness triage for broken MVPs, Bolt and Lovable prototypes and AI builds — for companies across the Middle East. Auth, rate limits, error states, evals.",
     images: [{ url: '/scenes/rescue-bridge.jpg' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Prototype Rescue — Fix a Broken MVP or AI Prototype | Plugabyte',
+    title: 'Plugabyte · Prototype Rescue — Fix a Broken MVP or AI Prototype',
     description: "Your demo worked, then real users arrived. Production-readiness triage for broken MVPs, Bolt and Lovable prototypes and AI builds — for companies across the Middle East. Auth, rate limits, error states, evals.",
     images: ['/scenes/rescue-bridge.jpg'],
   },

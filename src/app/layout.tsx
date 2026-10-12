@@ -40,7 +40,7 @@ const jetbrainsMono = JetBrains_Mono({
 const DESCRIPTION =
   'AI systems and software built to survive production — for companies across the Middle East. We build from scratch, integrate what you already run, and rescue prototypes that broke on real users. The demo was the easy part.';
 
-const TITLE = 'AI & Software Development Studio — Middle East | Plugabyte';
+const TITLE = 'Plugabyte — AI & Software Studio, Middle East';
 
 export const metadata: Metadata = {
   // Without metadataBase every canonical and Open Graph URL resolves relative,
@@ -48,8 +48,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: TITLE,
-    // Page titles read "Work | Plugabyte" without each page repeating the brand.
-    template: `%s | ${SITE_NAME}`,
+    // Brand first so it survives tab truncation; the page name follows.
+    template: `${SITE_NAME} · %s`,
   },
   description: DESCRIPTION,
   applicationName: SITE_NAME,
