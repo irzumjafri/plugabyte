@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { CONCEPTS } from '@/lib/concepts';
+import { publishedTestimonials } from '@/lib/testimonials';
 import Annotation from '@/components/Scene/Annotation';
 import styles from './HomeSections.module.css';
 
@@ -20,6 +21,8 @@ const AI_RELIABILITY = [
 const LAYERS = ['Auth that holds.', 'Retries that recover.', 'Someone watching.'];
 
 export default function HomeSections() {
+  const testimonials = publishedTestimonials();
+
   return (
     <div className={styles.main}>
       {/* Light ground, per the comps — the page alternates rather than running
@@ -95,6 +98,31 @@ export default function HomeSections() {
           </div>
         </div>
       </section>
+
+      {/* Renders only when there is something real to show — placeholders are
+          filtered out of production builds, so an empty list means no section
+          rather than an empty frame. */}
+      {testimonials.length > 0 && (
+        <section className={styles.voices}>
+          <div className={styles.voicesInner}>
+            <p className={styles.eyebrowLight}>What they said after</p>
+            <ul className={styles.voiceList}>
+              {testimonials.map(t => (
+                <li key={`${t.company}-${t.name}`} className={styles.voice}>
+                  <blockquote className={styles.voiceQuote}>
+                    <span aria-hidden="true" className={styles.voiceMark}>&ldquo;</span>
+                    {t.quote}
+                  </blockquote>
+                  <p className={styles.voiceWho}>
+                    <span className={styles.voiceName}>{t.name}</span>
+                    <span className={styles.voiceRole}>{t.role}, {t.company}</span>
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* The AI offer. Not advisory as a product — the brand book is explicit
           that AI is how the work gets done, not what is sold — but the

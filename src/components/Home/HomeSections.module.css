@@ -191,6 +191,70 @@
   border-radius: 6px;
 }
 
+/* ---- what they said ---------------------------------------------------- */
+
+.voices {
+  background: var(--pb-void);
+  padding: clamp(64px, 9vw, 104px) var(--gutter);
+}
+
+.voicesInner {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+
+.voiceList {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: clamp(28px, 4vw, 56px);
+  margin-top: 8px;
+}
+
+/* No card, no border: a quote set as type reads as something a person said,
+   where a bordered box reads as a widget. */
+.voiceQuote {
+  position: relative;
+  margin: 0 0 18px;
+  padding-left: 30px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(18px, 2.1vw, 23px);
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  color: var(--pb-text);
+}
+
+.voiceMark {
+  position: absolute;
+  left: 0;
+  top: -6px;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--pb-azure);
+  opacity: 0.55;
+}
+
+.voiceWho {
+  padding-left: 30px;
+  display: grid;
+  gap: 2px;
+}
+
+.voiceName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pb-text-dim);
+}
+
+.voiceRole {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pb-text-faint);
+}
+
 /* ---- the AI offer ------------------------------------------------------ */
 
 .ai {
