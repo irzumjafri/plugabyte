@@ -196,3 +196,37 @@ Measured rather than eyeballed, at 1600px: viewport, scrim, dialogue and chat
 all centre on 800. Worth repeating that the earlier "it's off-centre" report was
 *also* real — I dismissed it once because the pane's small width hid it. Check a
 centring bug at a wide viewport before concluding it is fine.
+
+## Analytics, SEO and the critique fixes (2026-10-12)
+
+Ran a four-way critique of the site, then worked the findings.
+
+Fixed: the estimator contradicted /work (3-5 weeks quoted against a published
+9-week build) — product's base is 4 now and the band is four weeks wide, with a
+test that fails if a quote's ceiling ever drops under a published case study
+again. The scoping chat was the only way in, so there is a visible email route
+in the hero, both closing bands and inside the overlay. Rescue got a second
+hero door. The pricing line stopped advertising its own omission.
+
+Built: sitemap, robots, metadataBase, per-page canonicals, Open Graph, Twitter
+cards and ProfessionalService JSON-LD — none of which existed. Visits now carry
+attribution (organic / referral / direct / campaign + landing page) and
+convex/analytics.ts reads traffic by path, by source, and the funnel.
+
+GA4 property created for plugabyte.com — property 485483292, stream
+"Plugabyte web", measurement ID G-PF7C1F3N17, UAE timezone. Wired behind
+NEXT_PUBLIC_GA_ID so nothing loads until it is set; verified at runtime that
+gtag defines and config fires with the real ID.
+
+Measured, finally: production transfer and LCP per page. The homepage is the
+outlier at 866 KB / 2.28s LCP against ~130 KB and ~150ms elsewhere — 231 KB of
+Three.js, 143 KB of fonts across three files, 111 KB hero plate. Not yet fixed.
+
+Two defects found along the way: the funnel queried a "spec_ready" event nothing
+emits, and the search-engine matcher counted google.com.evil.example as organic.
+
+### Still needs Irzum
+- Real testimonials (the section filters placeholders out of production).
+- GSC verification — DNS record, or paste the HTML tag value.
+- NEXT_PUBLIC_GA_ID must be set in Vercel for production.
+- A cookie/consent decision before GA4 goes live; there is no privacy policy.
