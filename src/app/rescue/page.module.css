@@ -416,6 +416,11 @@
   outline-offset: 3px;
 }
 
+.closeEmail {
+  display: block;
+  margin-top: 18px;
+}
+
 .closeGhost {
   width: clamp(130px, 16vw, 210px);
   aspect-ratio: 1;
@@ -429,7 +434,12 @@
     justify-items: start;
   }
 
-  .closeGhost {
+  .closeEmail {
+  display: block;
+  margin-top: 18px;
+}
+
+.closeGhost {
     width: 132px;
   }
 }

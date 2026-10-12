@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Annotation from '@/components/Scene/Annotation';
 import GhostStage from '@/components/Scene/GhostStage';
+import EmailLink from '@/components/EmailLink';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SceneHero from '@/components/Scene/SceneHero';
@@ -152,6 +153,7 @@ export default function RescuePage() {
             <Link href="/?type=rescue" className={styles.closeCta}>
               Start the triage conversation <span aria-hidden="true">→</span>
             </Link>
+            <EmailLink className={styles.closeEmail} subject={'Prototype rescue'} />
           </div>
           <GhostStage className={styles.closeGhost} />
         </section>

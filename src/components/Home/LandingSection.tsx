@@ -6,6 +6,8 @@ import ScopingChat, { type ScopingChatHandle } from '@/components/ScopingChat/Sc
 import SceneHero from '@/components/Scene/SceneHero';
 import ChatOverlay from '@/components/ScopingChat/ChatOverlay';
 import Annotation from '@/components/Scene/Annotation';
+import EmailLink from '@/components/EmailLink';
+import Link from 'next/link';
 import type { BuildTypeId } from '@/lib/estimator';
 import styles from './LandingSection.module.css';
 
@@ -80,6 +82,12 @@ export default function LandingSection({ chatRef, initialType, chatOpen, onOpenC
           >
             What are you building? <span aria-hidden="true">↗</span>
           </button>
+          <div className={styles.altActions}>
+            <Link href="/rescue" className={styles.secondaryCta}>
+              Something already broken? <span aria-hidden="true">→</span>
+            </Link>
+            <EmailLink className={styles.emailLink} />
+          </div>
           <ul className={styles.capabilities}>
             {CAPABILITIES.map(c => <li key={c}>{c}</li>)}
           </ul>

@@ -4,6 +4,18 @@ import { CONCEPTS } from '@/lib/concepts';
 import Annotation from '@/components/Scene/Annotation';
 import styles from './HomeSections.module.css';
 
+/**
+ * What we put around a model so it survives real users. These are the brand
+ * book's own AI set, and they are the offer: not advice about AI, but the
+ * engineering that makes an AI system reliable enough to run a business on.
+ */
+const AI_RELIABILITY = [
+  { title: 'Grounded in your data', desc: 'Answers that come from your systems, not from what the model half-remembers.' },
+  { title: 'Held to an eval harness', desc: 'The line between a demo and a product. It is how you know a prompt change did not quietly break it.' },
+  { title: 'A human path out', desc: "The escalation route for anything the model should not be answering." },
+  { title: 'Costed at real volume', desc: 'Modelled on the traffic you actually expect, not on a demo.' },
+];
+
 /** The three things the exploded plate is actually showing. */
 const LAYERS = ['Auth that holds.', 'Retries that recover.', 'Someone watching.'];
 
@@ -81,6 +93,34 @@ export default function HomeSections() {
               sizes="(max-width: 900px) 100vw, 620px"
             />
           </div>
+        </div>
+      </section>
+
+      {/* The AI offer. Not advisory as a product — the brand book is explicit
+          that AI is how the work gets done, not what is sold — but the
+          engineering that makes an AI system hold up, with the "where does it
+          belong" conversation as the way in. */}
+      <section className={styles.ai}>
+        <div className={styles.aiInner}>
+          <p className={styles.eyebrowLight}>Building with AI</p>
+          <h2 className={styles.titleLight}>
+            Most AI projects don&apos;t fail on the model.
+            <br />
+            <span className={styles.em}>They fail on everything around it.</span>
+          </h2>
+          <p className={styles.aiLead}>
+            We build AI systems that survive contact with real users — and we will tell you
+            where a model genuinely earns its keep before anyone writes a line of it. Not
+            sure where AI belongs in your business yet? That conversation is where we start.
+          </p>
+          <ul className={styles.aiGrid}>
+            {AI_RELIABILITY.map(a => (
+              <li key={a.title} className={styles.aiItem}>
+                <p className={styles.aiTitle}>{a.title}</p>
+                <p className={styles.aiDesc}>{a.desc}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

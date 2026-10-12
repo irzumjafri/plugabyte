@@ -1,0 +1,23 @@
+.link {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--pb-text-muted);
+  text-decoration: none;
+}
+
+.link:hover {
+  color: var(--pb-text-dim);
+}
+
+.link:hover .address {
+  color: var(--pb-ghost-hover);
+}
+
+.address {
+  color: var(--pb-azure);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

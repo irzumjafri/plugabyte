@@ -54,6 +54,38 @@
   outline-offset: 3px;
 }
 
+/* Two doors. Building something is the primary one; "something is already
+   broken" is the only offer with urgency behind it, so it gets a real link
+   rather than being three clicks away under Rescue. */
+.altActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+  margin-top: 18px;
+}
+
+.secondaryCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+}
+
+.secondaryCta:hover {
+  color: #fff;
+  text-decoration-color: #fff;
+}
+
+.emailLink {
+  color: var(--pb-text-dim);
+}
+
 .capabilities {
   list-style: none;
   margin-top: clamp(36px, 6vw, 64px);

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  BUILD_TYPES, classifyFreeText, branchQuestions, assumptionsFor, checkDisqualify, computeEffort, fillUnknowns, specId,
+  BUILD_TYPES, type BuildTypeId, classifyFreeText, branchQuestions, assumptionsFor, checkDisqualify, computeEffort, fillUnknowns, specId,
 } from './estimator';
 
 describe('classifyFreeText', () => {
@@ -115,26 +115,47 @@ describe('checkDisqualify', () => {
 describe('computeEffort', () => {
   it('returns the base band with no bumps', () => {
     const result = computeEffort('internal', {});
-    expect(result).toEqual({ low: 2, high: 4 });
+    expect(result).toEqual({ low: 2, high: 6 });
   });
 
   it('bumps for systems, apis, approvers and deadline', () => {
     const result = computeEffort('integration', {
       systems: '4 or more', apis: 'No', approvers: '3 or more', deadline: 'Hard date',
     });
-    // base 2-4, +1 systems, +1 apis, +1 approvers, +1 deadline = +4
-    expect(result).toEqual({ low: 6, high: 8 });
+    // base 2-6, +1 systems, +1 apis, +1 approvers, +1 deadline = +4
+    expect(result).toEqual({ low: 6, high: 10 });
   });
 
   it('always adds the AI eval-harness bump', () => {
     const result = computeEffort('ai', {});
-    expect(result).toEqual({ low: 4, high: 6 });
+    expect(result).toEqual({ low: 4, high: 8 });
   });
 
   it('bumps for screens and roles on product builds', () => {
     const result = computeEffort('product', { screens: '15+', roles: '4+' });
-    // base 3-5, +2 screens, +1 roles = +3
-    expect(result).toEqual({ low: 6, high: 8 });
+    // base 4-8, +2 screens, +1 roles = +3
+    expect(result).toEqual({ low: 7, high: 11 });
+  });
+});
+
+// The site shows both numbers, so they have to agree: a typical quote's upper
+// bound cannot sit under the case study for the same build type.
+describe('quoted bands vs published case studies', () => {
+  const PUBLISHED: Partial<Record<BuildTypeId, number>> = {
+    ai: 7, integration: 4, product: 9, rescue: 3,
+  };
+
+  it('reaches the effort our own case studies report', () => {
+    for (const [type, weeks] of Object.entries(PUBLISHED) as [BuildTypeId, number][]) {
+      const { answers } = fillUnknowns(type, {});
+      const { high } = computeEffort(type, answers);
+      // One week of tolerance: 4-8 against a published 9 reads as consistent,
+      // where the old 3-5 against 9 read as the site contradicting itself.
+      expect(
+        high,
+        `${type}: quote tops out at ${high}w but /work publishes ${weeks}w`,
+      ).toBeGreaterThanOrEqual(weeks - 1);
+    }
   });
 });
 

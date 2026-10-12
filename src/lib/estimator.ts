@@ -133,10 +133,19 @@ export function checkDisqualify(typeId: BuildTypeId, answers: Answers): Disquali
 
 // Bases assume AI-assisted delivery, which is what we sell — a buyer comparing
 // us to a traditional shop expects weeks, not quarters. Complexity still
-// escalates through the bumps below; it is the floor that came down.
+// escalates through the bumps below; it is the floor that stays low.
+//
+// Product moved 3 -> 4 because the band has to reach what we actually shipped:
+// /work says the claims tool took 9 weeks, and quoting 3-5 for the same build
+// type put two numbers a prospect can see in one visit in open contradiction.
 const BASE_WEEKS: Record<BuildTypeId, number> = {
-  product: 3, internal: 2, ai: 3, pipeline: 2, integration: 2, rescue: 1,
+  product: 4, internal: 2, ai: 3, pipeline: 2, integration: 2, rescue: 1,
 };
+
+// A two-week spread read as a commitment rather than a forecast, and its top
+// sat under our own case studies. Four weeks keeps the fast floor the pitch
+// rests on while the upper bound covers the work we have really delivered.
+const BAND_WIDTH = 4;
 
 export interface EffortResult {
   low: number;
@@ -145,7 +154,7 @@ export interface EffortResult {
 
 export function computeEffort(typeId: BuildTypeId, answers: Answers): EffortResult {
   let low = BASE_WEEKS[typeId] ?? 4;
-  let high = low + 2;
+  let high = low + BAND_WIDTH;
   const bump = (n: number) => { low += n; high += n; };
 
   // Only genuine complexity adds time. The mid-range answers cost nothing:

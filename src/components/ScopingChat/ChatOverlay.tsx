@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef } from 'react';
 import Ghost, { type GhostHandle } from '@/components/Ghost/Ghost';
+import EmailLink from '@/components/EmailLink';
 import styles from './ChatOverlay.module.css';
 
 /**
@@ -114,6 +115,9 @@ export default function ChatOverlay({
             <Ghost ref={setGhost} />
           </div>
           <div className={styles.conversation}>{children}</div>
+          <p className={styles.escape}>
+            <EmailLink label="Rather not chat? Email us —" subject="Project enquiry" />
+          </p>
         </div>
       </div>
     </div>

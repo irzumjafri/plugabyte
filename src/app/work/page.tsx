@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import EmailLink from '@/components/EmailLink';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Diagram from '@/components/Diagram';
@@ -82,6 +83,7 @@ export default function WorkPage() {
             <Link href="/?chat=1" className={styles.closeCta}>
               Start scoping yours <span aria-hidden="true">→</span>
             </Link>
+            <EmailLink className={styles.closeEmail} subject={'Scoping a build'} />
           </div>
           <GhostStage className={styles.closeGhost} />
         </section>

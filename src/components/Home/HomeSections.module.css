@@ -191,6 +191,60 @@
   border-radius: 6px;
 }
 
+/* ---- the AI offer ------------------------------------------------------ */
+
+.ai {
+  background:
+    radial-gradient(80% 120% at 88% 10%, rgba(82, 168, 253, 0.1), transparent 60%),
+    var(--pb-panel-2);
+  border-top: 1px solid rgba(143, 184, 232, 0.16);
+  padding: clamp(64px, 9vw, 112px) var(--gutter);
+}
+
+.aiInner {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+
+.eyebrowLight {
+  color: var(--pb-azure);
+}
+
+.aiLead {
+  max-width: 62ch;
+  margin: 22px 0 clamp(36px, 5vw, 54px);
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--pb-text-dim);
+}
+
+.aiGrid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 28px;
+}
+
+.aiItem {
+  padding-top: 16px;
+  border-top: 1px solid rgba(143, 184, 232, 0.2);
+}
+
+.aiTitle {
+  margin-bottom: 8px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.aiDesc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--pb-text-muted);
+}
+
 /* ---- close ------------------------------------------------------------- */
 
 .close {
