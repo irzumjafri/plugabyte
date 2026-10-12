@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { trackEvent } from '@/lib/track';
+import { getAttribution } from '@/lib/attribution';
 
 /**
  * Records a page view for every page, including client-side navigations — the
@@ -19,10 +20,17 @@ export default function PageViews() {
     if (lastPath.current === pathname) return;
     lastPath.current = pathname;
 
+    const attribution = getAttribution();
+
     trackEvent('page_view', {
-      // Where they came from, on the first page of the visit only.
       referrer: document.referrer || undefined,
       title: document.title || undefined,
+      // Carried on every view, not just the first, so any page can be traced
+      // back to the search or campaign that started the visit.
+      channel: attribution?.channel,
+      source: attribution?.source,
+      campaign: attribution?.campaign,
+      landing: attribution?.landing,
     });
   }, [pathname]);
 

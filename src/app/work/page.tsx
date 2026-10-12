@@ -11,8 +11,22 @@ import { TEARDOWNS } from '@/lib/teardowns';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Work | Plugabyte',
-  description: 'Real builds, ugly parts included — one product, one AI agent, one integration, one rescue.',
+  title: 'Work',
+  description: "Real builds, ugly parts included — one product, one AI agent, one integration, one rescue.",
+  alternates: { canonical: '/work' },
+  openGraph: {
+    type: 'website',
+    url: '/work',
+    title: 'Work | Plugabyte',
+    description: "Real builds, ugly parts included — one product, one AI agent, one integration, one rescue.",
+    images: [{ url: '/scenes/about-boards.jpg' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Work | Plugabyte',
+    description: "Real builds, ugly parts included — one product, one AI agent, one integration, one rescue.",
+    images: ['/scenes/about-boards.jpg'],
+  },
 };
 
 export default function WorkPage() {

@@ -10,8 +10,22 @@ import SceneHero from '@/components/Scene/SceneHero';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Prototype rescue | Plugabyte',
+  title: 'Prototype rescue',
   description: "Production-readiness triage for a prototype that already exists and isn't production-ready yet.",
+  alternates: { canonical: '/rescue' },
+  openGraph: {
+    type: 'website',
+    url: '/rescue',
+    title: 'Prototype rescue | Plugabyte',
+    description: "Production-readiness triage for a prototype that already exists and isn't production-ready yet.",
+    images: [{ url: '/scenes/rescue-bridge.jpg' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Prototype rescue | Plugabyte',
+    description: "Production-readiness triage for a prototype that already exists and isn't production-ready yet.",
+    images: ['/scenes/rescue-bridge.jpg'],
+  },
 };
 
 const CHECKS = [

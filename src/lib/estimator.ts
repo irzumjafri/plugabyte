@@ -232,7 +232,10 @@ export function specId(): string {
 }
 
 export function assumptionsFor(typeId: BuildTypeId, answers: Answers): string[] {
-  const a = ['Effort excludes rate-card pricing — discussed on the call.'];
+  // Still has to stop anyone reading the weeks figure as a quote, but the old
+  // wording ("excludes rate-card pricing — discussed on the call") advertised
+  // the omission and made the call sound like a gate in front of the number.
+  const a = ['An effort estimate, not a quote — we price it once the scope is agreed.'];
   if (typeId === 'ai') a.push('Includes eval harness, prompt/version management, human handoff path and cost modelling at stated volume.');
   if (answers.apis === 'No') a.push('At least one of those tools will not share its data directly — expect a workaround or a call with the vendor.');
   if (answers.apis === 'Not sure') a.push('Whether those tools will share their data is unconfirmed — the first week includes a check.');

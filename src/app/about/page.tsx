@@ -7,8 +7,22 @@ import Footer from '@/components/Footer';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Our Story | Plugabyte',
-  description: 'From a failed hardware startup to an AI consultancy built on engineering rigour. The story behind Plugabyte.',
+  title: 'About',
+  description: "We started with circuits. We kept the curiosity — same questions, bigger systems.",
+  alternates: { canonical: '/about' },
+  openGraph: {
+    type: 'website',
+    url: '/about',
+    title: 'About | Plugabyte',
+    description: "We started with circuits. We kept the curiosity — same questions, bigger systems.",
+    images: [{ url: '/scenes/workbench.jpg' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About | Plugabyte',
+    description: "We started with circuits. We kept the curiosity — same questions, bigger systems.",
+    images: ['/scenes/workbench.jpg'],
+  },
 };
 
 const BELIEFS = [
