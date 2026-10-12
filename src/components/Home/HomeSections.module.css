@@ -47,7 +47,7 @@
   max-width: var(--measure);
   margin: 0 auto clamp(40px, 5vw, 64px);
   display: grid;
-  grid-template-columns: 1fr minmax(200px, 300px) minmax(180px, auto);
+  grid-template-columns: 1fr minmax(200px, 34ch);
   align-items: start;
   gap: 32px;
 }
@@ -110,6 +110,70 @@
   display: grid;
   gap: 6px;
   align-content: start;
+}
+
+/* Status is stated, not implied: a reader should never have to guess whether
+   something was paid for, shipped, or still being built. */
+.projectMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 4px;
+}
+
+.kindClient,
+.kindOwn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 3px;
+}
+
+/* Client work earns the stronger mark — it is the rarer claim. */
+.kindClient {
+  color: var(--pb-deep-sky);
+  background: rgba(78, 108, 147, 0.1);
+  border: 1px solid rgba(78, 108, 147, 0.32);
+}
+
+.kindOwn {
+  color: var(--pb-ink-soft);
+  background: rgba(13, 19, 27, 0.05);
+  border: 1px solid rgba(13, 19, 27, 0.16);
+}
+
+.projectStatus {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--pb-ink-soft);
+}
+
+.projectDetail {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(13, 19, 27, 0.12);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--pb-ink-soft);
+  max-width: 52ch;
+}
+
+.projectLink {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--pb-deep-sky);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.projectLink:hover {
+  color: var(--pb-ink);
 }
 
 .conceptName {

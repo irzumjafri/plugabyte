@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { CONCEPTS } from '@/lib/concepts';
+import { PROJECTS } from '@/lib/projects';
 import { publishedTestimonials } from '@/lib/testimonials';
 import Annotation from '@/components/Scene/Annotation';
 import styles from './HomeSections.module.css';
@@ -30,43 +30,47 @@ export default function HomeSections() {
       <section id="work" className={styles.concepts}>
         <div className={styles.conceptsHead}>
           <div>
-            <p className={styles.eyebrowInk}>Concept projects</p>
+            <p className={styles.eyebrowInk}>What we&apos;ve built</p>
             <h2 className={styles.titleInk}>
-              A few things we could<br />put into the world.
+              Things you can
+              <br />actually open.
             </h2>
           </div>
-          <Image
-            className={styles.shelf}
-            src="/scenes/work-shelf.jpg"
-            alt="Four project volumes stacked on a desk: relay, folio, conduit, daybreak."
-            width={1130}
-            height={930}
-            sizes="(max-width: 860px) 100vw, 340px"
-          />
           <p className={styles.headAside}>
-            Real problems. Thoughtful products.<br />Built end to end.
+            Client work and our own products, each labelled for what it is.
             <span className={styles.rule} aria-hidden="true" />
           </p>
         </div>
 
         <ul className={styles.conceptGrid}>
-          {CONCEPTS.map((c, i) => (
-            <li key={c.slug} className={i < 2 ? styles.conceptCardWide : styles.conceptCard}>
-              {c.image && (
+          {PROJECTS.map((p, i) => (
+            <li key={p.slug} className={i === 0 ? styles.conceptCardWide : styles.conceptCard}>
+              {p.image && (
                 <Image
                   className={styles.conceptShot}
-                  src={c.image}
-                  alt={`${c.name} — ${c.tagline}`}
-                  width={1262}
-                  height={668}
-                  sizes="(max-width: 860px) 100vw, (max-width: 1200px) 50vw, 560px"
+                  src={p.image}
+                  alt={`${p.name} — ${p.tagline}`}
+                  width={1600}
+                  height={956}
+                  sizes="(max-width: 860px) 100vw, (max-width: 1200px) 50vw, 620px"
                 />
               )}
               <div className={styles.conceptText}>
-                <p className={styles.conceptName}>{c.name}</p>
-                <p className={styles.conceptTagline}>{c.tagline}</p>
-                <p className={styles.conceptBlurb}>{c.blurb}</p>
-                <span className={styles.conceptKind}>{c.kind}</span>
+                <p className={styles.projectMeta}>
+                  <span className={p.kind === 'Client work' ? styles.kindClient : styles.kindOwn}>
+                    {p.kind}
+                  </span>
+                  <span className={styles.projectStatus}>{p.status}</span>
+                </p>
+                <p className={styles.conceptName}>{p.name}</p>
+                <p className={styles.conceptTagline}>{p.tagline}</p>
+                <p className={styles.conceptBlurb}>{p.blurb}</p>
+                {p.detail && <p className={styles.projectDetail}>{p.detail}</p>}
+                {p.href && (
+                  <a className={styles.projectLink} href={p.href} target="_blank" rel="noopener noreferrer">
+                    Open it <span aria-hidden="true">↗</span>
+                  </a>
+                )}
               </div>
             </li>
           ))}
