@@ -100,10 +100,16 @@
   gap: 18px;
 }
 
+/* Fixed frame rather than intrinsic height: the sources are normalised to the
+   same 1600x956 today, but one odd-sized screenshot later would otherwise give
+   that card a taller image and knock the row out of alignment. */
 .conceptShot {
   width: 100%;
+  aspect-ratio: 1600 / 956;
   height: auto;
+  object-fit: cover;
   border-radius: 6px;
+  background: var(--pb-void);
 }
 
 .conceptText {
