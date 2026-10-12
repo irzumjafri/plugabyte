@@ -1,0 +1,89 @@
+.bar {
+  position: fixed;
+  z-index: 120;
+  left: clamp(12px, 3vw, 28px);
+  right: clamp(12px, 3vw, 28px);
+  bottom: clamp(12px, 3vw, 28px);
+  margin: 0 auto;
+  max-width: 720px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 24px;
+  padding: 18px 22px;
+  border: 1px solid rgba(143, 184, 232, 0.22);
+  border-radius: 10px;
+  background: rgba(11, 24, 38, 0.97);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 44px rgba(4, 8, 14, 0.5);
+  animation: consentIn 260ms ease-out;
+}
+
+.copy {
+  flex: 1 1 320px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--pb-text-dim);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.accept,
+.decline {
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Equal visual weight both ways: a greyed-out refusal next to a bright accept
+   is a dark pattern, and regulators read it as consent not freely given. */
+.accept {
+  border: 1px solid var(--pb-azure);
+  background: var(--pb-azure);
+  color: var(--pb-void);
+}
+
+.decline {
+  border: 1px solid rgba(143, 184, 232, 0.4);
+  background: transparent;
+  color: var(--pb-text-dim);
+}
+
+.accept:hover {
+  filter: brightness(1.08);
+}
+
+.decline:hover {
+  border-color: var(--pb-azure);
+  color: #fff;
+}
+
+.accept:focus-visible,
+.decline:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+@keyframes consentIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar { animation: none; }
+}
+
+@media (max-width: 560px) {
+  .actions { width: 100%; }
+  .accept, .decline { flex: 1; }
+}

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE_NAME, SITE_URL } from '@/lib/site';
 import PageViews from '@/components/PageViews';
 import Analytics from '@/components/Analytics';
+import CookieConsent from '@/components/CookieConsent';
 import { Nunito, Space_Grotesk, JetBrains_Mono, Caveat } from 'next/font/google';
 import './globals.css';
 
@@ -104,6 +105,7 @@ export default function RootLayout({
         />
         <PageViews />
         <Analytics />
+        <CookieConsent />
         {children}
       </body>
     </html>
