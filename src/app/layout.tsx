@@ -69,6 +69,16 @@ export const metadata: Metadata = {
     images: ['/scenes/workshop-night.jpg'],
   },
   robots: { index: true, follow: true },
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/favicon.ico', sizes: '48x48', type: 'image/x-icon' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
   // Only emitted when the env var is set, so an unverified environment does not
   // ship an empty verification tag.
   verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
