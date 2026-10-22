@@ -66,8 +66,8 @@ export const PROJECTS: Project[] = [
     image: '/work/blueprint.jpg',
   },
   {
-    slug: 'invincible-xi',
-    name: 'Invincible XI',
+    slug: 'rip-and-run',
+    name: 'Rip and Run',
     kind: 'Plugabyte product',
     status: 'In development',
     tagline: 'Pack. Pick. Prove it.',
